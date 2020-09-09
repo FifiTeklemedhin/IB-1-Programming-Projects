@@ -22,64 +22,30 @@ public class IntegerCollection
 {
     // @TODO: validate that all inputs in the file are integers
     // @TODO: don't crash if a file is not chosen
+    
+    static APConsole console = new APConsole("Integer Collection");
+    static Set<Integer> parsedInts = new HashSet<Integer>();
+
+
+    
+    static JButton inputOpen = new JButton();
+    static JFileChooser inputChooser = new JFileChooser();
+    static JOptionPane notifier = new JOptionPane();
+
+    static File inputFile = new File("");
+    static Scanner reader = new Scanner("");
+
+    static String inputPath = "";
     public static void main(String[] args) throws FileNotFoundException
     {
-        APConsole console = new APConsole("Integer Collection");
-        Set<Integer> parsedInts = new HashSet<Integer>();
         
+        // ************************* Selecting and Validating File *************************
         
-        // ************************* Input Selector *************************
-        JButton inputOpen = new JButton();
-        JFileChooser inputChooser = new JFileChooser();
-        JOptionPane notifier = new JOptionPane();
-        
-        File inputFile = new File("");
-        Scanner reader = new Scanner("");
-
-        String inputPath = "";
-
-        JOptionPane.showMessageDialog(inputOpen, "Select your input file");
         inputChooser = chooseFile(inputOpen, inputChooser);
-        
-        
-        while(true)
-        {
-            try
-            {
-                inputPath = inputChooser.getSelectedFile().getAbsolutePath();
-                break;
-            }
-            catch(NullPointerException e)
-            {
-                JOptionPane.showMessageDialog(inputOpen, "No file chosen. Select a valid input file");
-                inputChooser = chooseFile(inputOpen, inputChooser);
-                continue;
-            }
-        }
-        
-        inputPath = inputChooser.getSelectedFile().getAbsolutePath();
-        inputFile = new File(inputPath); 
-         while(true)
-        {
-            try
-            {
-                reader = new Scanner(new FileReader(inputFile));
-                break;
-            }
-            catch(FileNotFoundException e)
-            {
-                JOptionPane.showMessageDialog(inputOpen, "File not found. Select a valid input file");
-                inputChooser = chooseFile(inputOpen, inputChooser);
-                continue;
-            }
-        }
-        reader = new Scanner(new FileReader(inputFile));
-        // prints out what user clicked on
-
+        inputPath = validateFile();
         console.println("Input File: " + inputPath);
         
         // ************************* Delimiting String and Filling Set *************************
-
         while(reader.hasNextLine())
         {
             String currentLine = reader.nextLine();
@@ -95,6 +61,7 @@ public class IntegerCollection
     }
     public static JFileChooser chooseFile(JButton inputOpen, JFileChooser inputChooser)
     {
+        JOptionPane.showMessageDialog(inputOpen, "Select your input file");
         // need starting directory for file chooser "." sets it to the project location 
         inputChooser.setCurrentDirectory(new java.io.File("."));
         inputChooser.setDialogTitle("Select Input File");
@@ -108,7 +75,7 @@ public class IntegerCollection
         return inputChooser;
     }
     
-    public static void validateFile(JButton inputOpen, JFileChooser inputChooser, String inputPath, File inputFile, Scanner reader)
+    public static String validateFile()
     {
         while(true)
         {
@@ -141,6 +108,7 @@ public class IntegerCollection
                 continue;
             }
         }
+        return inputPath;
         
     }
 }
