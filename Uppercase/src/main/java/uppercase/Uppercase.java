@@ -19,69 +19,38 @@ import javax.swing.JOptionPane;
 
 public class Uppercase 
 {
+    // @TODO: pop-up description, get rid of console
+    // @TODO: validate data and clean up code
+    
+    static JButton inputOpen = new JButton();
+    static JButton outputOpen = new JButton();
+    static JFileChooser inputChooser = new JFileChooser();
+    static JFileChooser outputChooser = new JFileChooser();
+    static JOptionPane notifier = new JOptionPane();
+
+    static File inputFile;
+    static File outputFile;
+    static Scanner reader;
+    static FileWriter writer;
+
+    static String inputFileName;
+    static String inputPath;
+    static String outputPath; 
+    static ArrayList<String> outputLines;
     public static void main(String[] args) throws FileNotFoundException, IOException
     {
-        JButton inputOpen = new JButton();
-        JButton outputOpen = new JButton();
-        JFileChooser inputChooser = new JFileChooser();
-        JFileChooser outputChooser = new JFileChooser();
-        JOptionPane notifier = new JOptionPane();
+        // ***************** Reading and Validating Files *********************
+        inputChooser = chooseFile(inputOpen, inputChooser, "input");
+        inputPath = validateInput();
         
-        File inputFile;
-        File outputFile;
-        Scanner reader;
-        FileWriter writer;
-        
-        String inputFileName;
-        String inputPath;
-        String outputPath; 
-        ArrayList<String> outputLines;
-        
-        // ************************* Input Selector *************************
-        JOptionPane.showMessageDialog(inputOpen, "Select your input file");
-        // need starting directory for file chooser "." sets it to the project location 
-        inputChooser.setCurrentDirectory(new java.io.File("."));
-        inputChooser.setDialogTitle("Select Input File");
-        
-        //setting it so that file chooser will only show directories
-        inputChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        
-        // need a button component to open it up, even though it doesn'tactually need to be pressed
-        inputChooser.showDialog(inputOpen, "Select Input File");
-        
-        // prints out what user clicked on
-        inputFileName = inputChooser.getSelectedFile().getName();
-        inputPath = inputChooser.getSelectedFile().getAbsolutePath();
-        inputFile = new File(inputPath);
-        reader = new Scanner(new FileReader(inputFile));
-        System.out.println("Input File: " + inputPath);
+        outputChooser = chooseFile(outputOpen, outputChooser, "output");
+        outputPath = validateOutput();
         
         // ************************* Reading Input *****************************
         outputLines = new ArrayList<String>();
         while(reader.hasNextLine())
             outputLines.add(reader.nextLine());
-        
-        // ************************* Output Selector ***************************
-        JOptionPane.showMessageDialog(outputOpen, "Select your output file");
-        // need starting directory for file chooser "." sets it to the project location 
-        outputChooser.setCurrentDirectory(new java.io.File("."));
-        outputChooser.setDialogTitle("Select Output File");
-        System.out.println("current directory and dialog");
-        
-        //setting it so that file chooser will only show directories
-        outputChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        System.out.println("selection mode");
-        
-        // need a button component to open it up, even though it doesn'tactually need to be pressed
-        outputChooser.showDialog(outputOpen, "Select Output File");
-        System.out.println("show");
-       
-        outputPath = outputChooser.getSelectedFile().getAbsolutePath();
-        outputFile = new File(outputPath);
-        outputFile.canWrite();
-        writer = new FileWriter(outputFile);
-        System.out.println("Output File: " + outputPath);
-        
+
         // ************************* Writing Output ****************************
         for(int i = 0; i < outputLines.size(); i++)
         {    System.out.println(outputLines.get(i).toUpperCase());
@@ -89,8 +58,96 @@ public class Uppercase
         }
         
         writer.close();
-        
-        
-
     } 
+    
+    public static JFileChooser chooseFile(JButton open, JFileChooser chooser, String type)
+    {
+        JOptionPane.showMessageDialog(inputOpen, "Select your " + type + " file");
+        // need starting directory for file chooser "." sets it to the project location 
+        inputChooser = new JFileChooser();
+        inputChooser.setCurrentDirectory(new java.io.File("."));
+        inputChooser.setDialogTitle("Select " + type + " file");
+        
+        //setting it so that file chooser will only show directories
+        inputChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+       
+        // need a button component to open it up, even though it doesn'tactually need to be pressed
+        inputChooser.showDialog(inputOpen, "Select your " + type + " file");
+        
+        return inputChooser;
+    }
+    
+    public static String validateInput()
+    {
+        while(true)
+        {
+            try
+            {
+                inputPath = inputChooser.getSelectedFile().getAbsolutePath();
+                break;
+            }
+            catch(NullPointerException e)
+            {
+                JOptionPane.showMessageDialog(inputOpen, "No file chosen. Select a valid input file");
+                inputChooser = chooseFile(inputOpen, inputChooser, "input");
+                continue;
+            }
+        }
+        
+        inputPath = inputChooser.getSelectedFile().getAbsolutePath();
+        inputFile = new File(inputPath); 
+         while(true)
+        {
+            try
+            {
+                reader = new Scanner(new FileReader(inputFile));
+                break;
+            }
+            catch(FileNotFoundException e)
+            {
+                JOptionPane.showMessageDialog(inputOpen, "File not found. Select a valid input file");
+                inputChooser = chooseFile(inputOpen, inputChooser, "input");
+                continue;
+            }
+        }
+        
+        return inputPath;
+    }
+    public static String validateOutput()
+    {
+        while(true)
+        {
+            try
+            {
+                outputPath = outputChooser.getSelectedFile().getAbsolutePath();
+                break;
+            }
+            catch(NullPointerException e)
+            {
+                JOptionPane.showMessageDialog(outputOpen, "No file chosen. Select a valid input file");
+                outputChooser = chooseFile(outputOpen, outputChooser, "output");
+                continue;
+            }
+        }
+        
+        outputPath = outputChooser.getSelectedFile().getAbsolutePath();
+        outputFile = new File(outputPath); 
+         while(true)
+        {
+            try
+            {
+                writer = new FileWriter(outputFile);
+                break;
+            }
+            catch(IOException e)
+            {
+                JOptionPane.showMessageDialog(outputOpen, "Can't write into file. Select a valid input file");
+                outputChooser = chooseFile(outputOpen, outputChooser, "output");
+                continue;
+            }
+        }
+        
+        return outputPath;
+        
+    }
 }
