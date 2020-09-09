@@ -8,22 +8,20 @@
  *
  * @author fifiteklemedhin
  */
-import APClasses.APConsole;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Scanner;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.*;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import APClasses.APConsole;
+
 public class IntegerCollection 
 {
+    // @TODO: validate that all inputs in the file are integers
+    // @TODO: don't crash if a file is not chosen
     public static void main(String[] args) throws FileNotFoundException
     {
         APConsole console = new APConsole("Integer Collection");
@@ -35,29 +33,50 @@ public class IntegerCollection
         JFileChooser inputChooser = new JFileChooser();
         JOptionPane notifier = new JOptionPane();
         
-        File inputFile;
-        Scanner reader;
-        
-        String inputFileName;
-        String inputPath;
+        File inputFile = new File("");
+        Scanner reader = new Scanner("");
+
+        String inputPath = "";
 
         JOptionPane.showMessageDialog(inputOpen, "Select your input file");
-        // need starting directory for file chooser "." sets it to the project location 
-        inputChooser.setCurrentDirectory(new java.io.File("."));
-        inputChooser.setDialogTitle("Select Input File");
+        inputChooser = chooseFile(inputOpen, inputChooser);
         
-        //setting it so that file chooser will only show directories
-        inputChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         
-        // need a button component to open it up, even though it doesn'tactually need to be pressed
-        inputChooser.showDialog(inputOpen, "Select Input File");
+        while(true)
+        {
+            try
+            {
+                inputPath = inputChooser.getSelectedFile().getAbsolutePath();
+                break;
+            }
+            catch(NullPointerException e)
+            {
+                JOptionPane.showMessageDialog(inputOpen, "No file chosen. Select a valid input file");
+                inputChooser = chooseFile(inputOpen, inputChooser);
+                continue;
+            }
+        }
         
-        // prints out what user clicked on
-        inputFileName = inputChooser.getSelectedFile().getName();
         inputPath = inputChooser.getSelectedFile().getAbsolutePath();
-        inputFile = new File(inputPath);
+        inputFile = new File(inputPath); 
+         while(true)
+        {
+            try
+            {
+                reader = new Scanner(new FileReader(inputFile));
+                break;
+            }
+            catch(FileNotFoundException e)
+            {
+                JOptionPane.showMessageDialog(inputOpen, "File not found. Select a valid input file");
+                inputChooser = chooseFile(inputOpen, inputChooser);
+                continue;
+            }
+        }
         reader = new Scanner(new FileReader(inputFile));
-        System.out.println("Input File: " + inputPath);
+        // prints out what user clicked on
+
+        console.println("Input File: " + inputPath);
         
         // ************************* Delimiting String and Filling Set *************************
 
@@ -73,5 +92,55 @@ public class IntegerCollection
         // ************************* Traversing Set *************************
         for(Integer i: parsedInts)
             console.print(i + "\n");
+    }
+    public static JFileChooser chooseFile(JButton inputOpen, JFileChooser inputChooser)
+    {
+        // need starting directory for file chooser "." sets it to the project location 
+        inputChooser.setCurrentDirectory(new java.io.File("."));
+        inputChooser.setDialogTitle("Select Input File");
+        
+        //setting it so that file chooser will only show directories
+        inputChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+       
+        // need a button component to open it up, even though it doesn'tactually need to be pressed
+        inputChooser.showDialog(inputOpen, "Select Input File");
+        
+        return inputChooser;
+    }
+    
+    public static void validateFile(JButton inputOpen, JFileChooser inputChooser, String inputPath, File inputFile, Scanner reader)
+    {
+        while(true)
+        {
+            try
+            {
+                inputPath = inputChooser.getSelectedFile().getAbsolutePath();
+                break;
+            }
+            catch(NullPointerException e)
+            {
+                JOptionPane.showMessageDialog(inputOpen, "No file chosen. Select a valid input file");
+                inputChooser = chooseFile(inputOpen, inputChooser);
+                continue;
+            }
+        }
+        
+        inputPath = inputChooser.getSelectedFile().getAbsolutePath();
+        inputFile = new File(inputPath); 
+         while(true)
+        {
+            try
+            {
+                reader = new Scanner(new FileReader(inputFile));
+                break;
+            }
+            catch(FileNotFoundException e)
+            {
+                JOptionPane.showMessageDialog(inputOpen, "File not found. Select a valid input file");
+                inputChooser = chooseFile(inputOpen, inputChooser);
+                continue;
+            }
+        }
+        
     }
 }
