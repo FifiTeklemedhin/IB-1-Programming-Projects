@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class Uppercase 
@@ -39,19 +40,24 @@ public class Uppercase
     static ArrayList<String> outputLines;
     public static void main(String[] args) throws FileNotFoundException, IOException
     {
-        // ***************** Reading and Validating Files *********************
+        JFrame frame = new JFrame();
+        JOptionPane.showMessageDialog(frame, "Give me an input and output file,\n"
+                                           + "and I'll convert the input's content to uppercase,\n"
+                                           + "then print the results in the output file");
+        
+        // Reading and Validating Files
         inputChooser = chooseFile(inputOpen, inputChooser, "input");
         inputPath = validateInput();
         
         outputChooser = chooseFile(outputOpen, outputChooser, "output");
         outputPath = validateOutput();
         
-        // ************************* Reading Input *****************************
+        // Reading Input
         outputLines = new ArrayList<String>();
         while(reader.hasNextLine())
             outputLines.add(reader.nextLine());
 
-        // ************************* Writing Output ****************************
+        // Writing Output
         for(int i = 0; i < outputLines.size(); i++)
         {    System.out.println(outputLines.get(i).toUpperCase());
             writer.write(outputLines.get(i).toUpperCase() + "\n");

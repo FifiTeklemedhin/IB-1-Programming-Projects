@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import APClasses.APConsole;
+import javax.swing.JFrame;
 
 public class IntegerCollection 
 {
@@ -38,9 +39,13 @@ public class IntegerCollection
     
     public static void main(String[] args) throws FileNotFoundException
     {
-        
+        JFrame frame = new JFrame();
+        JOptionPane.showMessageDialog(frame, "Give me an input file and I'll \n"
+                                           + "print the unique integers in the file \n"
+                                           + "to the console in order of appearance");
         validate();
         // traversing and printing set
+        console.print("\n\n*************** Results ***************");
         for(Integer i: parsedInts)
             console.print(i + "\n");
     }
@@ -104,7 +109,7 @@ public class IntegerCollection
     
     public static void validate()
     {
-        console.println("\n\nchoosing file...");
+        console.println("choosing file...");
         inputChooser = chooseFile(inputOpen, inputChooser);
         console.println("validating file...");
         inputPath = validateFile();
@@ -128,6 +133,7 @@ public class IntegerCollection
                 {
                     parsedInts.removeAll(parsedInts);
                     JOptionPane.showMessageDialog(inputOpen, "File has non-integer values. Please input another file.");
+                    console.println("\n\n");
                     validate();
                     break;
                 }
