@@ -13,6 +13,8 @@ import APClasses.APConsole;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -20,7 +22,7 @@ import javax.swing.JOptionPane;
 
 public class Uppercase 
 {
-    // @TODO: validate data and clean up code
+    // @TODO: test
     
     static JButton inputOpen = new JButton();
     static JButton outputOpen = new JButton();
@@ -37,6 +39,18 @@ public class Uppercase
     static String inputPath;
     static String outputPath; 
     static ArrayList<String> outputLines;
+    
+    public Uppercase()
+    {
+        String[] args = {""};
+        try {
+            main(args);
+        } 
+        catch (IOException ex)
+        {
+            System.out.println("I/O Exception!!");
+        }
+    }
     public static void main(String[] args) throws FileNotFoundException, IOException
     {
         JFrame frame = new JFrame();
