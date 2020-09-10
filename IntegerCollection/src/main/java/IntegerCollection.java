@@ -39,11 +39,15 @@ public class IntegerCollection
     
     public static void main(String[] args) throws FileNotFoundException
     {
+        // introduction
         JFrame frame = new JFrame();
         JOptionPane.showMessageDialog(frame, "Give me an input file and I'll \n"
                                            + "print the unique integers in the file \n"
                                            + "to the console in order of appearance");
+        
+        // choosing file, validating, processing data
         validate();
+        
         // traversing and printing set
         console.print("\n\n*************** Results ***************");
         for(Integer i: parsedInts)
@@ -71,6 +75,7 @@ public class IntegerCollection
     
     public static String validateFile()
     {
+        // loops until the input file is chosen
         while(true)
         {
             try
@@ -81,6 +86,7 @@ public class IntegerCollection
             catch(NullPointerException e)
             {
                 JOptionPane.showMessageDialog(inputOpen, "No file chosen. Select a valid input file");
+                // goes back to choosing file. every time, input file changes before checking if a file was chosen
                 inputChooser = chooseFile(inputOpen, inputChooser);
                 continue;
             }
@@ -88,7 +94,9 @@ public class IntegerCollection
         
         inputPath = inputChooser.getSelectedFile().getAbsolutePath();
         inputFile = new File(inputPath); 
-         while(true)
+        
+        // makes you choose a new file while file not found
+        while(true)
         {
             try
             {
@@ -98,17 +106,23 @@ public class IntegerCollection
             catch(FileNotFoundException e)
             {
                 JOptionPane.showMessageDialog(inputOpen, "File not found. Select a valid input file");
+                // goes back to choosing file. every time, input file changes before checking if it is a file
                 inputChooser = chooseFile(inputOpen, inputChooser);
                 continue;
             }
         }
         
+         /*
+          path of the file is a string, and therefore immutable, so the method returns a string
+          that inputPath can assign itself to in the main method
+        */
         return inputPath;
         
     }
     
     public static void validate()
     {
+        
         console.println("choosing file...");
         inputChooser = chooseFile(inputOpen, inputChooser);
         console.println("validating file...");
@@ -119,6 +133,7 @@ public class IntegerCollection
         
         while(reader.hasNextLine())
         {
+            // splits the string with a space as its delimiter, gathering all ints
             String currentLine = reader.nextLine();
             String delimitedLine[] = currentLine.split(" ");
             
@@ -131,9 +146,10 @@ public class IntegerCollection
                 
                 catch(NumberFormatException e)
                 {
+                    // if a line has a char in it, then the set is wiped and the user has to repeat the process
                     parsedInts.removeAll(parsedInts);
                     JOptionPane.showMessageDialog(inputOpen, "File has non-integer values. Please input another file.");
-                    console.println("\n\n");
+                    console.print("\n\n");
                     validate();
                     break;
                 }

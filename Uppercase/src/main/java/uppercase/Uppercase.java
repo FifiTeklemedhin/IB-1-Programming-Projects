@@ -20,7 +20,6 @@ import javax.swing.JOptionPane;
 
 public class Uppercase 
 {
-    // @TODO: pop-up description, get rid of console
     // @TODO: validate data and clean up code
     
     static JButton inputOpen = new JButton();
@@ -85,6 +84,7 @@ public class Uppercase
     
     public static String validateInput()
     {
+        // loops until the input file is chosen
         while(true)
         {
             try
@@ -95,6 +95,7 @@ public class Uppercase
             catch(NullPointerException e)
             {
                 JOptionPane.showMessageDialog(inputOpen, "No file chosen. Select a valid input file");
+                // goes back to choosing file. every time, input file changes before checking if a file was chosen
                 inputChooser = chooseFile(inputOpen, inputChooser, "input");
                 continue;
             }
@@ -102,7 +103,9 @@ public class Uppercase
         
         inputPath = inputChooser.getSelectedFile().getAbsolutePath();
         inputFile = new File(inputPath); 
-         while(true)
+        
+        // makes you choose a new file while file not found
+        while(true)
         {
             try
             {
@@ -112,15 +115,21 @@ public class Uppercase
             catch(FileNotFoundException e)
             {
                 JOptionPane.showMessageDialog(inputOpen, "File not found. Select a valid input file");
+                // goes back to choosing file. every time, input file changes before checking if it is a file
                 inputChooser = chooseFile(inputOpen, inputChooser, "input");
                 continue;
             }
         }
         
+        /*
+          path of the file is a string, and therefore immutable, so the method returns a string
+          that inputPath can assign itself to in the main method
+        */
         return inputPath;
     }
     public static String validateOutput()
     {
+         // loops until the ouput file is chosen
         while(true)
         {
             try
@@ -131,6 +140,7 @@ public class Uppercase
             catch(NullPointerException e)
             {
                 JOptionPane.showMessageDialog(outputOpen, "No file chosen. Select a valid input file");
+                // goes back to choosing file. every time, input file changes before checking if a file was chosen
                 outputChooser = chooseFile(outputOpen, outputChooser, "output");
                 continue;
             }
@@ -138,6 +148,8 @@ public class Uppercase
         
         outputPath = outputChooser.getSelectedFile().getAbsolutePath();
         outputFile = new File(outputPath); 
+        
+        // makes you choose a new file while file not found
          while(true)
         {
             try
@@ -148,11 +160,16 @@ public class Uppercase
             catch(IOException e)
             {
                 JOptionPane.showMessageDialog(outputOpen, "Can't write into file. Select a valid input file");
+                // goes back to choosing file. every time, input file changes before checking if it is a file
                 outputChooser = chooseFile(outputOpen, outputChooser, "output");
                 continue;
             }
         }
         
+         /*
+          path of the file is a string, and therefore immutable, so the method returns a string
+          that outputPath can assign itself to in the main method
+        */
         return outputPath;
         
     }
