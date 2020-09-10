@@ -21,8 +21,6 @@ import javax.swing.JFrame;
 
 public class IntegerCollection 
 {
-    // @TODO: description, maybe delete status
-    // @TODO: comment out code
     // @TODO: test
     
     static APConsole console = new APConsole("Integer Collection");
