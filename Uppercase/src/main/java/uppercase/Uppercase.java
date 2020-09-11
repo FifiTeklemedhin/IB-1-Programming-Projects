@@ -72,7 +72,7 @@ public class Uppercase
 
         // Writing Output
         for(int i = 0; i < outputLines.size(); i++)
-        {    //System.out.println(outputLines.get(i).toUpperCase());
+        {  
             writer.write(outputLines.get(i).toUpperCase() + "\n");
         }
          

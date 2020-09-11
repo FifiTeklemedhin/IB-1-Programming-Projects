@@ -16,10 +16,6 @@ import java.util.Scanner;
  */
 public class Tester 
 {
-    // testing to see if private repo still allows local commits
-    // current issue: says files not found
-    // current issue: sometimes file choosers just don't open
-    
     // strings with correct outputs
     // not making the strings toUpperCase() at instantiation because each '+' on a new line reps a new string
      static String letItGoOut = "the snow glows white on the mountain tonight\n" 
@@ -53,7 +49,7 @@ public class Tester
         Uppercase iOwed = new Uppercase();
         Uppercase randomActs = new Uppercase();
         
-        
+        // test results for each sample
         System.out.println("Let it go:" + isCorrect(letItGoOut.toUpperCase(), "./src/main/java/Output sample files/let it go output sample.txt"));
         System.out.println("I owed: " + isCorrect(iOwedOut.toUpperCase(), "./src/main/java/Output sample files/i owed output sample.txt"));
         System.out.println("Random acts: " + isCorrect(randomActsOut.toUpperCase(), "./src/main/java/Output sample files/random acts output sample.txt"));
