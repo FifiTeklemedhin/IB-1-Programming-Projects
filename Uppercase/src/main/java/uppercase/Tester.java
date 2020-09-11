@@ -17,6 +17,7 @@ import java.util.logging.Logger;
  */
 public class Tester 
 {
+    // testing to see if private repo still allows local commits
     // current issue: says files not found
     // current issue: sometimes file choosers just don't open
     
