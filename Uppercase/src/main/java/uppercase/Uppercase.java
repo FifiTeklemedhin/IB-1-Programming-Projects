@@ -48,7 +48,7 @@ public class Uppercase
         } 
         catch (IOException ex)
         {
-            System.out.println("I/O Exception!!");
+            System.out.println("\"******* I/O EXCEPTION ******");
         }
     }
     public static void main(String[] args) throws FileNotFoundException, IOException
@@ -72,10 +72,10 @@ public class Uppercase
 
         // Writing Output
         for(int i = 0; i < outputLines.size(); i++)
-        {    System.out.println(outputLines.get(i).toUpperCase());
+        {    //System.out.println(outputLines.get(i).toUpperCase());
             writer.write(outputLines.get(i).toUpperCase() + "\n");
         }
-        
+         
         writer.close();
     } 
     
@@ -84,7 +84,7 @@ public class Uppercase
         JOptionPane.showMessageDialog(inputOpen, "Select your " + type + " file");
         // need starting directory for file chooser "." sets it to the project location 
         inputChooser = new JFileChooser();
-        inputChooser.setCurrentDirectory(new java.io.File("."));
+        inputChooser.setCurrentDirectory(new java.io.File("./src/main/java/"));
         inputChooser.setDialogTitle("Select " + type + " file");
         
         //setting it so that file chooser will only show directories
