@@ -24,7 +24,7 @@ public class IntegerCollection
     // @TODO: test
     
     static APConsole console = new APConsole("Integer Collection");
-    static Set<Integer> parsedInts = new HashSet<Integer>();
+    static Set<Integer> parsedInts = new LinkedHashSet<Integer>();
     
     static JButton inputOpen = new JButton();
     static JFileChooser inputChooser = new JFileChooser();
@@ -47,7 +47,7 @@ public class IntegerCollection
         validate();
         
         // traversing and printing set
-        console.print("\n\n*************** Results ***************");
+        console.println("\n\n*************** Results ***************");
         for(Integer i: parsedInts)
             console.print(i + "\n");
     }
@@ -59,7 +59,7 @@ public class IntegerCollection
         JOptionPane.showMessageDialog(inputOpen, "Select your input file");
         // need starting directory for file chooser "." sets it to the project location 
         inputChooser = new JFileChooser();
-        inputChooser.setCurrentDirectory(new java.io.File("."));
+        inputChooser.setCurrentDirectory(new java.io.File("./src/main/Random Integer Samples"));
         inputChooser.setDialogTitle("Select Input File");
         
         //setting it so that file chooser will only show directories
