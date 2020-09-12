@@ -23,6 +23,7 @@ public class IntegerCollection
 {
     // @TODO: test
     
+    // used LinkedHashSet because it is insertion-ordered, not unordered (hashSet) or naturally ordered (TreeSet)
     static APConsole console = new APConsole("Integer Collection");
     static Set<Integer> parsedInts = new LinkedHashSet<Integer>();
     
@@ -47,7 +48,7 @@ public class IntegerCollection
         validate();
         
         // traversing and printing set
-        console.println("\n\n*************** Results ***************");
+        console.println("\n\n************ Results ***************");
         for(Integer i: parsedInts)
             console.print(i + "\n");
     }
