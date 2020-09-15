@@ -3,54 +3,42 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package uppercase;
+package fifiteklemedhin.postfixexpressions;
 
-/**
- *
- * @author fifiteklemedhin
- */
+ 
 import APClasses.APConsole;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Stack;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-public class Uppercase 
+/**
+ *
+ * @author fifiteklemedhin
+ */
+public class PostfixExpressions 
 {
-    // @TODO: test
-    
+    //evaluate postfix expressions
+    // TODO: prompt user for file of postfix expressions (one per line)
+    // TODO: ask if we should be able validate a file based off of whether or not postfix expressions are correct
+    // TODO: use stackbased algorithm to evaluate input expression
+    // use 2 scanners: 1 for getting expressions, other for reading them
+    static Stack<Double> stack = new Stack<Double>();
     static JButton inputOpen = new JButton();
-    static JButton outputOpen = new JButton();
     static JFileChooser inputChooser = new JFileChooser();
-    static JFileChooser outputChooser = new JFileChooser();
     static JOptionPane notifier = new JOptionPane();
-
+    static ArrayList<String> expressionLines;
+    
     static File inputFile;
-    static File outputFile;
     static Scanner reader;
-    static FileWriter writer;
 
     static String inputFileName;
     static String inputPath;
-    static String outputPath; 
-    static ArrayList<String> outputLines;
     
-    public Uppercase()
-    {
-        String[] args = {""};
-        try {
-            main(args);
-        } 
-        catch (IOException ex)
-        {
-            System.out.println("\"******* I/O EXCEPTION ******");
-        }
-    }
     public static void main(String[] args) throws FileNotFoundException, IOException
     {
         JFrame frame = new JFrame();
@@ -62,29 +50,59 @@ public class Uppercase
         inputChooser = chooseFile(inputOpen, inputChooser, "input");
         inputPath = validateInput();
         
-        outputChooser = chooseFile(outputOpen, outputChooser, "output");
-        outputPath = validateOutput();
         
         // Reading Input
-        outputLines = new ArrayList<String>();
+        expressionLines = new ArrayList<String>();
         while(reader.hasNextLine())
-            outputLines.add(reader.nextLine());
-
-        // Writing Output
-        for(int i = 0; i < outputLines.size(); i++)
-        {  
-            writer.write(outputLines.get(i).toUpperCase() + "\n");
+        {
+            String next = reader.nextLine();
+            System.out.println(next + " ---> " + eval(next));
         }
-         
-        writer.close();
+        
+        
     } 
     
+    public static double eval(String s)
+    {
+        Scanner tokens = new Scanner(s);
+        while(tokens.hasNext())
+        {
+            String token = tokens.next();
+
+            if(isNumber(token))
+                stack.push(Double.parseDouble(token));
+            else 
+                stack.push(operate(stack.pop(), stack.pop(), token));  
+        }
+        return stack.peek();
+    }
+    public static double operate(double num1, double num2, String s)
+    {
+        if(s.equals("+"))
+            return num2 + num1;
+        if(s.equals("/"))
+           return num2 / num1;
+        if(s.equals("*"))
+            return num2 * num1;
+        if(s.equals("-"))
+            return num2 - num1;
+        System.out.println("operate did not work");
+        return .098098098908980;
+    }
+   
+    public static boolean isNumber(String s)
+    {
+        for(int i = 0; i < s.length(); i++)
+            if(!Character.isDigit(s.charAt(i)) && s.charAt(i) != '.')
+                return false;
+        return true;
+    }
     public static JFileChooser chooseFile(JButton open, JFileChooser chooser, String type)
     {
         JOptionPane.showMessageDialog(inputOpen, "Select your " + type + " file");
         // need starting directory for file chooser "." sets it to the project location 
         inputChooser = new JFileChooser();
-        //inputChooser.setCurrentDirectory(new java.io.File("./src/main/java/"));
+        inputChooser.setCurrentDirectory(new java.io.File("./src/main/java/"));
         inputChooser.setDialogTitle("Select " + type + " file");
         
         //setting it so that file chooser will only show directories
@@ -141,50 +159,6 @@ public class Uppercase
         */
         return inputPath;
     }
-    public static String validateOutput()
-    {
-         // loops until the ouput file is chosen
-        while(true)
-        {
-            try
-            {
-                outputPath = outputChooser.getSelectedFile().getAbsolutePath();
-                break;
-            }
-            catch(NullPointerException e)
-            {
-                JOptionPane.showMessageDialog(outputOpen, "No file chosen. Select a valid input file");
-                // goes back to choosing file. every time, input file changes before checking if a file was chosen
-                outputChooser = chooseFile(outputOpen, outputChooser, "output");
-                continue;
-            }
-        }
-        
-        outputPath = outputChooser.getSelectedFile().getAbsolutePath();
-        outputFile = new File(outputPath); 
-        
-        // makes you choose a new file while file not found
-         while(true)
-        {
-            try
-            {
-                writer = new FileWriter(outputFile);
-                break;
-            }
-            catch(IOException e)
-            {
-                JOptionPane.showMessageDialog(outputOpen, "Can't write into file. Select a valid input file");
-                // goes back to choosing file. every time, input file changes before checking if it is a file
-                outputChooser = chooseFile(outputOpen, outputChooser, "output");
-                continue;
-            }
-        }
-        
-         /*
-          path of the file is a string, and therefore immutable, so the method returns a string
-          that outputPath can assign itself to in the main method
-        */
-        return outputPath;
-        
-    }
+    
+    
 }
