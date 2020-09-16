@@ -53,43 +53,49 @@ public class PostfixExpressions
         
         // Reading Input
         expressionLines = new ArrayList<String>();
+        //loops through entire file, evaluates each expression
         while(reader.hasNextLine())
         {
             String next = reader.nextLine();
             console.println(next + " ---> " + eval(next));
         }
         
-        
+        JOptionPane.showMessageDialog(frame, "Done!");
     } 
     
     public static double eval(String s)
     {
         Scanner tokens = new Scanner(s);
+        //loops through entire expression
         while(tokens.hasNext())
         {
             String token = tokens.next();
 
+            // adds the number to the stack
             if(isNumber(token))
                 stack.push(Double.parseDouble(token));
+            //operates on the two most recent nodes if the token is an operator
             else 
-                stack.push(operate(stack.pop(), stack.pop(), token));  
+                operate(stack.pop(), stack.pop(), token);  
         }
         return stack.peek();
     }
-    public static double operate(double num1, double num2, String s)
+    
+    // operates based off of token
+    public static void operate(double num1, double num2, String s)
     {
         if(s.equals("+"))
-            return num2 + num1;
+            stack.push(num2 + num1);
         if(s.equals("/"))
-           return num2 / num1;
+           stack.push(num2 / num1);
         if(s.equals("*"))
-            return num2 * num1;
+            stack.push(num2 * num1);
         if(s.equals("-"))
-            return num2 - num1;
-        System.out.println("operate did not work");
-        return .098098098908980;
+            stack.push(num2 - num1);
+       
     }
    
+    //need method just in a number is more than one char
     public static boolean isNumber(String s)
     {
         for(int i = 0; i < s.length(); i++)
