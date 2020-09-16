@@ -28,15 +28,12 @@ public class PostfixExpressions
     // TODO: use stackbased algorithm to evaluate input expression
     // use 2 scanners: 1 for getting expressions, other for reading them
     static Stack<Double> stack = new Stack<Double>();
-    static JButton inputOpen = new JButton();
-    static JFileChooser inputChooser = new JFileChooser();
-    static JOptionPane notifier = new JOptionPane();
+    static JFileChooser chooser = new JFileChooser();
     static ArrayList<String> expressionLines;
     
-    static File inputFile;
+    static File file;
     static Scanner reader;
 
-    static String inputFileName;
     static String inputPath;
     
     public static void main(String[] args) throws FileNotFoundException, IOException
@@ -47,8 +44,8 @@ public class PostfixExpressions
                                            + " expressions on each line, and I will evaluate each one.");
         
         // Reading and Validating Files
-        inputChooser = chooseFile(inputOpen, inputChooser, "input");
-        inputPath = validateInput();
+        chooser = chooseFile();
+        validateInput();
         
         
         // Reading Input
@@ -103,68 +100,51 @@ public class PostfixExpressions
                 return false;
         return true;
     }
-    public static JFileChooser chooseFile(JButton open, JFileChooser chooser, String type)
+    public static JFileChooser chooseFile()
     {
-        JOptionPane.showMessageDialog(inputOpen, "Select your " + type + " file");
-        // need starting directory for file chooser "." sets it to the project location 
-        inputChooser = new JFileChooser();
-        inputChooser.setCurrentDirectory(new java.io.File("./src/main/java/"));
-        inputChooser.setDialogTitle("Select " + type + " file");
-        
-        //setting it so that file chooser will only show directories
-        inputChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-       
-        // need a button component to open it up, even though it doesn'tactually need to be pressed
-        inputChooser.showDialog(inputOpen, "Select your " + type + " file");
-        
-        return inputChooser;
+        JOptionPane.showMessageDialog(null,"Give me a text input and and I will\n"
+                                    + " determine unique words and their frequencies");
+        chooser.showOpenDialog(null);
+        return chooser;
     }
-    
-    public static String validateInput()
+    public static void validateInput()
     {
         // loops until the input file is chosen
         while(true)
         {
             try
             {
-                inputPath = inputChooser.getSelectedFile().getAbsolutePath();
+                inputPath = chooser.getSelectedFile().getAbsolutePath();
                 break;
             }
             catch(NullPointerException e)
             {
-                JOptionPane.showMessageDialog(inputOpen, "No file chosen. Select a valid input file");
+                JOptionPane.showMessageDialog(null, "No file chosen. Select a valid input file");
                 // goes back to choosing file. every time, input file changes before checking if a file was chosen
-                inputChooser = chooseFile(inputOpen, inputChooser, "input");
+                chooser = chooseFile();
                 continue;
             }
         }
         
-        inputPath = inputChooser.getSelectedFile().getAbsolutePath();
-        inputFile = new File(inputPath); 
+        inputPath = chooser.getSelectedFile().getAbsolutePath();
+        file = new File(inputPath); 
         
         // makes you choose a new file while file not found
         while(true)
         {
             try
             {
-                reader = new Scanner(new FileReader(inputFile));
+                reader = new Scanner(new FileReader(file));
                 break;
             }
             catch(FileNotFoundException e)
             {
-                JOptionPane.showMessageDialog(inputOpen, "File not found. Select a valid input file");
+                JOptionPane.showMessageDialog(null, "File not found. Select a valid input file");
                 // goes back to choosing file. every time, input file changes before checking if it is a file
-                inputChooser = chooseFile(inputOpen, inputChooser, "input");
+                chooser = chooseFile();
                 continue;
             }
         }
-        
-        /*
-          path of the file is a string, and therefore immutable, so the method returns a string
-          that inputPath can assign itself to in the main method
-        */
-        return inputPath;
+
     }
-    
-    
 }

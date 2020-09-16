@@ -59,11 +59,11 @@ public class Uppercase
                                            + "then print the results in the output file");
         
         // Reading and Validating Files
-        inputChooser = chooseFile(inputOpen, inputChooser, "input");
-        inputPath = validateInput();
+        inputChooser = chooseFile(inputChooser, "input");
+        validateInput();
         
-        outputChooser = chooseFile(outputOpen, outputChooser, "output");
-        outputPath = validateOutput();
+        outputChooser = chooseFile(outputChooser, "output");
+        validateOutput();
         
         // Reading Input
         outputLines = new ArrayList<String>();
@@ -79,24 +79,14 @@ public class Uppercase
         writer.close();
     } 
     
-    public static JFileChooser chooseFile(JButton open, JFileChooser chooser, String type)
+   
+    public static JFileChooser chooseFile(JFileChooser chooser, String type)
     {
         JOptionPane.showMessageDialog(inputOpen, "Select your " + type + " file");
-        // need starting directory for file chooser "." sets it to the project location 
-        inputChooser = new JFileChooser();
-        //inputChooser.setCurrentDirectory(new java.io.File("./src/main/java/"));
-        inputChooser.setDialogTitle("Select " + type + " file");
-        
-        //setting it so that file chooser will only show directories
-        inputChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-       
-        // need a button component to open it up, even though it doesn'tactually need to be pressed
-        inputChooser.showDialog(inputOpen, "Select your " + type + " file");
-        
-        return inputChooser;
+        chooser.showOpenDialog(null);
+        return chooser;
     }
-    
-    public static String validateInput()
+    public static void validateInput()
     {
         // loops until the input file is chosen
         while(true)
@@ -108,9 +98,9 @@ public class Uppercase
             }
             catch(NullPointerException e)
             {
-                JOptionPane.showMessageDialog(inputOpen, "No file chosen. Select a valid input file");
+                JOptionPane.showMessageDialog(null, "No file chosen. Select a valid input file");
                 // goes back to choosing file. every time, input file changes before checking if a file was chosen
-                inputChooser = chooseFile(inputOpen, inputChooser, "input");
+                inputChooser = chooseFile(inputChooser, "input");
                 continue;
             }
         }
@@ -128,22 +118,17 @@ public class Uppercase
             }
             catch(FileNotFoundException e)
             {
-                JOptionPane.showMessageDialog(inputOpen, "File not found. Select a valid input file");
+                JOptionPane.showMessageDialog(null, "File not found. Select a valid input file");
                 // goes back to choosing file. every time, input file changes before checking if it is a file
-                inputChooser = chooseFile(inputOpen, inputChooser, "input");
+                inputChooser = chooseFile(inputChooser, "input");
                 continue;
             }
         }
-        
-        /*
-          path of the file is a string, and therefore immutable, so the method returns a string
-          that inputPath can assign itself to in the main method
-        */
-        return inputPath;
+
     }
-    public static String validateOutput()
+    public static void validateOutput()
     {
-         // loops until the ouput file is chosen
+        // loops until the input file is chosen
         while(true)
         {
             try
@@ -153,9 +138,9 @@ public class Uppercase
             }
             catch(NullPointerException e)
             {
-                JOptionPane.showMessageDialog(outputOpen, "No file chosen. Select a valid input file");
+                JOptionPane.showMessageDialog(null, "No file chosen. Select a valid input file");
                 // goes back to choosing file. every time, input file changes before checking if a file was chosen
-                outputChooser = chooseFile(outputOpen, outputChooser, "output");
+                outputChooser = chooseFile(outputChooser, "input");
                 continue;
             }
         }
@@ -164,7 +149,7 @@ public class Uppercase
         outputFile = new File(outputPath); 
         
         // makes you choose a new file while file not found
-         while(true)
+        while(true)
         {
             try
             {
@@ -173,18 +158,12 @@ public class Uppercase
             }
             catch(IOException e)
             {
-                JOptionPane.showMessageDialog(outputOpen, "Can't write into file. Select a valid input file");
+                JOptionPane.showMessageDialog(null, "IO Exception. Select a valid input file");
                 // goes back to choosing file. every time, input file changes before checking if it is a file
-                outputChooser = chooseFile(outputOpen, outputChooser, "output");
+                outputChooser = chooseFile(outputChooser, "output");
                 continue;
             }
         }
-        
-         /*
-          path of the file is a string, and therefore immutable, so the method returns a string
-          that outputPath can assign itself to in the main method
-        */
-        return outputPath;
-        
+
     }
 }
