@@ -40,18 +40,21 @@ public class ConcordanceAlgorithm
         chooser = chooseFile();
         validateInput();
         
-        
+        // goes through each line in the text
         while(scanner.hasNextLine())
         {
+            // goes through each word in each line (delimited by spaces)
             Scanner reader = new Scanner(scanner.nextLine());
             while(reader.hasNext())
             {
                 String curr = reader.next();
                 
-                if(map.get(curr) != null)
+                // if the current word already exists, increment value by 1
+                if(map.get(curr.toLowerCase()) != null)
                     map.put(curr, map.get(curr) + 1);
+                // else, add the word with a value of 1
                 else
-                    map.put(curr, 1);
+                    map.put(curr.toLowerCase(), 1);
             }
         }
         console.println("scanned");
