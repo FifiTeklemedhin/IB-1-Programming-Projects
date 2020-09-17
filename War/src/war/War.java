@@ -6,6 +6,7 @@
 package war;
 import java.util.*;
 import APClasses.APConsole;
+import javax.swing.JOptionPane;
 /**
  *
  * @author mercyougothis
@@ -30,8 +31,15 @@ public class War
         int count = 0;
         
         String lbr = "---------------------------------------------------------------";
-        String war = "**************************** WAR ******************************";
+        String war = "********************************** WAR *********************************";
         console.println(lbr);
+        JOptionPane.showMessageDialog(null, "There are two players in the game of War. During the course of a game,\n"
+                + "each player will have three piles of cards, named an unplayed pile,\n"
+                + "a war pile, and a winnings pile, respectively.\n"
+                + "\nThe game moves forward as cards move from the unplayed piles to the war\n"
+                + "piles and then to the winnings piles.The game ends when a player’s unplayed\n"
+                + "pile has no more cards.");
+        
         while(!(unplayed1.isEmpty() || unplayed2.isEmpty()))
         {
             
@@ -40,14 +48,14 @@ public class War
             if(compResult < 0)
             {
                 addPile(winningPile2, warPile);
-                console.println("User 2 wins!");
+                console.println("----> User 2 wins!");
                 console.println(lbr);
             }
             
             if(compResult > 0)
             {
                 addPile(winningPile1, warPile);
-                console.println("User 1 wins!");
+                console.println("----> User 1 wins!");
                 console.println(lbr);
             }
             
@@ -62,10 +70,10 @@ public class War
         }
         if(winningPile1.size() > winningPile2.size())
         {
-            console.println("*************************\nWinner: User 1!\n*************************");
+            console.println("\n\n*************************\nWinner: User 1!\n*************************");
             return;
         }
-        console.println("*************************\nWinner: User 2!\n*************************");
+        console.println("\n\n*************************\nWinner: User 2!\n*************************");
     }
     public static void addPile(ArrayList urPile, ArrayList warPile)
     {

@@ -39,9 +39,8 @@ public class Deck
         for(int j = 2; j <= 14; j++)
         {
             String fLetter = Character.toString(suit.getName().charAt(0));
-            String letter = "\\" + j + fLetter.toUpperCase() + ".png";
-            cards.add(new Card(suit, j, getRoot() + letter));
-            cards.get(cards.size()-1).setFullPath(getRoot() + letter);
+            cards.add(new Card(suit, j));
+            cards.get(cards.size()-1);
         }
     }
     
