@@ -16,10 +16,13 @@ public class Therapist
 {
     private Set<String> hedgeSet; //set of hedges
     private Set<String> qualifierSet; //set of qualifiers
+    private Set<String> patientHistory; // set of user inputs
     private Map<String, String> replacementMap; //the map of replacement words
     
     public Therapist()
     {
+        patientHistory = new HashSet<String>();
+        
         hedgeSet = new HashSet<String>();
         hedgeSet.add("Please tell me more");
         hedgeSet.add("Many of my patients tell me the same thing");
@@ -35,6 +38,7 @@ public class Therapist
         replacementMap.put("me", "you");
         replacementMap.put("my", "your");
         replacementMap.put("am", "are");
+        
     }
     
     public String reply(String patientString) 
@@ -53,17 +57,37 @@ public class Therapist
         
         // If the patient says nothing, then encourage him.
         if(patientString.trim().equals(""))
+        {
+            updatePatientHistory(patientString);
             return "Take your time. Some things are difficult to talk about.";
-        
+        }
+           
         //else reply with a hedge or a qualified response
         if(choice == 1)
             reply = hedge(hedgeSet);
         else if(choice == 2 || choice == 3)
             reply = qualifier(qualifierSet) + changePerson(patientString);
-        
-        return reply + "?";        
+      
+        updatePatientHistory(patientString);
+        return reply;        
     }
     
+    public boolean canReferBack()
+    {
+        return patientHistory.size() >= 3;
+    }
+    public String referBack()
+    {
+        return "Referring back, I remember you said " + changePerson(selectRandom(patientHistory)) + ". Lets go back to that";
+    }
+    // adds the patients latest reply to their history if they haven't said it before
+    private void updatePatientHistory(String latestInput)
+    {
+        if(this.patientHistory.contains(latestInput.toLowerCase()))
+            return;
+        this.patientHistory.add(latestInput.toLowerCase());
+                    
+    }
     private String hedge(Set<String> hedgeSet)
     {
         /*
@@ -106,8 +130,7 @@ public class Therapist
             String replacement = findReplacement(keyWord);
             result = result + replacement + " ";
         }
-        if(result.charAt(result.length()-1) == ' ')
-            return result.substring(0, result.length()-1);
+        
         return result;
     }
     
