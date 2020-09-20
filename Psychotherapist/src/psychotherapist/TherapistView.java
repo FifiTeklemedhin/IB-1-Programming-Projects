@@ -30,7 +30,7 @@ public class TherapistView
                 {   
                    iterate = 0;
                    randomInterval = (int) (Math.random() * (7 - 3 + 1));
-                   console.println("\nRefering back: " + therapist.referBack());
+                   console.println(therapist.referBack());
                    continue;
                 }
                 randomInterval = (int) (Math.random() * (5 - 2 + 1));
