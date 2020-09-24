@@ -13,7 +13,7 @@ package producerandconsumer;
 public class SharedCell{
     private int data;
     private boolean writable;
-
+    public int numInputs = 0;
     public SharedCell()
     {
         data = -1;
@@ -54,8 +54,16 @@ public class SharedCell{
             System.out.println(Thread.currentThread().getName() +
             " accessing data " + data);
 
-        writable = true;
-        notify(); // Tell producer to become ready
+        
+        if(Consumer.numConsumers == numInputs)
+        {
+            numInputs = 0;
+            writable = true;
+            notify();
+        }
+        else
+           numInputs += 1;
+         // Tell producer to become ready
         return data;
     }
 }

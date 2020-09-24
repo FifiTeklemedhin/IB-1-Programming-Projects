@@ -16,11 +16,13 @@ package producerandconsumer;
 public class Consumer extends Thread{
     private SharedCell cell;
     private int accessCount;
+    public static int numConsumers = 0;
     public Consumer(int accessCount, SharedCell cell, String name)
     {
         super(name);
         this.accessCount = accessCount;
         this.cell = cell;
+        numConsumers += 1;
     }
     public void run()
     {
