@@ -1,16 +1,14 @@
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package producerandconsumer;
+package csthreads;
 
 /**
  *
  * @author fifiteklemedhin
  */
-
 public class SharedCell{
     private int data;
     private boolean writable;
@@ -30,10 +28,10 @@ public class SharedCell{
             }
             catch(InterruptedException e)
             {
-                ProducerAndConsumer.console.println(e.toString());
+                CSThreads.console.println(e.toString());
             }
         }
-        ProducerAndConsumer.console.println("\n" + Thread.currentThread().getName() + " setting data to " + data);
+        CSThreads.console.println("\n" + Thread.currentThread().getName() + " is opening spot " + data);
 
         this.data = data;
         writable = false;
@@ -47,15 +45,16 @@ public class SharedCell{
             { // producer invokes notify()
             wait();
             }
-            catch(InterruptedException e)
+                catch(InterruptedException e)
             {
-                ProducerAndConsumer.console.println(e.toString());
+                CSThreads.console.println(e.toString());
             }
         }
-            ProducerAndConsumer.console.println(Thread.currentThread().getName() +
-            " accessing data " + data);
+            CSThreads.console.println("---> " + Thread.currentThread().getName() +
+            " is enrolling in spot " + data);
         occupied = true;
         writable = true;
+        ConsumerGroup.added.add(Thread.currentThread().getName()/* +": " + data*/);
         notify(); // Tell producer to become ready
         return data;
     }

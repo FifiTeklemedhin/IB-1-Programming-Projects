@@ -3,8 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package producerandconsumer;
+package csthreads;
 
+/**
+ *
+ * @author fifiteklemedhin
+ */
+import static java.lang.Thread.sleep;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,19 +30,24 @@ import java.util.Set;
     }
     public void run()
     {
-        ProducerAndConsumer.console.println(getName() + " starting up\n"); // Identify myself
+        CSThreads.console.println(getName() + " starting up\n"); // Identify myself
         for (int i = 1; i <= accessCount; i++)
         {
             try
             {
-                sleep((int) (Math.random() * ProducerAndConsumer.SLEEP_INTERVAL));
+                sleep((int) (Math.random() * CSThreads.SLEEP_INTERVAL));
             }
             catch(InterruptedException e)
             {
-                ProducerAndConsumer.console.println(e.toString());
+                CSThreads.console.println(e.toString());
             }
         cell.setData(i); // Produce by setting shared cell
         }
-    ProducerAndConsumer.console.println(getName() + " is done producing");
+    CSThreads.console.println(getName() + " has opened all spots");
     }
+    public SharedCell getCell()
+    {
+        return this.cell;
+    }
+    
 }

@@ -3,20 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package producerandconsumer;
+package csthreads;
 
-
+import static java.lang.Thread.sleep;
+import java.util.Collections;
 
 /**
  *
  * @author fifiteklemedhin
  */
-///////////////////////////////////////////////////
-// File: Consumer.java
 public class Consumer extends Thread{
     private SharedCell cell;
     private int accessCount;
     public static int numConsumers = 0;
+    public int value = -1;
     public Consumer(int accessCount, SharedCell cell, String name)
     {
         super(name);
@@ -26,23 +26,21 @@ public class Consumer extends Thread{
     }
     public void run()
     {
-        ProducerAndConsumer.console.println(getName() + " starting up\n"); // Identify myself
+        CSThreads.console.println(getName() + " starting up\n"); // Identify myself
 
-        int value;
-        do
-        {
         try
         {
-            sleep((int) (Math.random() * ProducerAndConsumer.SLEEP_INTERVAL));
+            sleep((int) (Math.random() * CSThreads.SLEEP_INTERVAL));
         }
         catch(InterruptedException e)
         {
-            ProducerAndConsumer.console.println(e.toString());
+            CSThreads.console.println(e.toString());
         }
         value = cell.getData(); // Consume by accessing shared cell
         cell.occupied = false;
-    }
-        while (value != accessCount);
-        ProducerAndConsumer.console.println(getName() + " is done consuming");
+
+        CSThreads.console.println(getName() + " is done enrolling");
+
+            
     }
 }
