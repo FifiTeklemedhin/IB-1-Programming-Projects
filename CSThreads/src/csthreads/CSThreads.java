@@ -34,10 +34,10 @@ public class CSThreads
         Producer producer5 = new Producer(20,  cell5);
         
         ConsumerGroup group1 = makeGroup(1, cell1, producer1);
-        ConsumerGroup group2 = makeGroup(2, cell1, producer2);
-        ConsumerGroup group3 = makeGroup(3, cell1, producer3);
-        ConsumerGroup group4 = makeGroup(4, cell1, producer4);
-        ConsumerGroup group5 = makeGroup(5, cell1, producer5);
+        ConsumerGroup group2 = makeGroup(2, cell2, producer2);
+        ConsumerGroup group3 = makeGroup(3, cell3, producer3);
+        ConsumerGroup group4 = makeGroup(4, cell4, producer4);
+        ConsumerGroup group5 = makeGroup(5, cell5, producer5);
         
         fill(group1);
         fill(group2);
@@ -64,8 +64,8 @@ public class CSThreads
         ArrayList<Consumer> consumers = new ArrayList<Consumer>();
         
         for(int i = start; i < start + 20; i++)
-            consumers.add(new Consumer(20, cell, "Consumer" + i));
-        return new ConsumerGroup(producer, (start - 1) % 5, consumers);  
+            consumers.add(new Consumer(20, cell, "Student" + i));
+        return new ConsumerGroup(producer, (start - 1) / 5, consumers);  
     }
     public static void fill(ConsumerGroup group)
     {
@@ -79,6 +79,6 @@ public class CSThreads
         {
             CSThreads.console.println(e.toString());
         }
-        CSThreads.console.println("SECTION " + group.section + " IS FULL");
+        CSThreads.console.println("***********************SECTION " + group.section + " IS FULL***********************");
     }
 }

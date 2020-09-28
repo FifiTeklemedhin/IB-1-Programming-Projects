@@ -54,7 +54,6 @@ public class SharedCell{
             " is enrolling in spot " + data);
         occupied = true;
         writable = true;
-        ConsumerGroup.added.add(Thread.currentThread().getName()/* +": " + data*/);
         notify(); // Tell producer to become ready
         return data;
     }

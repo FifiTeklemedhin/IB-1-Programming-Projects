@@ -43,7 +43,7 @@ import java.util.Set;
             }
         cell.setData(i); // Produce by setting shared cell
         }
-    CSThreads.console.println(getName() + " has opened all spots");
+    //CSThreads.console.println(getName() + " has opened all spots");
     }
     public SharedCell getCell()
     {

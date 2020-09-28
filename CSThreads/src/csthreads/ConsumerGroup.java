@@ -18,7 +18,7 @@ import java.util.TreeSet;
 public class ConsumerGroup 
 {
     public Set<Consumer> scheduledConsumers = new HashSet<Consumer>();
-    public static ArrayList<String> added;
+ 
     public ArrayList<Consumer> allConsumers;
     Producer producer;
     SharedCell cell;
@@ -29,7 +29,6 @@ public class ConsumerGroup
         this.cell = producer.getCell();
         this.section = section;
         this.allConsumers = consumers;
-        this.added = new ArrayList<String>();
     }
     
     public  void fillSection()
