@@ -19,6 +19,7 @@ public class TherapyInterface{
      
      // Spawn the server daemon
      new TherapyServerDaemon();
+     new TherapyClient();
      
      System.out.println ("Main program ending");
    }

@@ -28,8 +28,12 @@ public class Therapist
     private File userTranscript;
     private String transcript = "";
     private String historyStr = "";
+    private String username = "";
+    
     public Therapist(String username)
     {
+        this.username = username;
+        
         patientHistory = new HashSet<String>();
         
         hedgeSet = new HashSet<String>();
@@ -48,9 +52,11 @@ public class Therapist
         replacementMap.put("my", "your");
         replacementMap.put("am", "are");
         
-        this.userHistory = new File("./Patient Input Histories/" + username + "-history.txt");
-        this.userTranscript = new File("./Patient Transcripts/" + username + "-transcript.txt");
+        this.userHistory = new File("./Patient Input Histories/" + this.username.toLowerCase() + "-history.txt");
+        this.userTranscript = new File("./Patient Transcripts/" +  this.username.toLowerCase() + "-transcript.txt");
     }
+ 
+    
     public void writeToFile(File file, String newLine) 
     {
         FileWriter writer;
@@ -89,9 +95,7 @@ public class Therapist
       
         updatePatientHistory(patientString);
         updateTranscript(patientString, reply);
-        System.out.println(patientHistory);
-        printFiles();
-        //printFiles();
+        
         return reply;        
     }
     public void updateTranscript(String input, String output)
@@ -106,7 +110,6 @@ public class Therapist
     {
         Scanner reader;
         
-        /*
         System.out.println("****************TRANSCRIPT*********************");
         try
         {
@@ -119,8 +122,6 @@ public class Therapist
         while(reader.hasNextLine())
             System.out.println(reader.nextLine());
         System.out.println("**********************************************");
-        */
-        
         
         System.out.println("****************HISTORY***********************");
 

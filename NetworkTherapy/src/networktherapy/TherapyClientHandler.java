@@ -17,6 +17,7 @@ public class TherapyClientHandler extends Thread{
 
    private Socket socketBackToClient;
    private Therapist therapist;
+   public static String username = "";
 
    // Instantiate and start the handler
    public TherapyClientHandler(Socket socket, Therapist therapist){
@@ -24,7 +25,7 @@ public class TherapyClientHandler extends Thread{
       this.therapist = therapist;
       start();
    }
-      
+
    public void run (){
       System.out.println("TherapyClientHandler starting");
       try{
@@ -33,7 +34,7 @@ public class TherapyClientHandler extends Thread{
          InputStream is = socketBackToClient.getInputStream();
          BufferedReader br = new BufferedReader(new InputStreamReader(is));
          PrintStream os = new PrintStream(socketBackToClient.getOutputStream(), true);
-
+         
          // Send the therapist's greeting to the client
          os.println(therapist.greeting());
 
@@ -67,7 +68,7 @@ public class TherapyClientHandler extends Thread{
         
         
       }catch (Exception e){
-         System.out.println ("Error:\n" + e.toString());
+         System.out.println ("Client Handler Error:\n" + e.toString());
       }
       System.out.println("TherapyClientHandler ending");
    }

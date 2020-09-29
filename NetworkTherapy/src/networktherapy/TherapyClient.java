@@ -18,8 +18,11 @@ import java.io.*;
 import java.util.Scanner;
  
 public class TherapyClient{
-     
-   public static void main (String[] args)
+   public TherapyClient()
+   {
+       run();
+   }
+   public static void run ()
    {
       // Ask the user for the IP address of the chat server.
       Scanner reader = new Scanner(System.in);

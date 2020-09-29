@@ -8,6 +8,7 @@ package networktherapy;
 
 import java.net.*;
 import java.io.*;
+import java.util.Scanner;
 
 public class TherapyServerDaemon extends Thread{
     
@@ -26,10 +27,12 @@ public class TherapyServerDaemon extends Thread{
             Socket socketBackToClient = socketOnWhichToListenForClients.accept();
             
             // Spawn a handler
-            new TherapyClientHandler (socketBackToClient, new Therapist("Fifi"));
+            Scanner reader = new Scanner(System.in);
+            System.out.print("Username: ");
+            new TherapyClientHandler (socketBackToClient, new Therapist(reader.nextLine()));
          }
       }catch (Exception e){
-         System.out.println ("Error:\n" + e.toString());
+         System.out.println ("Daemon Error:\n" + e.toString());
       }
       System.out.println ("Server daemon ending");
    }
