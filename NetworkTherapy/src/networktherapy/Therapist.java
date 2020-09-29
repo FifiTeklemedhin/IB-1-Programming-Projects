@@ -18,8 +18,9 @@ public class Therapist
     private Set<String> qualifierSet; //set of qualifiers
     private Set<String> patientHistory; // set of user inputs
     private Map<String, String> replacementMap; //the map of replacement words
+    protected ArrayList<String[]> transcript = new ArrayList<>(); 
     
-    public Therapist()
+    public Therapist(/*String username*/)
     {
         patientHistory = new HashSet<String>();
         
@@ -72,9 +73,15 @@ public class Therapist
             reply = qualifier(qualifierSet) + changePerson(patientString);
       
         updatePatientHistory(patientString);
+        updateTranscript(patientString, reply);
+        
+        
         return reply;        
     }
-    
+    public void updateTranscript(String input, String output)
+    {
+        transcript.add(new String[] {input, output});
+    }
     public boolean canReferBack()
     {
         return patientHistory.size() >= 3;

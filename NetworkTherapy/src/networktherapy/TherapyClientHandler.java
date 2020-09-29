@@ -23,6 +23,7 @@ public class TherapyClientHandler extends Thread{
       socketBackToClient = socket;
       this.therapist = therapist;
       start();
+      System.out.println("TRANSCRIPT\n" + therapist.transcript);
    }
       
    public void run (){
@@ -42,7 +43,7 @@ public class TherapyClientHandler extends Thread{
             // Read a line of input from the client and test for the exit condition
             String clientInput = br.readLine();
             if (clientInput.equalsIgnoreCase("bye")) 
-               break;
+                break;
             // Send the therapist's reply to the client
             int randomInterval = (int) (Math.random() * (7 - 3 + 1));
             int iterate = 0;
@@ -52,7 +53,10 @@ public class TherapyClientHandler extends Thread{
                 {   
                    iterate = 0;
                    randomInterval = (int) (Math.random() * (7 - 3 + 1));
-                   os.println(therapist.referBack());
+                   String referringBack = therapist.referBack();
+                   
+                   therapist.updateTranscript(clientInput, referringBack);
+                   os.println(referringBack);
                    continue;
                 }
                 randomInterval = (int) (Math.random() * (5 - 2 + 1));
