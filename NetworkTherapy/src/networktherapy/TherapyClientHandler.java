@@ -23,7 +23,6 @@ public class TherapyClientHandler extends Thread{
       socketBackToClient = socket;
       this.therapist = therapist;
       start();
-      System.out.println("TRANSCRIPT\n" + therapist.transcript);
    }
       
    public void run (){

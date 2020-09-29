@@ -26,7 +26,7 @@ public class TherapyServerDaemon extends Thread{
             Socket socketBackToClient = socketOnWhichToListenForClients.accept();
             
             // Spawn a handler
-            new TherapyClientHandler (socketBackToClient, new Therapist());
+            new TherapyClientHandler (socketBackToClient, new Therapist("Fifi"));
          }
       }catch (Exception e){
          System.out.println ("Error:\n" + e.toString());

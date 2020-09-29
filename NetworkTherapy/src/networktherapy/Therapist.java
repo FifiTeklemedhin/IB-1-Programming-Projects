@@ -10,7 +10,13 @@ package networktherapy;
  * @author fifiteklemedhin
  */
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Therapist 
 {
@@ -18,9 +24,11 @@ public class Therapist
     private Set<String> qualifierSet; //set of qualifiers
     private Set<String> patientHistory; // set of user inputs
     private Map<String, String> replacementMap; //the map of replacement words
-    protected ArrayList<String[]> transcript = new ArrayList<>(); 
-    
-    public Therapist(/*String username*/)
+    private File userHistory;
+    private File userTranscript;
+    private String transcript = "";
+    private String historyStr = "";
+    public Therapist(String username)
     {
         patientHistory = new HashSet<String>();
         
@@ -40,6 +48,22 @@ public class Therapist
         replacementMap.put("my", "your");
         replacementMap.put("am", "are");
         
+        this.userHistory = new File("./Patient Input Histories/" + username + "-history.txt");
+        this.userTranscript = new File("./Patient Transcripts/" + username + "-transcript.txt");
+    }
+    public void writeToFile(File file, String newLine) 
+    {
+        FileWriter writer;
+        try
+        {
+           writer = new FileWriter(file);
+           writer.write(newLine);
+           writer.close();
+        }
+        catch(IOException e)
+        {
+            System.out.println("io exception when instantiating to writer");
+        }
     }
     public String greeting()
     {
@@ -47,15 +71,6 @@ public class Therapist
     }
     public String reply(String patientString) 
     {
-        /*
-        Replies to the patient's statement with either a hedge or
-        a string consisting of a qualifier concatenated to a trasnformed
-        version of the patient's statement.
-        
-        Preconditions: none
-        Postconditions: returns a reply
-        */
-        
         String reply = "";
         int choice = randomInt(1,3); //generates a random number, makes getting a hedge a 1/3 chance
         
@@ -74,14 +89,55 @@ public class Therapist
       
         updatePatientHistory(patientString);
         updateTranscript(patientString, reply);
-        
-        
+        System.out.println(patientHistory);
+        printFiles();
+        //printFiles();
         return reply;        
     }
     public void updateTranscript(String input, String output)
     {
-        transcript.add(new String[] {input, output});
+   
+        transcript += input + " --> " + output+ "\n";
+        writeToFile(userTranscript, transcript);
+        
+        
     }
+    public void printFiles()
+    {
+        Scanner reader;
+        
+        /*
+        System.out.println("****************TRANSCRIPT*********************");
+        try
+        {
+            reader = new Scanner(userTranscript);
+        } catch (FileNotFoundException ex) 
+        {
+            System.out.println("no file found to read -- print transcript");
+            return;
+        }
+        while(reader.hasNextLine())
+            System.out.println(reader.nextLine());
+        System.out.println("**********************************************");
+        */
+        
+        
+        System.out.println("****************HISTORY***********************");
+
+        try {
+            reader = new Scanner(userHistory);
+        } catch (FileNotFoundException ex) {
+            System.out.println("no file found to read -- print history");
+            return;
+        }
+
+        while(reader.hasNextLine())
+            System.out.println(reader.nextLine());
+
+        
+        System.out.println("**********************************************");
+    }
+    
     public boolean canReferBack()
     {
         return patientHistory.size() >= 3;
@@ -90,45 +146,29 @@ public class Therapist
     {
         return "Referring back, I remember you said " + changePerson(selectRandom(patientHistory)) + ". Lets go back to that";
     }
+    
     // adds the patients latest reply to their history if they haven't said it before
     private void updatePatientHistory(String latestInput)
     {
         if(this.patientHistory.contains(latestInput.toLowerCase()))
             return;
         this.patientHistory.add(latestInput.toLowerCase());
+        
+        historyStr += latestInput.toLowerCase() + "\n";
+        writeToFile(userHistory, historyStr);
                     
     }
     private String hedge(Set<String> hedgeSet)
     {
-        /*
-        Selects a hedge at random
-        
-        Preconditions: hedge set has been initialized
-        Postconditions: returns a randomly selected hedge
-        */
+    
         return selectRandom(hedgeSet);
     }
     private String qualifier(Set<String> qualifierSet)
     {
-        /*
-        Selects a qualifier at random
-        
-        Preconditions: qualifier set has been initialized
-        Postconditions: returns a randomly selected hedge
-        */
-        
-        
         return selectRandom(qualifierSet);
     }
     private String changePerson(String str)
     {
-        /*
-        Returns a string created by sqapping i, me, etc. for you, your, etc. in the paramenter
-        
-        Preconditions: non
-        Post Conditions: returns the created string
-        */
-        
         //Tokenize str
         Scanner tokens = new Scanner(str);
         String result = "";
@@ -146,14 +186,7 @@ public class Therapist
     
     private String findReplacement(String keyWord)
     {
-        /*
-        Returns the value associated with the keyword or the keyword itself
-        if the keyword is not in the map.
-        
-        Preconditions: the replacement map has been initialized
-        Postconditions: returns the replacement
-        */
-        
+       
         keyWord = keyWord.toLowerCase();
         if(replacementMap.containsKey(keyWord))
             return (String) replacementMap.get(keyWord);
@@ -164,12 +197,6 @@ public class Therapist
     
     private String selectRandom(Set<String> set)
     {
-        /*
-        Selects an entry at random from the set
-        
-        Preconditions: set is not empty
-        Postconditons: returns random entry
-        */
         
         int index =  randomInt(0, set.size() -1);
         Iterator<String> iter = set.iterator();
@@ -180,13 +207,6 @@ public class Therapist
     
     private int randomInt(int low, int high)
     {
-        /*
-        Generate a random number between low and high
-        
-        Preconditions: low <= high
-        Postconditions: returs the random number
-        */
-        
-        return (int) (low + Math.random() * (high - low + 1));
+         return (int) (low + Math.random() * (high - low + 1));
     }
 }
