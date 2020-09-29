@@ -24,15 +24,21 @@ public class Therapist
     private Set<String> qualifierSet; //set of qualifiers
     private Set<String> patientHistory; // set of user inputs
     private Map<String, String> replacementMap; //the map of replacement words
+    
+    private static File allUsers = new File("./all-usernames.txt");
     private File userHistory;
     private File userTranscript;
-    private String transcript = "";
-    private String historyStr = "";
+  
     private String username = "";
     
-    public Therapist(String username)
+    public Therapist(String username) 
     {
         this.username = username;
+       
+        if(userExists()) 
+            retrievePatientHistory();
+        else
+            writeToFile(allUsers, username.toLowerCase());
         
         patientHistory = new HashSet<String>();
         
@@ -55,15 +61,47 @@ public class Therapist
         this.userHistory = new File("./Patient Input Histories/" + this.username.toLowerCase() + "-history.txt");
         this.userTranscript = new File("./Patient Transcripts/" +  this.username.toLowerCase() + "-transcript.txt");
     }
+
+    public void retrievePatientHistory()
+    {
+       try
+        {
+            Scanner reader = new Scanner(userHistory);
+            while(reader.hasNextLine())
+                patientHistory.add(reader.nextLine());  
+        }
+        catch(FileNotFoundException e)
+        {
+            System.out.println("no file for usernames");
+        }
  
-    
+    }
+    public boolean userExists()
+    {
+ 
+        try
+        {
+            Scanner reader = new Scanner(allUsers);
+            while(reader.hasNextLine())
+            {
+                if(reader.nextLine().contains(this.username.toLowerCase())) 
+                    return true;
+            }
+        }
+        catch(FileNotFoundException e)
+        {
+            allUsers = new File("./all-usernames.txt");
+            System.out.println("no file for usernames");
+        }
+        return false;
+    }
     public void writeToFile(File file, String newLine) 
     {
         FileWriter writer;
         try
         {
-           writer = new FileWriter(file);
-           writer.write(newLine);
+           writer = new FileWriter(file, true);
+           writer.write(newLine+"\n");
            writer.close();
         }
         catch(IOException e)
@@ -100,11 +138,9 @@ public class Therapist
     }
     public void updateTranscript(String input, String output)
     {
+
+        writeToFile(userTranscript, input + " --> " + output);
    
-        transcript += input + " --> " + output+ "\n";
-        writeToFile(userTranscript, transcript);
-        
-        
     }
     public void printFiles()
     {
@@ -154,9 +190,8 @@ public class Therapist
         if(this.patientHistory.contains(latestInput.toLowerCase()))
             return;
         this.patientHistory.add(latestInput.toLowerCase());
-        
-        historyStr += latestInput.toLowerCase() + "\n";
-        writeToFile(userHistory, historyStr);
+  
+        writeToFile(userHistory, latestInput.toLowerCase());
                     
     }
     private String hedge(Set<String> hedgeSet)
