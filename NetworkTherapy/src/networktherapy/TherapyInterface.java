@@ -5,6 +5,10 @@
  */
 package networktherapy;
 
+/**
+ *
+ * @author fifiteklemedhin
+ */
 // Example 15.11
 // File: TherapyInterface.java
 // Start the therapy server daemon and stop

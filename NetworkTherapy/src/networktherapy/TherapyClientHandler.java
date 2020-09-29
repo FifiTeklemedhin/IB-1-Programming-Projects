@@ -5,10 +5,6 @@
  */
 package networktherapy;
 
-/**
- *
- * @author fifiteklemedhin
- */
 // Example 15.11
 // File: TherapyClientHandler.java
 // Conduct conversation between the therapist the client
@@ -42,25 +38,35 @@ public class TherapyClientHandler extends Thread{
          os.println(therapist.greeting());
 
          // Enter the conversational loop with the client
-        
          while (true){
             // Read a line of input from the client and test for the exit condition
             String clientInput = br.readLine();
             if (clientInput.equalsIgnoreCase("bye")) 
-            {
-                therapist.serialize();
-                break;
-            }
+               break;
             // Send the therapist's reply to the client
+            int randomInterval = (int) (Math.random() * (7 - 3 + 1));
+            int iterate = 0;
+            if(iterate >= randomInterval)
+            {
+                if(therapist.canReferBack())
+                {   
+                   iterate = 0;
+                   randomInterval = (int) (Math.random() * (7 - 3 + 1));
+                   os.println(therapist.referBack());
+                   continue;
+                }
+                randomInterval = (int) (Math.random() * (5 - 2 + 1));
+                iterate += 1;
+            }
             os.println(therapist.reply(clientInput));
          }
         
-         // Close the socket
-         socketBackToClient.close();
+        
         
       }catch (Exception e){
-         System.out.println ("Handler Error:\n" + e.toString());
+         System.out.println ("Error:\n" + e.toString());
       }
       System.out.println("TherapyClientHandler ending");
    }
 }
+

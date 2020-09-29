@@ -18,14 +18,13 @@ import java.io.*;
 import java.util.Scanner;
  
 public class TherapyClient{
-     public static String username = "";
-   public static void main (String[] args){
+     
+   public static void main (String[] args)
+   {
       // Ask the user for the IP address of the chat server.
       Scanner reader = new Scanner(System.in);
       System.out.print ("Host name or IP number: ");
       String hostId = reader.nextLine();
-      
-      
       
       try{
       	 // Connect to port 5555 on the host using a socket.
@@ -49,7 +48,7 @@ public class TherapyClient{
             String userInput = reader.nextLine();
             os.println(userInput);
             if (userInput.equalsIgnoreCase("bye"))
-                break;
+               break;
             // Read the input from the server and display it on the user's terminal
             String serverInput = br.readLine();
             System.out.println(serverInput);	
@@ -59,8 +58,7 @@ public class TherapyClient{
          // Close the socket
          socket.close();
       }catch (Exception e){
-         System.out.println ("Client Error:\n" + e.toString());
+         System.out.println ("Error:\n" + e.toString());
       }
    }
 }
-
