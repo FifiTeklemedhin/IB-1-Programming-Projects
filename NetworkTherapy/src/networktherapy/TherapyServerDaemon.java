@@ -29,7 +29,8 @@ public class TherapyServerDaemon extends Thread{
             // Spawn a handler
             Scanner reader = new Scanner(System.in);
             System.out.print("Username (not case-sensitive): ");
-            new TherapyClientHandler (socketBackToClient, new Therapist(reader.nextLine()));
+            String username = reader.nextLine();
+            new TherapyClientHandler (socketBackToClient, new Therapist(username));
          }
       }catch (Exception e){
          System.out.println ("Daemon Error:\n" + e.toString());

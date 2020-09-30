@@ -22,7 +22,7 @@ public class Therapist
 {
     private Set<String> hedgeSet; //set of hedges
     private Set<String> qualifierSet; //set of qualifiers
-    private Set<String> patientHistory; // set of user inputs
+    private Set<String> patientHistory = new HashSet<String>(); // set of user inputs
     private Map<String, String> replacementMap; //the map of replacement words
     
     private static File allUsers = new File("./all-usernames.txt");
@@ -34,13 +34,15 @@ public class Therapist
     public Therapist(String username) 
     {
         this.username = username;
-       
+        
         if(userExists()) 
             retrievePatientHistory();
+        
         else
             writeToFile(allUsers, username.toLowerCase());
+ 
+        System.out.println("sucessfully wrote file");
         
-        patientHistory = new HashSet<String>();
         
         hedgeSet = new HashSet<String>();
         hedgeSet.add("Please tell me more");
@@ -66,12 +68,13 @@ public class Therapist
     {
        try
         {
-            Scanner reader = new Scanner(userHistory);
+            Scanner reader = new Scanner(allUsers);
             while(reader.hasNextLine())
-                patientHistory.add(reader.nextLine());  
+                patientHistory.add(reader.nextLine()); 
         }
         catch(FileNotFoundException e)
         {
+            this.userHistory = new File("./Patient Input Histories/" + this.username.toLowerCase() + "-history.txt");
             System.out.println("no file for usernames");
         }
  
@@ -106,7 +109,7 @@ public class Therapist
         }
         catch(IOException e)
         {
-            System.out.println("io exception when instantiating to writer");
+            System.out.println("io exception when instantiating to writer: ");
         }
     }
     public String greeting()
