@@ -34,11 +34,14 @@ public class Therapist
     public Therapist(String username) 
     {
         this.username = username;
+        this.userHistory = new File("./Patient Input Histories/" + this.username.toLowerCase() + "-history.txt");
+        this.userTranscript = new File("./Patient Transcripts/" +  this.username.toLowerCase() + "-transcript.txt");
         
         if(userExists()) 
             retrievePatientHistory();
         
         else
+
             writeToFile(allUsers, username.toLowerCase());
  
         System.out.println("sucessfully wrote file");
@@ -59,9 +62,6 @@ public class Therapist
         replacementMap.put("me", "you");
         replacementMap.put("my", "your");
         replacementMap.put("am", "are");
-        
-        this.userHistory = new File("./Patient Input Histories/" + this.username.toLowerCase() + "-history.txt");
-        this.userTranscript = new File("./Patient Transcripts/" +  this.username.toLowerCase() + "-transcript.txt");
     }
 
     public void retrievePatientHistory()
