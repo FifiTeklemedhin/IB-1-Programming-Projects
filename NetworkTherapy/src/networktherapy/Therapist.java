@@ -43,10 +43,7 @@ public class Therapist
         else
 
             writeToFile(allUsers, username.toLowerCase());
- 
-        System.out.println("sucessfully wrote file");
-        
-        
+
         hedgeSet = new HashSet<String>();
         hedgeSet.add("Please tell me more");
         hedgeSet.add("Many of my patients tell me the same thing");

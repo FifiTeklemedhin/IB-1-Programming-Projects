@@ -9,67 +9,65 @@ package multiclientchat;
  *
  * @author fifiteklemedhin
  */
-// Example 15.10
-// File: ChatClient.java
-// Example 15.10
-
-// Client for two-way chat application
-
 import java.net.*;
 import java.io.*;
 import java.util.Scanner;
  
-public class ChatRoomClient
-{
-   public String name = "";
-   public ChatRoomClient()
-   {
-       
-   }
-   public void run ()
-   {
-      // Ask the user for the IP address of the chat server.
+public class ChatRoomClient{  
+     
+   public static void main (String[] args){
+      // Ask the user for the IP address of the chat room server
+      // and a user name.
       Scanner reader = new Scanner(System.in);
-      System.out.print ("Host name or IP number: ");
+      System.out.print("Host name or IP number: ");
       String hostId = reader.nextLine();
-      System.out.print ("Enter your name: ");
-      this.name = reader.nextLine();
-      Transcript transcript = new Transcript();
+      System.out.print("your name: ");
+      String userName = reader.nextLine();
+      
       try{
       	 // Connect to port 5555 on the host using a socket.
          Socket socket = new Socket (hostId, 5555);
          
          // Establish input and output streams on the socket
          InputStream is = socket.getInputStream();
-         BufferedReader br = new BufferedReader(new InputStreamReader(is));
+         BufferedReader br = 
+            new BufferedReader(new InputStreamReader(is));
          PrintStream os = 
-                new PrintStream(socket.getOutputStream(), true);
+            new PrintStream(socket.getOutputStream(), true);
+
+         // Send this user's name to the server
+         os.println(userName);
                                       
-         // Read and display a line from the buffered input stream, 
-         // which is assumed to be the server's greeting.
-         String greeting = br.readLine(); 
-         System.out.println (greeting);
+         // Read a line from the buffered input stream, which
+         // is assumed to be the server's greeting.
+         String greeting = br.readLine();
          
-         // Run a conversation loop until either party quits
-         while (true){
-            // Read and send the user's input to the server
+         // Display the server's greeting 
+         System.out.println(greeting);
+         
+         // Repeatedly send user input to the handler.
+         // Read the transcript from the handler.
+         // Display the current transcript.
+         while (true) {
             System.out.print("> ");
             String userInput = reader.nextLine();
             os.println(userInput);
-            transcript.add(userInput);
-            if (userInput.equalsIgnoreCase("bye"))
+            if (userInput.equals("bye"))
                break;
-            // Read the input from the server and display it on the user's terminal
-            String serverInput = br.readLine();
-            System.out.println(serverInput);	
-            System.out.print("> ");
-            if (serverInput.equalsIgnoreCase("bye"))
-               break; 
-         }          
+         	
+            // Read the multiline transcript from the handler and 
+            // display it on the client's console
+            String transcript = br.readLine();
+            while (! transcript.equals("")){
+               System.out.println(transcript);
+               transcript = br.readLine();
+            }
+         }
          // Close the socket
-         socket.close();
+         socket.close();    
       }catch (Exception e){
-         System.out.println ("Error:\n" + e.toString());
+         System.out.println ("Error in client:\n" + e.toString());
       }
    }
 }
+

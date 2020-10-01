@@ -37,5 +37,3 @@ public class MultiClientChatDaemon extends Thread{
       System.out.println ("Server daemon ending");
    }
 }
-
-

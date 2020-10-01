@@ -9,21 +9,15 @@ package multiclientchat;
  *
  * @author fifiteklemedhin
  */
-// Example 15.10
-// File: ChatRoomServer.java
-// Server for a two-way chat between server and client
 
 import java.net.*;
 import java.io.*;
 import java.util.*;
 
 public class ChatRoomServer{
-   public static void main(String[] args)
-   {
+   public static void main(String[] args){
       Scanner reader = new Scanner(System.in);
-      Transcript transcript = new Transcript();
-      try
-      {
+      try{
          System.out.println("Starting Server");
          ServerSocket socketOnWhichToListenForClients = new ServerSocket (5555);
          while(true){
@@ -45,7 +39,6 @@ public class ChatRoomServer{
                System.out.print("> ");
                String userInput = reader.nextLine();
                os.println(userInput);
-               transcript.add(userInput);
                if (userInput.equalsIgnoreCase("bye"))
                   break;
             }

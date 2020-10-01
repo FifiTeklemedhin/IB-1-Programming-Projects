@@ -16,20 +16,25 @@ package networktherapy;
 import java.net.*;
 import java.io.*;
 import java.util.Scanner;
- 
+import APClasses.APConsole;
+
 public class TherapyClient{
+   public static APConsole console = new APConsole("Therapy Client");
    public TherapyClient()
    {
        run();
    }
    public static void run ()
    {
+      
       // Ask the user for the IP address of the chat server.
-      Scanner reader = new Scanner(System.in);
-      System.out.print ("Host name or IP number: ");
-      String hostId = reader.nextLine();
+      console.print ("Host name or IP number: ");
+      String hostId = console.nextLine();
       
       try{
+          //create input strem, buffered reader, output stream
+          //to get input from client, in something dealing with server, use br from server
+          //one for client and one for server, no static console
       	 // Connect to port 5555 on the host using a socket.
          Socket socket = new Socket (hostId, 5555);
          
@@ -42,26 +47,26 @@ public class TherapyClient{
          // Read and display a line from the buffered input stream, 
          // which is assumed to be the server's greeting.
          String greeting = br.readLine(); 
-         System.out.println (greeting);
+         console.println (greeting);
          
          // Run a conversation loop until either party quits
          while (true){
             // Read and send the user's input to the server
-            System.out.print("> ");
-            String userInput = reader.nextLine();
+            console.print("> ");
+            String userInput =  console.nextLine();
             os.println(userInput);
             if (userInput.equalsIgnoreCase("bye"))
                break;
             // Read the input from the server and display it on the user's terminal
             String serverInput = br.readLine();
-            System.out.println(serverInput);	
+            console.println(serverInput);	
             if (serverInput.equalsIgnoreCase("bye"))
                break; 
          }          
          // Close the socket
          socket.close();
       }catch (Exception e){
-         System.out.println ("Error:\n" + e.toString());
+         console.println ("Error:\n" + e.toString());
       }
    }
 }

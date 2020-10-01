@@ -19,7 +19,7 @@ public class TherapyServerDaemon extends Thread{
     
     public void run(){
       try{
-         System.out.println("Server daemon starting");
+         TherapyInterface.console.println("Server daemon starting");
          ServerSocket socketOnWhichToListenForClients = new ServerSocket (5555);
          
          // Listen indefinitely for client requests
@@ -27,14 +27,14 @@ public class TherapyServerDaemon extends Thread{
             Socket socketBackToClient = socketOnWhichToListenForClients.accept();
             
             // Spawn a handler
-            Scanner reader = new Scanner(System.in);
-            System.out.print("Username (not case-sensitive): ");
-            String username = reader.nextLine();
+            TherapyClient.console.print("Username (not case-sensitive): ");
+            String username = TherapyClient.console.nextLine();
+            TherapyClient.console.print("\n*********************************\n");
             new TherapyClientHandler (socketBackToClient, new Therapist(username));
          }
       }catch (Exception e){
-         System.out.println ("Daemon Error:\n" + e.toString());
+         TherapyClient.console.println ("Daemon Error:\n" + e.toString());
       }
-      System.out.println ("Server daemon ending");
+      TherapyClient.console.println ("Server daemon ending");
    }
 }

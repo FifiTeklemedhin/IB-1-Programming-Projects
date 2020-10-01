@@ -27,7 +27,7 @@ public class TherapyClientHandler extends Thread{
    }
 
    public void run (){
-      System.out.println("TherapyClientHandler starting");
+      TherapyInterface.console.println("TherapyClientHandler starting");
       try{
 
       	 // Establish input and output streams with the client    	
@@ -68,9 +68,9 @@ public class TherapyClientHandler extends Thread{
         
         
       }catch (Exception e){
-         System.out.println ("Client Handler Error:\n" + e.toString());
+         TherapyInterface.console.println ("Client Handler Error:\n" + e.toString());
       }
-      System.out.println("TherapyClientHandler ending");
+      TherapyInterface.console.println("TherapyClientHandler ending");
    }
 }
 

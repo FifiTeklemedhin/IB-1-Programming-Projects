@@ -9,6 +9,6 @@ package multiclientchat;
  *
  * @author fifiteklemedhin
  */
-public class MultiClientChat {
+public class MultiClientChatInterface {
     
 }
