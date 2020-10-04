@@ -9,6 +9,14 @@ package multiclientchat;
  *
  * @author fifiteklemedhin
  */
-public class MultiClientChatInterface {
+public class MultiClientChatInterface 
+{
+    public static Transcript transcript = new Transcript();
     
+    public static void main(String[] args)
+    {
+        new ChatRoomServer();
+        new MultiClientChatDaemon();
+    }
+ 
 }

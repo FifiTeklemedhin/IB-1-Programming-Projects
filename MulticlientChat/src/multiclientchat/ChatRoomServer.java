@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -10,15 +11,17 @@ package multiclientchat;
  * @author fifiteklemedhin
  */
 
+import APClasses.APConsole;
 import java.net.*;
 import java.io.*;
 import java.util.*;
 
 public class ChatRoomServer{
+   public static APConsole console = new APConsole("Chatroom Server and Daemon");
    public static void main(String[] args){
       Scanner reader = new Scanner(System.in);
       try{
-         System.out.println("Starting Server");
+         console.println("Starting Server");
          ServerSocket socketOnWhichToListenForClients = new ServerSocket (5555);
          while(true){
             Socket socketBackToClient = socketOnWhichToListenForClients.accept();
@@ -32,11 +35,11 @@ public class ChatRoomServer{
             while (true){
                // Read and echo a line of input from the client.
                String clientInput = br.readLine();
-               System.out.println (clientInput);
+               console.println (clientInput);
                if (clientInput.equalsIgnoreCase("bye")) 
                   break;
                // Read a line of input from the server's user and send it to the client
-               System.out.print("> ");
+               console.print("> ");
                String userInput = reader.nextLine();
                os.println(userInput);
                if (userInput.equalsIgnoreCase("bye"))
@@ -45,7 +48,7 @@ public class ChatRoomServer{
             socketBackToClient.close();
          }
       }catch (Exception e){
-         System.out.println ("Error:\n" + e.toString());
+         console.println ("Error:\n" + e.toString());
       }
    }
 }

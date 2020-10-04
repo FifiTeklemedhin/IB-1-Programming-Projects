@@ -9,20 +9,23 @@ package multiclientchat;
  *
  * @author fifiteklemedhin
  */
+import APClasses.APConsole;
 import java.net.*;
 import java.io.*;
 import java.util.Scanner;
  
 public class ChatRoomClient{  
-     
-   public static void main (String[] args){
+   
+   public static void main (String[] args)
+   {
+       APConsole console = new APConsole("Chatroom Client");
       // Ask the user for the IP address of the chat room server
       // and a user name.
       Scanner reader = new Scanner(System.in);
-      System.out.print("Host name or IP number: ");
-      String hostId = reader.nextLine();
-      System.out.print("your name: ");
-      String userName = reader.nextLine();
+      console.print("Host name or IP number: ");
+      String hostId = console.nextLine();
+      console.print("your name: ");
+      String userName = console.nextLine();
       
       try{
       	 // Connect to port 5555 on the host using a socket.
@@ -36,21 +39,21 @@ public class ChatRoomClient{
             new PrintStream(socket.getOutputStream(), true);
 
          // Send this user's name to the server
-         os.println(userName);
+         os.println("Name: " + userName);
                                       
          // Read a line from the buffered input stream, which
          // is assumed to be the server's greeting.
          String greeting = br.readLine();
          
          // Display the server's greeting 
-         System.out.println(greeting);
+         console.println(greeting);
          
          // Repeatedly send user input to the handler.
          // Read the transcript from the handler.
          // Display the current transcript.
          while (true) {
-            System.out.print("> ");
-            String userInput = reader.nextLine();
+            console.print("> ");
+            String userInput = console.nextLine();
             os.println(userInput);
             if (userInput.equals("bye"))
                break;
@@ -59,15 +62,14 @@ public class ChatRoomClient{
             // display it on the client's console
             String transcript = br.readLine();
             while (! transcript.equals("")){
-               System.out.println(transcript);
+               console.println(transcript);
                transcript = br.readLine();
             }
          }
          // Close the socket
          socket.close();    
       }catch (Exception e){
-         System.out.println ("Error in client:\n" + e.toString());
+         console.println ("Error in client:\n" + e.toString());
       }
    }
 }
-

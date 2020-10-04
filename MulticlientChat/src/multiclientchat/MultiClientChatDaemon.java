@@ -13,27 +13,29 @@ import java.net.*;
 import java.io.*;
 
 public class MultiClientChatDaemon extends Thread{
-    
+    public static Transcript transcript;
     // Instantiate the daemon and start it.
     public MultiClientChatDaemon(){
         start();
     }
     
-    public void run(){
+    public void run()
+    {
+        transcript = new Transcript();
       try{
-         System.out.println("Server daemon starting");
+         ChatRoomServer.console.println("Server daemon starting");
          ServerSocket socketOnWhichToListenForClients = new ServerSocket (5555);
          
          // Listen indefinitely for client requests
          while(true){
             Socket socketBackToClient = socketOnWhichToListenForClients.accept();
-            
+            ChatRoomServer.console.println("new handler");
             // Spawn a handler
-            new TherapyClientHandler (socketBackToClient, new Therapist());
+            new MultiClientChatHandler (socketBackToClient, transcript);
          }
       }catch (Exception e){
-         System.out.println ("Error:\n" + e.toString());
+         ChatRoomServer.console.println ("Error:\n" + e.toString());
       }
-      System.out.println ("Server daemon ending");
+      ChatRoomServer.console.println ("Server daemon ending");
    }
 }
