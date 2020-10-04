@@ -39,11 +39,6 @@ public class ChatRoomServer{
                if (clientInput.equalsIgnoreCase("bye")) 
                   break;
                // Read a line of input from the server's user and send it to the client
-               console.print("> ");
-               String userInput = reader.nextLine();
-               os.println(userInput);
-               if (userInput.equalsIgnoreCase("bye"))
-                  break;
             }
             socketBackToClient.close();
          }

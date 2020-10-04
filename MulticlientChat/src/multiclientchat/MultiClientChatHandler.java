@@ -54,8 +54,13 @@ public class MultiClientChatHandler extends Thread{
               
             if (clientInput.equalsIgnoreCase("bye")) 
                break;
+            if (clientInput.isEmpty()) 
+            {
+                 os.println(this.transcript);
+                 continue;
+            }
    
-            this.transcript.add(this.name + ": " + clientInput);
+            this.transcript.add(this.name + " " + new Date() + "\n" + clientInput);
             
             // Send the ChatRoomClient's reply to the client
             os.println(this.transcript);
