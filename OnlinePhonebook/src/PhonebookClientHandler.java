@@ -37,29 +37,29 @@ public class PhonebookClientHandler extends Thread{
          // Enter the conversational loop with the client
          while (true){
             // Read a line of input from the client and test for the exit condition
-
+            console.println(greeting);
             String clientInput = br.readLine();
             console.println("br: " + clientInput);
             
             if (clientInput.equalsIgnoreCase("end")) 
                break;
             if (clientInput.equalsIgnoreCase("add"))
-                addContact();
+               addContact();
+
             if (clientInput.equalsIgnoreCase("find"))
                 getContact();
             else
-                os.println("That is not one of the available commands. Try again");
-            
-            os.println("\n" + greeting);
+                os.println(clientInput + ": That is not one of the available commands. Try again`");
+
          }
         
          // Close the socket
          socketBackToClient.close();
         
       }catch (Exception e){
-         console.println ("ClientHandler Error:\n" + e.toString());
+         os.println ("ClientHandler Error:\n" + e.toString());
       }
-      console.println("ClientHandler ending");
+      os.println("ClientHandler ending");
    }
    public void addContact()
    {

@@ -47,14 +47,17 @@ public class PhonebookClient{
             // Read the multiline transcript from the handler and 
             // display it on the client's console
             String transcript = br.readLine();
-            while (! transcript.equals(""))
+            while (! transcript.equals("") && !transcript.contains("`"))
             {
                console.println(transcript);
                
                if(transcript.contains("Give me"))
-               console.print("> ");
-               userInput = console.nextLine();
-               os.println(userInput);
+               {
+                   console.print("> ");
+                   userInput = console.nextLine();
+                   os.println(userInput);
+               }
+               
                
                transcript = br.readLine();
             }
