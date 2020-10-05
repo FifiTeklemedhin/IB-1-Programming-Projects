@@ -26,40 +26,43 @@ public class Phonebook
     */
     private File phonebookFile;
     protected HashMap<String, String> contacts = new HashMap<String, String>();
-    public Phonebook(String serverName)
+    public Phonebook()
     {
-        phonebookFile = new File("./" + serverName + "-file.txt");
-        parseFile();
+        this.phonebookFile = new File("./localhost-phonebooj.txt");
+        this.parseFile();
     }
     
-    public void add(String name, String number)
+    public String add(String name, String number)
     {
         if(this.contacts.containsKey(name))
-        {
-            System.out.println("Contact already exists. Try again");
-            return;
-        }
+            return("Contact already exists. Try again");
+        
         
         this.contacts.put(name, number);
         String contact = name + ": " + number;
         FileWriter writer;
         try
         {
-           writer = new FileWriter(phonebookFile, true);
+           writer = new FileWriter(this.phonebookFile, true);
            writer.write(contact + "\n");
            writer.close();
         }
         catch(IOException e)
         {
-            System.out.println("IO exception when instantiating to writer: ");
+            return ("IO exception when instantiating to writer: ");
         }
+        return "Successfully added contact!";
     }
     
     public String get(String name)
     {
-        if(this.contacts.containsKey(name))
+        try{
             return name + ": " + this.contacts.get(name);
-        return "Contact does not exist. Try again.";
+        }
+        catch(Exception e)
+        {
+            return "Contact does not exist. Try again.";
+        }
     }
     
     public void parseFile() 
@@ -73,7 +76,7 @@ public class Phonebook
             while(reader.hasNextLine())
             {
                 String[] contactInfo = reader.nextLine().split(":");
-                contacts.put(contactInfo[0], contactInfo[1]);
+                this.contacts.put(contactInfo[0], contactInfo[1]);
                 
             }
         }
