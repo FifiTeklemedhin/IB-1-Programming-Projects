@@ -13,7 +13,7 @@ public class PhonebookClientHandler extends Thread{
    private BufferedReader br;
    private PrintStream os;
    
-   private APConsole console = new APConsole("Chatroom Handler");
+   //private APConsole console = new APConsole("Chatroom Handler");
    
     // Instantiate and start the handler
    public PhonebookClientHandler(Socket socket, Phonebook phonebook){
@@ -24,9 +24,7 @@ public class PhonebookClientHandler extends Thread{
    }
       
    public void run (){
-      console.println("MultiClientChatHandler starting");
-      String greeting = "To use this digial phonebook, submit either \"add\" or \"find\"\n"
-                          + "To terminate this program, submit \"end\"\n";
+      
       try{
 
       	 // Establish input and output streams with the client    	
@@ -40,8 +38,8 @@ public class PhonebookClientHandler extends Thread{
             // Read a line of input from the client and test for the exit condition
             //console.println(greeting);
             String clientInput = br.readLine();
-            console.println("br: \"" + clientInput + "\"");
-            
+          
+            // each input corresponds with a function of the phonebook
             if (clientInput.equalsIgnoreCase("end")) 
                break;
             else if (clientInput.equalsIgnoreCase("add"))
@@ -61,7 +59,7 @@ public class PhonebookClientHandler extends Thread{
       }
       os.println("ClientHandler ending");
    }
-   public void addContact()
+   public void addContact() //adds contact using therapist
    {
        
        try
@@ -73,8 +71,6 @@ public class PhonebookClientHandler extends Thread{
            String number = br.readLine();
            
            os.println(this.phonebook.add(name, number));
-           console.println("\t>br: " + name);
-           console.println("\t>br: " + number);
        }
        catch(IOException e)
        {
@@ -83,7 +79,7 @@ public class PhonebookClientHandler extends Thread{
 
    }
    
-   public void getContact()
+   public void getContact() // gets contact using therapist
    {
        try
        {
@@ -91,7 +87,6 @@ public class PhonebookClientHandler extends Thread{
            String name = br.readLine();
            
            os.println(this.phonebook.get(name));
-           console.println("\t>br: " + name);
        }
        catch(IOException e)
        {

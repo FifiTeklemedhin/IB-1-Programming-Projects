@@ -38,7 +38,7 @@ public class PhonebookClient{
          // Repeatedly send user input to the handler.
          
          while (true) {
-            console.println(greeting);
+            console.println("\n" + greeting);
             console.print("> ");
             String userInput = console.nextLine();
             os.println(userInput);
@@ -50,11 +50,10 @@ public class PhonebookClient{
           
             while (true)
             {
-               //console.println("RUNNING LOOP");
-               
                String transcript = br.readLine();
                console.println(transcript);
                
+               // prompts the user if the client handler is asking for an input
                while(transcript.contains("Give me"))
                {
                    //console.println("RUNNING INNER LOOP");
@@ -66,8 +65,7 @@ public class PhonebookClient{
                    console.println(transcript);
 
                }
-              
-              //console.println("BREAKING");
+  
               break;
             }
          }
