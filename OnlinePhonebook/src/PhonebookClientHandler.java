@@ -35,17 +35,18 @@ public class PhonebookClientHandler extends Thread{
          os = new PrintStream(socketBackToClient.getOutputStream(), true);
 
          // Enter the conversational loop with the client
-         while (true){
+         while (true)
+         {
             // Read a line of input from the client and test for the exit condition
             //console.println(greeting);
             String clientInput = br.readLine();
-            console.println("br: " + clientInput);
+            console.println("br: \"" + clientInput + "\"");
             
             if (clientInput.equalsIgnoreCase("end")) 
                break;
-            if (clientInput.equalsIgnoreCase("add"))
+            else if (clientInput.equalsIgnoreCase("add"))
                addContact();
-            if (clientInput.equalsIgnoreCase("find"))
+            else if (clientInput.equalsIgnoreCase("find"))
                 getContact();
             else
                 os.println(clientInput + ": That is not one of the available commands. Try again");
