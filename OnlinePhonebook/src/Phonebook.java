@@ -28,7 +28,7 @@ public class Phonebook
     protected HashMap<String, String> contacts = new HashMap<String, String>();
     public Phonebook()
     {
-        this.phonebookFile = new File("./localhost-phonebooj.txt");
+        this.phonebookFile = new File("./localhost-phonebook.txt");
         this.parseFile();
     }
     
@@ -56,13 +56,9 @@ public class Phonebook
     
     public String get(String name)
     {
-        try{
-            return name + ": " + this.contacts.get(name);
-        }
-        catch(Exception e)
-        {
+        if(this.contacts.get(name) == null)
             return "Contact does not exist. Try again.";
-        }
+        return name + ": " + this.contacts.get(name);
     }
     
     public void parseFile() 

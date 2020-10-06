@@ -37,7 +37,7 @@ public class PhonebookClientHandler extends Thread{
          // Enter the conversational loop with the client
          while (true){
             // Read a line of input from the client and test for the exit condition
-            console.println(greeting);
+            //console.println(greeting);
             String clientInput = br.readLine();
             console.println("br: " + clientInput);
             
@@ -45,11 +45,10 @@ public class PhonebookClientHandler extends Thread{
                break;
             if (clientInput.equalsIgnoreCase("add"))
                addContact();
-
             if (clientInput.equalsIgnoreCase("find"))
                 getContact();
             else
-                os.println(clientInput + ": That is not one of the available commands. Try again`");
+                os.println(clientInput + ": That is not one of the available commands. Try again");
 
          }
         
@@ -68,11 +67,13 @@ public class PhonebookClientHandler extends Thread{
        {
            os.println("Give me the name: ");
            String name = br.readLine();
-
+           
            os.println("Give me the contact's number: ");
            String number = br.readLine();
            
            os.println(this.phonebook.add(name, number));
+           console.println("\t>br: " + name);
+           console.println("\t>br: " + number);
        }
        catch(IOException e)
        {
@@ -87,7 +88,9 @@ public class PhonebookClientHandler extends Thread{
        {
            os.println("Give me the name: ");
            String name = br.readLine();
+           
            os.println(this.phonebook.get(name));
+           console.println("\t>br: " + name);
        }
        catch(IOException e)
        {

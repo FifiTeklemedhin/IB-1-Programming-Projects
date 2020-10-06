@@ -36,6 +36,7 @@ public class PhonebookClient{
          // Display the server's greeting
          
          // Repeatedly send user input to the handler.
+         
          while (true) {
             console.println(greeting);
             console.print("> ");
@@ -46,20 +47,28 @@ public class PhonebookClient{
          	
             // Read the multiline transcript from the handler and 
             // display it on the client's console
-            String transcript = br.readLine();
-            while (! transcript.equals("") && !transcript.contains("`"))
+          
+            while (true)
             {
+               //console.println("RUNNING LOOP");
+               
+               String transcript = br.readLine();
                console.println(transcript);
                
-               if(transcript.contains("Give me"))
+               while(transcript.contains("Give me"))
                {
+                   //console.println("RUNNING INNER LOOP");
                    console.print("> ");
                    userInput = console.nextLine();
                    os.println(userInput);
+                   
+                   transcript = br.readLine();
+                   console.println(transcript);
+
                }
-               
-               
-               transcript = br.readLine();
+              
+              //console.println("BREAKING");
+              break;
             }
          }
          // Close the socket
