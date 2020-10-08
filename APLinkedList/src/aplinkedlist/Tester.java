@@ -28,9 +28,12 @@ public class Tester
         
         //inserting
         list.insert(11, 11);
-        list.insert(2, 2);
+        console.println("\n" + list);
+        list.insert(23, 5);
+        console.println(list);
         
-        
+        //removing
+        list.remove(2);
         console.println("\n" + list);
     }
 }

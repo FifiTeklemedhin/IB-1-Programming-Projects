@@ -20,7 +20,7 @@ public class APLinkedList<E> {
         {
             first = new Node(data, null);
             this.size += 1;
-            return data;
+            return (E) data;
         }
         
         return insert(data, this.size - 1);
@@ -29,23 +29,48 @@ public class APLinkedList<E> {
     
     public E insert( E data, int position )
     {
+        Node<E> currentNode = first;
+        
         if(position > this.size - 1)
             return null;
         
-        Node<E> currentNode = first;
-        for(int i = 0; i < position; i++)
+        if(position == this.size - 1)
+            for(int i = 0; i < position; i++)
             currentNode = currentNode.next;
+        
+        
+        else
+        {
+            for(int i = 0; i < position-1; i++)
+            currentNode = currentNode.next;
+        }
         
         Node<E> nextNode = currentNode.next;
         currentNode.next = new Node(data, nextNode);
         
         this.size += 1;
-        
-        return data;
+        System.out.println("size: " + size);
+        return (E) data;
     }
     
     public E remove( int position )
     {
+        if(position > this.size - 1)
+            return null;
+        
+        Node<E> currentNode = first;
+        Node<E> previousNode = null;
+        
+        //goes until the node before
+        for(int i = 0; i < position - 1; i++)
+            currentNode = currentNode.next;
+        
+        previousNode = currentNode;
+        currentNode = currentNode.next;
+        previousNode.next = currentNode.next;
+        
+        this.size -= 1;
+        System.out.println("removal size: " + size);
         return null;
     }
     
