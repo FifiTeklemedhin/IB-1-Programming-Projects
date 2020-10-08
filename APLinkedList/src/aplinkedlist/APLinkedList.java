@@ -11,7 +11,7 @@ package aplinkedlist;
  */
 public class APLinkedList<E> {
     
-    private Node<E> first = null;
+    Node<E> first = null;
     private int size = 0;
     
     public E add(E data)
@@ -22,7 +22,12 @@ public class APLinkedList<E> {
             this.size += 1;
             return (E) data;
         }
-        
+        if(first.next == null)
+        {
+            first.next = new Node(data, null);
+            this.size += 1;
+            return (E) data;
+        }
         return insert(data, this.size - 1);
 
     }
@@ -30,22 +35,30 @@ public class APLinkedList<E> {
     public E insert( E data, int position )
     {
         Node<E> currentNode = first;
-        
-        if(position > this.size - 1)
+        Node<E> nextNode = null;
+         
+        if(position > this.size-1)
             return null;
         
+        //finds the node before the positon the new node is being inserted at
+        //if the position is at the end of the list, find the tail node 
         if(position == this.size - 1)
-            for(int i = 0; i < position; i++)
-            currentNode = currentNode.next;
-        
-        
-        else
         {
-            for(int i = 0; i < position-1; i++)
-            currentNode = currentNode.next;
+            while(currentNode.next != null)
+               currentNode = currentNode.next;
+            
+            currentNode.next = new Node(data, null);
+            this.size += 1;
+            System.out.println("size: " + size);
+            return (E) data;
         }
+        //if inserting between two nodes, go one before the desired position to maintain order
+        else
+            for(int i = 0; i < position-1 && i >= 0; i++)
+                currentNode = currentNode.next;
         
-        Node<E> nextNode = currentNode.next;
+        //stores the nodes that are being shifted over then inserts the desired node with the variable as its next property
+        nextNode = currentNode.next;
         currentNode.next = new Node(data, nextNode);
         
         this.size += 1;
@@ -57,6 +70,11 @@ public class APLinkedList<E> {
     {
         if(position > this.size - 1)
             return null;
+        if(position == 0)
+        {
+            this.first = first.next;
+            return null;
+        }
         
         Node<E> currentNode = first;
         Node<E> previousNode = null;
@@ -70,44 +88,94 @@ public class APLinkedList<E> {
         previousNode.next = currentNode.next;
         
         this.size -= 1;
-        System.out.println("removal size: " + size);
         return null;
     }
     
-    public E remove( E data )
+    public E removeFirst( E data )
     {
-        return null;
+        if(!this.contains(data))
+            return null;
+        remove(this.get(data));
+        return data;
     }
-    
+    public E removeAll(E data)
+    {
+        if(!this.contains(data))
+            return null;
+        while(this.contains(data))
+            removeFirst(data);
+        return data;
+    }
+    /*
     public int firstIndexOf( E data )
     {
         return -1;
     }
-    
-   /*
+    */
+   
     public boolean contains(E data)
     {
-        
+       Node<E> currentNode = first;
+       while(currentNode != null)
+       {
+           if(currentNode.data == data)
+            return true;
+           currentNode = currentNode.next;
+       } 
+       return false;
     }
+    
+    //get the value at a position
     public E get( int position )
     {
+        if(position < 0)
+            return null;
+        if(position > this.size - 1)
+            return null;
         
+        Node<E> currentNode = this.first;
+        for(int i = 0; i < position; i++)
+            currentNode = currentNode.next;
+        
+        return currentNode.data;
     }
+    
+    //get the position of a value
+    public int get(E data)
+    {
+        if(!this.contains(data))
+            return -1;
+        
+        Node<E> currentNode = this.first;
+        for(int i = 0; i < this.size; i++)
+        {
+           if(currentNode.data == data)
+            return i;
+           currentNode = currentNode.next;
+        } 
+        
+        return -1;
+    }
+    
     public int size()
     {
         return this.size;
     }
-  */
     public String toString()
     {
-        String list = "[";
-        Node<E> currentNode = first;
+       if(first == null)
+        return "[]";
+        
+       String list = "[";
+       Node<E> currentNode = first;
        while(currentNode != null)
        {
            list += currentNode.data + ", ";
            currentNode = currentNode.next;
        }
-       
+
+       if(list.length() == 2)
+           return list.replace(",", "") + "]";
        return list.substring(0, list.length()-2) + "]";
     }
   
