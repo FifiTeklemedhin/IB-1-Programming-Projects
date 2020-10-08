@@ -1,5 +1,3 @@
-package servershutdown;
-
 /**
  *
  * @author fifiteklemedhin
@@ -33,8 +31,7 @@ public class PhonebookClient{
          // Read a line from the buffered input stream, which
          // is assumed to be the server's greeting.
          String greeting = "To use this digial phonebook, submit either \"add\" or \"find\"\n"
-                          + "To terminate this program, submit \"end\"\n"
-                          + "To shutdown the server, submit \"shutdown\"\n";
+                          + "To terminate this program, submit \"end\"\n";
          
          // Display the server's greeting
          
@@ -45,40 +42,22 @@ public class PhonebookClient{
             console.print("> ");
             String userInput = console.nextLine();
             os.println(userInput);
-            
-            if(userInput.equalsIgnoreCase("end"))
+            if (userInput.equalsIgnoreCase("end"))
             {
-                console.println("Client shutdown complete");
-                
+                console.println("Shutting client down...");
                 break;
             }
-            if(userInput.equalsIgnoreCase("shutdown"))
+            else if(userInput.equalsIgnoreCase("shutdown"))
             {
-                console.println("Client shutdown complete...");
-                while(!userInput.contains("Server shutdown complete"))
-                {
-                    userInput = br.readLine();
-                    console.println(userInput);
-                }
-                
-                break;
-            }
-           
-            
-            
-            /*
-            if(userInput.equalsIgnoreCase("shutdown"))
-            {
-                console.println("shutting down client...");
-                os.println("shutting down client..");
                 String transcript = br.readLine();
-                
-                while(!transcript.equals("server shut down"))
+                while(!transcript.equalsIgnoreCase("Thread shutdown complete"))
+                {
+                    console.println(transcript);
                     transcript = br.readLine();
-                console.println("server shut down");
-                break;
+                }
+                console.println("Server shut down.");
+                console.println("Program terminated");
             }
-            */
             // Read the multiline transcript from the handler and 
             // display it on the client's console
           
@@ -86,7 +65,7 @@ public class PhonebookClient{
             {
                String transcript = br.readLine();
                console.println(transcript);
-                   
+               
                // prompts the user if the client handler is asking for an input
                while(transcript.contains("Give me"))
                {
