@@ -29,7 +29,7 @@ public class APLinkedList<E> {
     
     public E insert( E data, int position )
     {
-        if(position > this.size)
+        if(position > this.size - 1)
             return null;
         
         Node<E> currentNode = first;

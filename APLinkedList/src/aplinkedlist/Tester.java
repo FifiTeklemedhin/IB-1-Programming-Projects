@@ -19,12 +19,17 @@ public class Tester
         APLinkedList list = new APLinkedList();
         APConsole console = new APConsole("Linked List");
         
-        //list.add(1);
+        //adding
         for(int  i = 0; i <= 10; i++)
         {
             list.add(i);
             console.println(list);
         }
+        
+        //inserting
+        list.insert(11, 11);
+        list.insert(2, 2);
+        
         
         console.println("\n" + list);
     }
