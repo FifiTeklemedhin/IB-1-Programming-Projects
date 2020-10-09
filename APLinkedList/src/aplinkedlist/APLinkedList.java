@@ -40,8 +40,8 @@ public class APLinkedList<E> {
         if(position > this.size-1)
             return null;
         
-        //finds the node before the positon the new node is being inserted at
-        //if the position is at the end of the list, find the tail node 
+        
+        //if the position is at the end of the list, find the tail node and set it's next value to a node with the data
         if(position == this.size - 1)
         {
             while(currentNode.next != null)
@@ -49,7 +49,6 @@ public class APLinkedList<E> {
             
             currentNode.next = new Node(data, null);
             this.size += 1;
-            System.out.println("size: " + size);
             return (E) data;
         }
         //if inserting between two nodes, go one before the desired position to maintain order
@@ -62,7 +61,6 @@ public class APLinkedList<E> {
         currentNode.next = new Node(data, nextNode);
         
         this.size += 1;
-        System.out.println("size: " + size);
         return (E) data;
     }
     
@@ -118,6 +116,10 @@ public class APLinkedList<E> {
        Node<E> currentNode = first;
        while(currentNode != null)
        {
+           boolean isString = (currentNode.data.getClass().toString()).equalsIgnoreCase("java.lang.String");
+           if(isString && currentNode.equals(data))
+            return true;
+           
            if(currentNode.data == data)
             return true;
            currentNode = currentNode.next;
@@ -129,12 +131,19 @@ public class APLinkedList<E> {
     public E get( int position )
     {
         if(position < 0)
-            return null;
+        {
+            return(E)("\nCould not get, index " + position + " is under 0");
+            //return null;
+        }
+            
         if(position > this.size - 1)
-            return null;
+        {
+            return (E)("\nCould not get, index " + position + " is greater than largest");
+           //return null;
+        }
         
         Node<E> currentNode = this.first;
-        for(int i = 0; i < position; i++)
+        for(int i = 0; i < position && currentNode.next != null; i++)
             currentNode = currentNode.next;
         
         return currentNode.data;
@@ -149,11 +158,18 @@ public class APLinkedList<E> {
         Node<E> currentNode = this.first;
         for(int i = 0; i < this.size; i++)
         {
+           boolean isString = (currentNode.data.getClass().toString()).equalsIgnoreCase("java.lang.String");
+           if(isString && currentNode.equals(data))
+            return i;
+           
            if(currentNode.data == data)
             return i;
+           
            currentNode = currentNode.next;
         } 
         
+        System.out.println(this + " does not include a string " + data);
+        System.out.println(this + " does not include an int " + data + "\n");
         return -1;
     }
     
