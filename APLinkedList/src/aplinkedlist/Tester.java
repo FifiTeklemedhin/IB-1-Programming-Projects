@@ -58,9 +58,9 @@ public class Tester
         //removing
         console.println("**********************************REMOVING**********************************");
         console.println("removing");
-        for(int i = list.size(); i >= 0; i--)
+        while(list.size() > 0)
         {
-            list.remove(i);
+            list.remove(list.size() - 1);
             console.println(list);
         }
            
