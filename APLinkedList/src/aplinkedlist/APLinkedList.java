@@ -66,6 +66,8 @@ public class APLinkedList<E> {
     
     public E remove( int position )
     {
+        if(position == this.size - 1 && !(this.size -1 >= 0))
+            return null;
         if(position < 0)
             return null;
         
@@ -73,7 +75,9 @@ public class APLinkedList<E> {
             return null;
         if(position == 0)
         {
+            System.out.println("Current head: " + first  + ", new head: " + first.next);
             this.first = first.next;
+            this.size -= 1;
             return null;
         }
         

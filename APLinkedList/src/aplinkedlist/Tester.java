@@ -59,16 +59,13 @@ public class Tester
         console.println("**********************************REMOVING**********************************");
         console.println("removing");
         
-        console.println(list.size());
-        while(list.size() > 1)
-        {
-            list.remove(list.size() - 1);
-            console.println(list.size());
+        console.println(list);
+        while(list.size() >= 1)
+        {   
+            list.remove(list.size() - 1);  
+            console.println(list);
         }
-        
-        if(list.size() == 1)
-            list.remove(0);
-           
+       
         console.println("*******************************REMOVING FIRST*******************************");
         //filling list
         console.println("adding new list");
