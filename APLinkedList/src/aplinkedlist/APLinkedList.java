@@ -5,8 +5,6 @@
  */
 package aplinkedlist;
 
-import java.util.NoSuchElementException;
-
 /**
  *
  * @author tvawdrey
@@ -40,7 +38,7 @@ public class APLinkedList<E> {
         Node<E> nextNode = null;
          
         if(position > this.size-1)
-            throw new IndexOutOfBoundsException("Unable to insert: position " + position + "is not within bounds");
+            return null;
         
         
         //if the position is at the end of the list, find the tail node and set it's next value to a node with the data
@@ -68,12 +66,15 @@ public class APLinkedList<E> {
     
     public E remove( int position )
     {
+        if(position < 0)
+            return null;
+        
         if(position > this.size - 1)
-            throw new IndexOutOfBoundsException("Unable to remove: position " + position + " is not within bounds");
+            return null;
         if(position == 0)
         {
             this.first = first.next;
-            return (E)("Successfully removed at position " + position);
+            return null;
         }
         
         Node<E> currentNode = first;
@@ -88,20 +89,20 @@ public class APLinkedList<E> {
         previousNode.next = currentNode.next;
         
         this.size -= 1;
-        return (E)("Successfully removed at position " + position);
+        return null;
     }
     
     public E removeFirst( E data )
     {
         if(!this.contains(data))
-            throw new NoSuchElementException("Unable to remove: no element with data " + data);
+            return null;
         remove(this.firstIndexOf(data));
         return data;
     }
     public E removeAll(E data)
     {
         if(!this.contains(data))
-            throw new NoSuchElementException("Unable to remove: no element with data " + data);
+            return null;
         while(this.contains(data))
             removeFirst(data);
         return data;
@@ -127,14 +128,14 @@ public class APLinkedList<E> {
     public E get( int position )
     {
         if(position < 0)
-            throw new IndexOutOfBoundsException("Unable to remove: position " + position + "is not within bounds");
-        
+           return null;
+            
         if(position > this.size - 1)
-            throw new IndexOutOfBoundsException("Unable to remove: position " + position + "is not within bounds");
-
+            return null;
+        
         
         Node<E> currentNode = this.first;
-        for(int i = 0; i < position && currentNode.next != null; i++)
+        for(int i = 0; i < position; i++)
             currentNode = currentNode.next;
         
         return currentNode.data;
@@ -144,21 +145,22 @@ public class APLinkedList<E> {
     public int firstIndexOf(E data)
     {
         if(!this.contains(data))
-            throw new NoSuchElementException("Unable to find: no element with data " + data);
+            return -1;
         
         Node<E> currentNode = this.first;
-        for(Integer i = 0; i < this.size; i++)
+        for(int i = 0; i < this.size; i++)
         {
            boolean isString = (currentNode.data.getClass().toString()).equalsIgnoreCase("java.lang.String");
            if(isString && currentNode.equals(data))
             return i;
-            
+           
            if(currentNode.data == data)
             return i;
            
            currentNode = currentNode.next;
         } 
-        throw new NoSuchElementException("Unable to find: no element with data " + data);
+   
+        return -1;
     }
     
     public int size()
