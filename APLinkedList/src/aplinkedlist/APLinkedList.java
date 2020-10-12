@@ -5,11 +5,14 @@
  */
 package aplinkedlist;
 
+import java.util.Iterator;
+
+
 /**
  *
  * @author tvawdrey
  */
-public class APLinkedList<E> {
+public class APLinkedList<E> implements Iterable<E> {
     
     Node<E> first = null;
     private int size = 0;
@@ -66,8 +69,10 @@ public class APLinkedList<E> {
     
     public E remove( int position )
     {
-        if(position == this.size - 1 && !(this.size -1 >= 0))
+        /*
+        if(position == this.size - 1 && !(this.size -1 >= 0)) //if the position is lower
             return null;
+        */
         if(position < 0)
             return null;
         
@@ -75,7 +80,6 @@ public class APLinkedList<E> {
             return null;
         if(position == 0)
         {
-            System.out.println("Current head: " + first  + ", new head: " + first.next);
             this.first = first.next;
             this.size -= 1;
             return null;
@@ -100,15 +104,19 @@ public class APLinkedList<E> {
     {
         if(!this.contains(data))
             return null;
+        
         remove(this.firstIndexOf(data));
+        
         return data;
     }
-    public E removeAll(E data)
+    public E remove(E data)
     {
         if(!this.contains(data))
             return null;
+        
         while(this.contains(data))
             removeFirst(data);
+        
         return data;
     }
    
@@ -117,12 +125,16 @@ public class APLinkedList<E> {
        Node<E> currentNode = first;
        while(currentNode != null)
        {
+           // if the data is a string, uses .equals() to compare
            boolean isString = (currentNode.data.getClass().toString()).equalsIgnoreCase("java.lang.String");
            if(isString && currentNode.equals(data))
             return true;
            
+           // else compares the data as a numeric value
            if(currentNode.data == data)
             return true;
+           
+           // if the data does not match with the current node, moves on
            currentNode = currentNode.next;
        } 
        return false;
@@ -154,13 +166,16 @@ public class APLinkedList<E> {
         Node<E> currentNode = this.first;
         for(int i = 0; i < this.size; i++)
         {
+            // if the data is a string, uses .equals() to compare
            boolean isString = (currentNode.data.getClass().toString()).equalsIgnoreCase("java.lang.String");
            if(isString && currentNode.equals(data))
             return i;
            
+           // else compares the data as a numeric value
            if(currentNode.data == data)
             return i;
            
+           // if the data does not match with the current node, moves on
            currentNode = currentNode.next;
         } 
    
@@ -188,7 +203,56 @@ public class APLinkedList<E> {
            return list.replace(",", "") + "]";
        return list.substring(0, list.length()-2) + "]";
     }
-  
-    
-}
 
+    @Override
+    public Iterator<E> iterator() 
+    {
+        return new LinkedListIterator(this);
+    }
+    
+    private class LinkedListIterator implements Iterator<E>
+    {
+        private Node<E> current;
+        private APLinkedList list; 
+        private int index;
+        public LinkedListIterator(APLinkedList list)
+        {
+            this.list = list;
+            this.current = this.list.first;
+            this.index = 0;
+        }
+        
+        @Override
+        public boolean hasNext() 
+        {
+           return this.current != null;
+        }
+
+        @Override
+        public E next() 
+        {
+            if(hasNext())
+            {
+                E currentData = this.current.data;
+                this.current = this.current.next;
+                this.index += 1;
+                
+                return currentData;
+                
+            }
+            return null;
+        }
+        
+        @Override
+        public void remove()
+        {
+           System.out.println("removing: " + list.get(this.index) + " at index " + this.index);
+           if(hasNext())
+           {
+               this.list.remove(this.index);
+           }
+        }
+        
+    }
+
+}
