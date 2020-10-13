@@ -246,11 +246,12 @@ public class APLinkedList<E> implements Iterable<E> {
         @Override
         public void remove()
         {
-           System.out.println("removing: " + list.get(this.index) + " at index " + this.index);
            if(hasNext())
            {
-               this.list.remove(this.index);
+                this.list.remove(index);
+                current = current.next;
            }
+        
         }
         
     }

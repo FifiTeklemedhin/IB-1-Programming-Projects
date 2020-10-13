@@ -174,8 +174,9 @@ public class Tester
         
         for(Object node: list)
         {
-           this.console.println("\t" + list);
+           
             iterator.remove();
+            this.console.println("\t" + list);
             
         }
         
@@ -191,7 +192,7 @@ public class Tester
         
         iterator.remove();
         this.console.println("\t" + list);
-        this.console.println("\tnew head: " + iterator.next());
+        this.console.println("\tnew head: " + list.first.data);
         
         this.console.println("\nremoving half\n");
         this.console.println("\t" + list);
@@ -204,6 +205,14 @@ public class Tester
             index += 1;
         }
         this.console.println("\t" + list);
+        
+        this.console.println("\ninserting and removing\n");
+        list.insert(1235, 5);
+        console.println(list);
+        list.remove(5);
+        console.println(list);
+        
+        
         
         boolean functionsCorrectly =  "[hello, 47, hello, 47, hello, 47, hello, 47, hello, 47, hello]".equals(list.toString());
         if(functionsCorrectly)
