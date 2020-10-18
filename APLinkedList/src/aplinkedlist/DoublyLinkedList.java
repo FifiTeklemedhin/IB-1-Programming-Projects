@@ -21,16 +21,15 @@ public class DoublyLinkedList<E> extends APLinkedList<E>
         
         console.println("***********************************ADDING************************************");
         console.println("letters");
-        
+        list.add("43802sdlja3048");
+        list.add("hello world");
         console.println("\t" + list);
-        console.println("\t" + list.size());
-        
+             
         console.println("\nadd numbers");
         for(int  i = 0; i <= 10; i++)
         {
             list.add(i);
            console.println("\t" + list);
-           System.out.println(i);
         }
         
         console.println("\nmore letters");
@@ -97,14 +96,14 @@ public class DoublyLinkedList<E> extends APLinkedList<E>
         return (E) data;
     }
     
-    /*public String toString()
+    public String toString()
     {
        if(first == null)
         return "[]";
         
        String list = "[";
        Node<E> currentNode = tail;
-       for(int i = 0; i < this.size()-1; i++)
+       for(int i = 0; i < this.size(); i++)
        {
            list += currentNode.data + ", ";
            currentNode = currentNode.previous;
@@ -113,6 +112,6 @@ public class DoublyLinkedList<E> extends APLinkedList<E>
 
        
        return list;
-    }*/
+    }
 }
 
