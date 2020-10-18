@@ -214,9 +214,19 @@ public class Tester
         
         
         
-        boolean functionsCorrectly =  "[hello, 47, hello, 47, hello, 47, hello, 47, hello, 47, hello]".equals(list.toString());
+        boolean mostMethodsPassed =  "[47, hello, 47, hello, 47, hello, 47, hello, 47, hello]".equals(list.toString());
+        boolean containsWorks = !list.contains(3) && list.contains(47);
+        boolean functionsCorrectly =  mostMethodsPassed && containsWorks && list.size() == 10;
+        
+        console.println(containsWorks);
         if(functionsCorrectly)
-            console.println("\n********************************ITERABLE*********************************");
+            console.println("\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<ALL TESTS PASSED>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        
+         else
+            console.println("\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<TESTS FAILED>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         return functionsCorrectly;
+        
+        //TODO: test size() and contains()
+        
     }
 }
