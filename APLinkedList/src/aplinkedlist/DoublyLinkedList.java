@@ -13,6 +13,7 @@ import APClasses.APConsole;
  */
 public class DoublyLinkedList<E> extends APLinkedList<E>
 {   
+    Node<E> tail;
     public static void main(String[] args)
     {
         APConsole console = new APConsole("Doubly LinkedList Tester");
@@ -20,15 +21,16 @@ public class DoublyLinkedList<E> extends APLinkedList<E>
         
         console.println("***********************************ADDING************************************");
         console.println("letters");
-        list.add("43802sdlja3048");
-        list.add("hello world");
+        
         console.println("\t" + list);
+        console.println("\t" + list.size());
         
         console.println("\nadd numbers");
         for(int  i = 0; i <= 10; i++)
         {
             list.add(i);
            console.println("\t" + list);
+           System.out.println(i);
         }
         
         console.println("\nmore letters");
@@ -37,22 +39,41 @@ public class DoublyLinkedList<E> extends APLinkedList<E>
         list.add("l");
         console.println("\t" + list);
     }
-    Node<E> tail;
-    public E add(E data)
+    
+    public E add(E data) //changed to be o(1)
     {
         if(first == null)
         {
             first = new Node(data, null);
+            tail = first;
             this.size += 1;
             return (E) data;
         }
         if(first.next == null)
         {
             first.next = new Node(data, null, first);
+            tail = first.next;
             this.size += 1;
             return (E) data;
         }
-        return insert(data, this.size - 1);
+        //if the position is at the end of the list, find the tail node and set it's next value to a node with the data
+     
+        if(tail == null)
+        {
+            tail = new Node(data, null, null);
+            return (E) data;
+        }
+        if(tail == first)
+        {
+            tail.next = new Node(data, null, null);
+            this.tail = tail.next;
+        }
+            
+        tail.next = new Node(data, null, tail);
+        this.tail = tail.next;
+        this.size += 1;
+        return (E) data;
+        
     }
     
     public E insert( E data, int position )
@@ -62,23 +83,10 @@ public class DoublyLinkedList<E> extends APLinkedList<E>
          
         if(position > this.size-1)
             return null;
-        
-        
-        //if the position is at the end of the list, find the tail node and set it's next value to a node with the data
-        if(position == this.size - 1)
-        {
-            while(currentNode.next != null)
-               currentNode = currentNode.next;
-            
-            currentNode.next = new Node(data, null, currentNode);
-            this.tail = currentNode.next;
-            this.size += 1;
-            return (E) data;
-        }
+
         //if inserting between two nodes, go one before the desired position to maintain order
-        else
-            for(int i = 0; i < position-1 && i >= 0; i++)
-                currentNode = currentNode.next;
+        for(int i = 0; i < position-1 && i >= 0; i++)
+            currentNode = currentNode.next;
         
         //stores the nodes that are being shifted over then inserts the desired node with the variable as its next property
         Node<E> previousNode = currentNode;
@@ -89,22 +97,22 @@ public class DoublyLinkedList<E> extends APLinkedList<E>
         return (E) data;
     }
     
-    public String toString()
+    /*public String toString()
     {
        if(first == null)
         return "[]";
         
        String list = "[";
        Node<E> currentNode = tail;
-       while(currentNode != null)
+       for(int i = 0; i < this.size()-1; i++)
        {
            list += currentNode.data + ", ";
            currentNode = currentNode.previous;
+           
        }
 
-       if(list.length() == 2)
-           return list.replace(",", "") + "]";
+       
        return list;
-    }
+    }*/
 }
 
