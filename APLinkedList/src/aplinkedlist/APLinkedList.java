@@ -15,7 +15,7 @@ import java.util.Iterator;
 public class APLinkedList<E> implements Iterable<E> {
     
     Node<E> first = null;
-    private int size = 0;
+    protected int size = 0;
     
     public E add(E data)
     {
