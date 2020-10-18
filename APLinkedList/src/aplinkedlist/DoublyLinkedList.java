@@ -41,17 +41,17 @@ public class DoublyLinkedList<E> extends APLinkedList<E>
     
     public E add(E data) //changed to be o(1)
     {
-        if(first == null)
+        if(this.head == null)
         {
-            first = new Node(data, null);
-            tail = first;
+            this.head = new Node(data, null);
+            tail = this.head;
             this.size += 1;
             return (E) data;
         }
-        if(first.next == null)
+        if(this.head.next == null)
         {
-            first.next = new Node(data, null, first);
-            tail = first.next;
+            this.head.next = new Node(data, null, this.head);
+            tail = this.head.next;
             this.size += 1;
             return (E) data;
         }
@@ -62,7 +62,7 @@ public class DoublyLinkedList<E> extends APLinkedList<E>
             tail = new Node(data, null, null);
             return (E) data;
         }
-        if(tail == first)
+        if(tail == this.head)
         {
             tail.next = new Node(data, null, null);
             this.tail = tail.next;
@@ -77,7 +77,7 @@ public class DoublyLinkedList<E> extends APLinkedList<E>
     
     public E insert( E data, int position )
     {
-        Node<E> currentNode = first;
+        Node<E> currentNode = this.head;
         Node<E> nextNode = null;
          
         if(position > this.size-1)
@@ -98,7 +98,7 @@ public class DoublyLinkedList<E> extends APLinkedList<E>
     
     public String toString()
     {
-       if(first == null)
+       if(this.head == null)
         return "[]";
         
        String list = "[";
@@ -110,8 +110,9 @@ public class DoublyLinkedList<E> extends APLinkedList<E>
            
        }
 
-       
-       return list;
+       if(list.length() == 2)
+           return list.replace(",", "") + "]";
+       return list.substring(0, list.length()-2) + "]";
     }
 }
 

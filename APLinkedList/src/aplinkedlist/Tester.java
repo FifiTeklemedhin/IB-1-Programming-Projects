@@ -192,7 +192,7 @@ public class Tester
         
         iterator.remove();
         this.console.println("\t" + list);
-        this.console.println("\tnew head: " + list.first.data);
+        this.console.println("\tnew head: " + list.head.data);
         
         this.console.println("\nremoving half\n");
         this.console.println("\t" + list);
