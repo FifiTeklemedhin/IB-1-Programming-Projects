@@ -14,20 +14,20 @@ import java.util.Iterator;
  */
 public class LinkedList<E> implements Iterable<E> {
     
-    Node<E> first = null;
-    private int size = 0;
+    Node<E> head = null;
+    protected int size = 0;
     
     public E add(E data)
     {
-        if(first == null)
+        if(head == null)
         {
-            first = new Node(data, null);
+            head = new Node(data, null);
             this.size += 1;
             return (E) data;
         }
-        if(first.next == null)
+        if(head.next == null)
         {
-            first.next = new Node(data, null);
+            head.next = new Node(data, null);
             this.size += 1;
             return (E) data;
         }
@@ -37,7 +37,7 @@ public class LinkedList<E> implements Iterable<E> {
     
     public E insert( E data, int position )
     {
-        Node<E> currentNode = first;
+        Node<E> currentNode = head;
         Node<E> nextNode = null;
          
         if(position > this.size-1)
@@ -80,12 +80,12 @@ public class LinkedList<E> implements Iterable<E> {
             return null;
         if(position == 0)
         {
-            this.first = first.next;
+            this.head = head.next;
             this.size -= 1;
             return null;
         }
         
-        Node<E> currentNode = first;
+        Node<E> currentNode = head;
         Node<E> previousNode = null;
         
         //goes until the node before
@@ -105,7 +105,7 @@ public class LinkedList<E> implements Iterable<E> {
         if(!this.contains(data))
             return null;
         
-        remove(this.firstIndexOf(data));
+        remove(this.headIndexOf(data));
         
         return data;
     }
@@ -122,7 +122,7 @@ public class LinkedList<E> implements Iterable<E> {
    
     public boolean contains(E data)
     {
-       Node<E> currentNode = first;
+       Node<E> currentNode = head;
        while(currentNode != null)
        {
            // if the data is a string, uses .equals() to compare
@@ -150,7 +150,7 @@ public class LinkedList<E> implements Iterable<E> {
             return null;
         
         
-        Node<E> currentNode = this.first;
+        Node<E> currentNode = this.head;
         for(int i = 0; i < position; i++)
             currentNode = currentNode.next;
         
@@ -158,12 +158,12 @@ public class LinkedList<E> implements Iterable<E> {
     }
     
     //get the position of a value
-    public int firstIndexOf(E data)
+    public int headIndexOf(E data)
     {
         if(!this.contains(data))
             return -1;
         
-        Node<E> currentNode = this.first;
+        Node<E> currentNode = this.head;
         for(int i = 0; i < this.size; i++)
         {
             // if the data is a string, uses .equals() to compare
@@ -188,11 +188,11 @@ public class LinkedList<E> implements Iterable<E> {
     }
     public String toString()
     {
-       if(first == null)
+       if(head == null)
         return "[]";
         
        String list = "[";
-       Node<E> currentNode = first;
+       Node<E> currentNode = head;
        while(currentNode != null)
        {
            list += currentNode.data + ", ";
@@ -218,7 +218,7 @@ public class LinkedList<E> implements Iterable<E> {
         public LinkedListIterator(LinkedList list)
         {
             this.list = list;
-            this.current = this.list.first;
+            this.current = this.list.head;
             this.index = 0;
         }
         

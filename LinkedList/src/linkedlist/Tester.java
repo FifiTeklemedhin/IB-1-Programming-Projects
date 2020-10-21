@@ -94,7 +94,7 @@ public class Tester
         this.console.println("\t" + list);
         
         //removing each element one by one
-        this.console.println("\nremoving first: wassup");
+        this.console.println("\nremoving head: wassup");
         
         list.removeFirst("wassup");
         for(int i = 0; i <= 10; i++)
@@ -193,7 +193,7 @@ public class Tester
         
         iterator.remove();
         this.console.println("\t" + list);
-        this.console.println("\tnew head: " + list.first.data);
+        this.console.println("\tnew head: " + list.head.data);
         
         this.console.println("\nremoving half\n");
         this.console.println("\t" + list);
