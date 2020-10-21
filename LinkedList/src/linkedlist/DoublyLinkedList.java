@@ -46,13 +46,13 @@ public class DoublyLinkedList<E> extends LinkedList<E>
         console.println("\t" + list);
         list.insert(23, 5);
         
-        console.println("\t" + list + "\n");
+        console.println("\t" + list+ "\n");
         console.println("inserting letters");
        
         list.insert("wassup", 11);
         console.println("\t" + list);
         list.insert("testing", 5);
-        console.println("\t" + list + "\n");
+        console.println("\t" + list.reversed() + "\n");
         
     }
 
@@ -109,6 +109,7 @@ public class DoublyLinkedList<E> extends LinkedList<E>
         nodeBefore = currentNode;
         nextNode = currentNode.next;
         currentNode.next = new Node(data, nextNode, nodeBefore); //adds previous attribute
+        nextNode.previous = currentNode.next;// updating the previous attribute for the index after
         
         size += 1;
         return (E) data;
