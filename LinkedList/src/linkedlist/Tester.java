@@ -19,15 +19,15 @@ public class Tester
     LinkedList list;
     APConsole console;
  
-    public Tester(LinkedList list)
+    public Tester(LinkedList list, APConsole console)
     {
         this.list = list;
-        this.console = new APConsole("Linked List 2");
+        this.console = console;
         this.functionsCorrectly(list);
     }
     public static void main(String[] args)
     {
-        new Tester(new LinkedList());
+        new Tester(new LinkedList(), new APConsole("LinkedList2"));
     }
     public boolean functionsCorrectly(LinkedList list)
     {

@@ -6,6 +6,8 @@
 package linkedlist;
 
 import APClasses.APConsole;
+import java.util.Iterator;
+import java.util.Random;
 
 /**
  *
@@ -20,7 +22,7 @@ public class DoublyLinkedList<E> extends LinkedList<E>
         APConsole console = new APConsole("Doubly LinkedList2 Tester");
         DoublyLinkedList list = new DoublyLinkedList();
         
-        console.println("***********************************ADDING************************************");
+         console.println("***********************************ADDING************************************");
         console.println("letters");
         list.add("43802sdlja3048");
         list.add("hello world");
@@ -37,35 +39,181 @@ public class DoublyLinkedList<E> extends LinkedList<E>
         list.add("i");
         list.add("j");
         list.add("l");
-        console.println("\t" + list);
+        console.println("\t" + list.reversed());
         
+        
+        //inserting
         console.println("**********************************INSERTING**********************************");
         console.println("inserting numbers");
         
         list.insert(11, 11);
-        console.println("\t" + list);
+        console.println("\t" + list.reversed());
         list.insert(23, 5);
         
-        console.println("\t" + list+ "\n");
+        console.println("\t" + list.reversed() + "\n");
         console.println("inserting letters");
        
         list.insert("wassup", 11);
-        console.println("\t" + list);
+        console.println("\t" + list.reversed());
         list.insert("testing", 5);
         console.println("\t" + list + "\n");
         
-        console.println("HEAD: " + list.head.data);
-        console.println("TAIL: " + list.tail.data);
-        
+        //removing
         console.println("**********************************REMOVING**********************************");
         console.println("removing");
         
-        console.println("\t" + list);
+        console.println("\t" + list.reversed());
         while(list.size() >= 1)
         {   
             list.remove(list.size() - 1);  
             console.println("\t" + list.reversed());
         }
+       
+        console.println("*******************************REMOVING FIRST*******************************");
+        //filling list
+        console.println("adding new list");
+        for(int i = 0; i <= 10; i++)
+        {
+            list.add(i);
+            list.add(i);
+ 
+        }
+        list.insert("wassup", 11);
+        list.insert("testing", 5);
+        console.println("\t" + list.reversed());
+        
+        //removing each element one by one
+        console.println("\nremoving head: wassup");
+        
+        list.removeFirst("wassup");
+        for(int i = 0; i <= 10; i++)
+            list.removeFirst(i);
+        console.println("\t" + list.reversed());
+        
+        
+        console.println("\n********************************REMOVING ALL*********************************");
+        //filling list
+        console.println("adding new list");
+        for(int i = 0; i <= 10; i++)
+        {
+            list.add(i);
+ 
+        }
+        list.insert("wassup", 11);
+        list.insert("testing", 5);
+        
+        console.println("\t" + list.reversed());
+        
+        console.println("\nremoving all of each data value: wassup, testing");
+        list.remove("wassup");
+        list.remove("testing");
+        console.println("\t" + list.reversed());
+        
+        //removing all of each data value
+        
+        
+        console.println("\nadding new list");
+        Random rand = new Random();
+        for(int i = 0; i <= 10; i++)
+        {
+            list.add(rand.nextInt((100 - 11) + 1) + 11);
+            list.add("hello"); 
+        }
+        console.println("\t" + list.reversed());
+        
+         
+        console.println("\nremoving all of each data value: 47, hello");
+        
+        list.remove(47);
+        list.remove("hello");
+        console.println("\t" + list.reversed());
+        
+        console.println("\n********************************CONTAINS*********************************");
+        if(list.contains("1"))
+            list.add(20);
+        
+        if(!list.contains("hello"))
+            list.add(40);
+        
+        console.println("\n********************************CONTAINS*********************************");
+        if(list.contains("1"))
+            list.add(20);
+        
+        if(!list.contains("hello"))
+            list.add(40);
+        
+        console.println("\n********************************ITERABLE*********************************");
+        Iterator<LinkedList> iterator = list.iterator();
+        console.println("For-each: removing all/n");
+        console.println("\t" + list.reversed());
+        for(Object node : list)
+        {
+            list.removeFirst(node);
+           console.println("\t" + list.reversed());
+        }
+        
+        console.println("\nadding new list");
+        for(int i = 0; i <= 10; i++)
+        {
+            list.add(47);
+            list.add("hello"); 
+        }
+        
+        console.println("removing all");
+        console.println("\t" + list.reversed());
+        
+        for(Object node: list)
+        {
+           
+            iterator.remove();
+            console.println("\t" + list.reversed());
+            
+        }
+        
+        console.println("\nadding new list");
+        for(int j = 0; j <= 10; j++)
+        {
+            list.add(47);
+            list.add("hello"); 
+        }
+        
+        console.println("removing one\n");
+        console.println("\t" + list.reversed());
+        
+        iterator.remove();
+        console.println("\t" + list.reversed());
+        console.println("\tnew head: " + list.head.data);
+        
+        console.println("\nremoving half\n");
+        console.println("\t" + list.reversed());
+        int index = 0;
+        for(Object node: list)
+        {
+            
+            if(index % 2 == 0)
+                iterator.remove();
+            index += 1;
+        }
+        console.println("\t" + list.reversed());
+        
+        console.println("\ninserting and removing\n");
+        list.insert(1235, 5);
+        console.println(list.reversed());
+        list.remove(5);
+        console.println(list.reversed());
+        
+        
+        
+        boolean mostMethodsPassed =  "[hello, 47, hello, 47, hello, 47, hello, 47, hello, 47]".equals(list.reversed());
+        boolean containsWorks = !list.contains(3) && list.contains(47);
+        boolean functionsCorrectly =  mostMethodsPassed && containsWorks && list.size() == 10;
+        
+        console.println(containsWorks);
+        if(functionsCorrectly)
+            console.println("\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<ALL TESTS PASSED>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        
+         else
+            console.println("\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<TESTS FAILED>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
        
         
     }
@@ -161,7 +309,7 @@ public class DoublyLinkedList<E> extends LinkedList<E>
         previousNode.next = currentNode.next;
         
         if(previousNode.next != null) //if removing the not tail
-            previousNode.next.previous = currentNode; //makes it so that the node after the removed node does not point back to the removed node
+            previousNode.next.previous = previousNode; //makes it so that the node after the removed node does not point back to the removed node
         else
             tail = previousNode;
         size -= 1;
