@@ -38,6 +38,22 @@ public class DoublyLinkedList<E> extends LinkedList<E>
         list.add("j");
         list.add("l");
         console.println("\t" + list.reversed());
+        
+        console.println("**********************************INSERTING**********************************");
+        console.println("inserting numbers");
+        
+        list.insert(11, 11);
+        console.println("\t" + list);
+        list.insert(23, 5);
+        
+        console.println("\t" + list + "\n");
+        console.println("inserting letters");
+       
+        list.insert("wassup", 11);
+        console.println("\t" + list);
+        list.insert("testing", 5);
+        console.println("\t" + list + "\n");
+        
     }
 
     //add 
