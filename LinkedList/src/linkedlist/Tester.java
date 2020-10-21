@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package aplinkedlist;
+package linkedlist;
 
 import APClasses.APConsole;
 import java.util.Iterator;
 import java.util.Random;
+import linkedlist.LinkedList;
 
 /**
  *
@@ -15,20 +16,20 @@ import java.util.Random;
  */
 public class Tester 
 {
-    APLinkedList list;
+    LinkedList list;
     APConsole console;
  
-    public Tester(APLinkedList list, APConsole console)
+    public Tester(LinkedList list)
     {
         this.list = list;
-        this.console = console;
+        this.console = new APConsole("Linked List 2");
         this.functionsCorrectly(list);
     }
     public static void main(String[] args)
     {
-        new Tester(new APLinkedList(), new APConsole("Linked List"));
+        new Tester(new LinkedList());
     }
-    public boolean functionsCorrectly(APLinkedList list)
+    public boolean functionsCorrectly(LinkedList list)
     {
         
         //adding
@@ -91,7 +92,7 @@ public class Tester
         list.insert("wassup", 11);
         list.insert("testing", 5);
         this.console.println("\t" + list);
-       
+        
         //removing each element one by one
         this.console.println("\nremoving first: wassup");
         
@@ -153,7 +154,7 @@ public class Tester
             list.add(40);
         
         this.console.println("\n********************************ITERABLE*********************************");
-        Iterator<APLinkedList> iterator = list.iterator();
+        Iterator<LinkedList> iterator = list.iterator();
         this.console.println("For-each: removing all/n");
         this.console.println("\t" + list);
         for(Object node : list)
@@ -192,7 +193,7 @@ public class Tester
         
         iterator.remove();
         this.console.println("\t" + list);
-        this.console.println("\tnew head: " + list.head.data);
+        this.console.println("\tnew head: " + list.first.data);
         
         this.console.println("\nremoving half\n");
         this.console.println("\t" + list);
@@ -218,17 +219,6 @@ public class Tester
         boolean containsWorks = !list.contains(3) && list.contains(47);
         boolean functionsCorrectly =  mostMethodsPassed && containsWorks && list.size() == 10;
         
-        if(mostMethodsPassed)
-            console.println("\nMost Methods Passed");
-        
-        if(containsWorks)
-            console.println("Contains Works");
-        
-        console.println(list.size());
-        if(list.size() == 10)
-            console.println("Right Size");
-        
-        
         console.println(containsWorks);
         if(functionsCorrectly)
             console.println("\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<ALL TESTS PASSED>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
@@ -236,6 +226,8 @@ public class Tester
          else
             console.println("\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<TESTS FAILED>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         return functionsCorrectly;
+        
         //TODO: test size() and contains()
+        
     }
 }

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package aplinkedlist;
+package linkedlist;
 
 import java.util.Iterator;
 
@@ -12,22 +12,22 @@ import java.util.Iterator;
  *
  * @author tvawdrey
  */
-public class APLinkedList<E> implements Iterable<E> {
+public class LinkedList<E> implements Iterable<E> {
     
-    Node<E> head = null;
-    protected int size = 0;
+    Node<E> first = null;
+    private int size = 0;
     
     public E add(E data)
     {
-        if(this.head== null)
+        if(first == null)
         {
-            this.head= new Node(data, null);
+            first = new Node(data, null);
             this.size += 1;
             return (E) data;
         }
-        if(this.head.next == null)
+        if(first.next == null)
         {
-            this.head.next = new Node(data, null);
+            first.next = new Node(data, null);
             this.size += 1;
             return (E) data;
         }
@@ -37,7 +37,7 @@ public class APLinkedList<E> implements Iterable<E> {
     
     public E insert( E data, int position )
     {
-        Node<E> currentNode = this.head;
+        Node<E> currentNode = first;
         Node<E> nextNode = null;
          
         if(position > this.size-1)
@@ -80,12 +80,12 @@ public class APLinkedList<E> implements Iterable<E> {
             return null;
         if(position == 0)
         {
-            this.head= this.head.next;
+            this.first = first.next;
             this.size -= 1;
             return null;
         }
         
-        Node<E> currentNode = this.head;
+        Node<E> currentNode = first;
         Node<E> previousNode = null;
         
         //goes until the node before
@@ -122,7 +122,7 @@ public class APLinkedList<E> implements Iterable<E> {
    
     public boolean contains(E data)
     {
-       Node<E> currentNode = this.head;
+       Node<E> currentNode = first;
        while(currentNode != null)
        {
            // if the data is a string, uses .equals() to compare
@@ -150,7 +150,7 @@ public class APLinkedList<E> implements Iterable<E> {
             return null;
         
         
-        Node<E> currentNode = this.head;
+        Node<E> currentNode = this.first;
         for(int i = 0; i < position; i++)
             currentNode = currentNode.next;
         
@@ -163,7 +163,7 @@ public class APLinkedList<E> implements Iterable<E> {
         if(!this.contains(data))
             return -1;
         
-        Node<E> currentNode = this.head;
+        Node<E> currentNode = this.first;
         for(int i = 0; i < this.size; i++)
         {
             // if the data is a string, uses .equals() to compare
@@ -188,11 +188,11 @@ public class APLinkedList<E> implements Iterable<E> {
     }
     public String toString()
     {
-       if(this.head == null)
+       if(first == null)
         return "[]";
         
        String list = "[";
-       Node<E> currentNode = this.head;
+       Node<E> currentNode = first;
        while(currentNode != null)
        {
            list += currentNode.data + ", ";
@@ -213,12 +213,12 @@ public class APLinkedList<E> implements Iterable<E> {
     private class LinkedListIterator implements Iterator<E>
     {
         private Node<E> current;
-        private APLinkedList list; 
+        private LinkedList list; 
         private int index;
-        public LinkedListIterator(APLinkedList list)
+        public LinkedListIterator(LinkedList list)
         {
             this.list = list;
-            this.current = this.list.head;
+            this.current = this.list.first;
             this.index = 0;
         }
         
@@ -250,8 +250,7 @@ public class APLinkedList<E> implements Iterable<E> {
            {
                 this.list.remove(index);
                 current = current.next;
-                
-           } 
+           }
         
         }
         
