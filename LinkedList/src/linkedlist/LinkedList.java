@@ -69,10 +69,6 @@ public class LinkedList<E> implements Iterable<E> {
     
     public E remove( int position )
     {
-        /*
-        if(position == this.size - 1 && !(this.size -1 >= 0)) //if the position is lower
-            return null;
-        */
         if(position < 0)
             return null;
         

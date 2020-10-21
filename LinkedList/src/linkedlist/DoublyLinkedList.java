@@ -37,7 +37,7 @@ public class DoublyLinkedList<E> extends LinkedList<E>
         list.add("i");
         list.add("j");
         list.add("l");
-        console.println("\t" + list.reversed());
+        console.println("\t" + list);
         
         console.println("**********************************INSERTING**********************************");
         console.println("inserting numbers");
@@ -52,7 +52,21 @@ public class DoublyLinkedList<E> extends LinkedList<E>
         list.insert("wassup", 11);
         console.println("\t" + list);
         list.insert("testing", 5);
-        console.println("\t" + list.reversed() + "\n");
+        console.println("\t" + list + "\n");
+        
+        console.println("HEAD: " + list.head.data);
+        console.println("TAIL: " + list.tail.data);
+        
+        console.println("**********************************REMOVING**********************************");
+        console.println("removing");
+        
+        console.println("\t" + list);
+        while(list.size() >= 1)
+        {   
+            list.remove(list.size() - 1);  
+            console.println("\t" + list.reversed());
+        }
+       
         
     }
 
@@ -113,6 +127,45 @@ public class DoublyLinkedList<E> extends LinkedList<E>
         
         size += 1;
         return (E) data;
+    }
+    
+    public E remove( int position )
+    {
+        if(position < 0)
+            return null;
+        
+        if(position > size - 1)
+            return null;
+        if(position == 0)
+        {
+            head = head.next;
+            
+            if(head == null) //null does not have a previous attribute to set to null
+                tail = null;
+            else
+                head.previous = null; //cannot reference a removed node
+            
+            size -= 1;
+            return null;
+        }
+        
+        Node<E> currentNode = head;
+        Node<E> previousNode = null;
+        
+        //goes until the node before
+        for(int i = 0; i < position - 1; i++)
+            currentNode = currentNode.next;
+        
+        previousNode = currentNode;
+        currentNode = currentNode.next;
+        previousNode.next = currentNode.next;
+        
+        if(previousNode.next != null) //if removing the not tail
+            previousNode.next.previous = currentNode; //makes it so that the node after the removed node does not point back to the removed node
+        else
+            tail = previousNode;
+        size -= 1;
+        return null;
     }
     
     public String reversed()
