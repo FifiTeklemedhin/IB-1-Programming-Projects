@@ -6,29 +6,16 @@
 package linkedlist;
 
 import APClasses.APConsole;
+import java.util.Iterator;
+import java.util.Random;
 
 /**
  *
  * @author fifiteklemedhin
  */
-public class CyclicallyLinkedList<E> extends DoublyLinkedList<E> 
+public class APDoublyLinkedList<E> extends APLinkedList<E> 
 {
-    
-    public static void main(String[] args)
-    {
-        APConsole console = new APConsole("Cyclically Linked List Tester");
-        CyclicallyLinkedList list = new CyclicallyLinkedList();
-        
-        console.println("***********************************ADDING************************************");
-        console.println("letters");
-        list.add("43802sdlja3048");
-        list.add("hello world");
-        console.println("\t" + list);
-    
-        console.println("HEAD: "+ list.tail.next.data);
-        console.println("TAIL: "+ list.head.previous.data);
-        
-    }
+    Node<E> tail;
 
     //add 
     public E add(E data)
@@ -36,9 +23,7 @@ public class CyclicallyLinkedList<E> extends DoublyLinkedList<E>
         if(head == null)
         {
             head = new Node(data, null);
-           
             size += 1;
-            updateEnds();
             return (E) data;
         }
         if(head.next == null)
@@ -47,10 +32,8 @@ public class CyclicallyLinkedList<E> extends DoublyLinkedList<E>
             tail = head.next; //since the next node is null, it is the last
             
             size += 1;
-            updateEnds();
             return (E) data;
         }
-        
         return insert(data, size - 1);
 
     }
@@ -76,7 +59,6 @@ public class CyclicallyLinkedList<E> extends DoublyLinkedList<E>
             tail = currentNode.next;
             
             size += 1;
-            updateEnds();
             return (E) data;
         }
         //if inserting between two nodes, go one before the desired position to maintain order
@@ -91,7 +73,6 @@ public class CyclicallyLinkedList<E> extends DoublyLinkedList<E>
         nextNode.previous = currentNode.next;// updating the previous attribute for the index after
         
         size += 1;
-        updateEnds();
         return (E) data;
     }
     
@@ -112,7 +93,6 @@ public class CyclicallyLinkedList<E> extends DoublyLinkedList<E>
                 head.previous = null; //cannot reference a removed node
             
             size -= 1;
-            updateEnds();
             return null;
         }
         
@@ -127,41 +107,83 @@ public class CyclicallyLinkedList<E> extends DoublyLinkedList<E>
         currentNode = currentNode.next;
         previousNode.next = currentNode.next;
         
-        if(previousNode.next != null) //if removing the not tail
+        if(previousNode.next != null) //if not removing the not tail
             previousNode.next.previous = previousNode; //makes it so that the node after the removed node does not point back to the removed node
         else
             tail = previousNode;
-        
         size -= 1;
-        updateEnds();
         return null;
     }
     
-    public void updateEnds()
-    {
-        if(head != null && tail != null)
-        {
-            head.previous = tail;
-            tail.next = head;
-        }
-        
-    }
-    
-    public String toString()
+    public String reversed()
     {
        if(head == null)
         return "[]";
         
        String list = "[";
-       Node<E> currentNode = head;
-       for(int i = 0; i < size; i++)
+       Node<E> currentNode = tail;
+       for(int i = 0; i < size() && currentNode != null; i++)
        {
            list += currentNode.data + ", ";
-           currentNode = currentNode.next;
+           currentNode = currentNode.previous;
+           
        }
 
        if(list.length() == 2)
            return list.replace(",", "") + "]";
        return list.substring(0, list.length()-2) + "]";
     }
+    
+    @Override
+    public Iterator<E> iterator() 
+    {
+        return new DoublyLinkedListIterator(this);
+    }
+    
+    private class DoublyLinkedListIterator implements Iterator<E>
+    {
+        private Node<E> current;
+        private APDoublyLinkedList list; 
+        private int index;
+        public DoublyLinkedListIterator(APDoublyLinkedList list)
+        {
+            this.list = list;
+            this.current = this.list.head;
+            this.index = 0;
+        }
+        
+        @Override
+        public boolean hasNext() 
+        {
+           return this.current != null;
+        }
+
+        @Override
+        public E next() 
+        {
+            if(hasNext())
+            {
+                E currentData = this.current.data;
+                this.current = this.current.next;
+                this.index += 1;
+                
+                return currentData;
+                
+            }
+            return null;
+        }
+        
+        @Override
+        public void remove()
+        {
+           if(hasNext())
+           {
+                this.list.remove(index);
+                current = current.next;
+           }
+        
+        }
+        
+    }
+    
 }

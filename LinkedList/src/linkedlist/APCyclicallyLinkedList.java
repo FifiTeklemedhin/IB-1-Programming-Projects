@@ -5,33 +5,37 @@
  */
 package linkedlist;
 
+import APClasses.APConsole;
 import java.util.Iterator;
-
+import java.util.Random;
 
 /**
  *
- * @author tvawdrey
+ * @author fifiteklemedhin
  */
-public class LinkedList<E> implements Iterable<E> {
-    
-    Node<E> head = null;
-    protected int size = 0;
-    
+public class APCyclicallyLinkedList<E> extends APDoublyLinkedList<E> 
+{  
+    //add 
     public E add(E data)
     {
         if(head == null)
         {
             head = new Node(data, null);
-            this.size += 1;
+            size += 1;
             return (E) data;
         }
         if(head.next == null)
         {
-            head.next = new Node(data, null);
-            this.size += 1;
+            head.next = new Node(data, null, head);//previous is the head of the list
+            
+            tail = head.next; //since the next node is null, it is the last
+            head.previous = tail;
+            tail.next = head;
+            
+            size += 1;
             return (E) data;
         }
-        return insert(data, this.size - 1);
+        return insert(data, size - 1);
 
     }
     
@@ -39,19 +43,26 @@ public class LinkedList<E> implements Iterable<E> {
     {
         Node<E> currentNode = head;
         Node<E> nextNode = null;
+        Node<E> nodeBefore = null;
          
-        if(position > this.size-1)
+        if(position > size-1)
             return null;
         
         
         //if the position is at the end of the list, find the tail node and set it's next value to a node with the data
-        if(position == this.size - 1)
+        if(position == size - 1)
         {
-            while(currentNode.next != null)
+            for(int i = 0; i < size && currentNode.next != null; i++)
                currentNode = currentNode.next;
             
-            currentNode.next = new Node(data, null);
-            this.size += 1;
+            //the new tail of the list
+            currentNode.next = new Node(data, null,currentNode); //sets the new tail to have the old tail be its previous
+            tail = currentNode.next;
+            
+            
+            head.previous = tail;
+            tail.next = head;
+            size += 1;
             return (E) data;
         }
         //if inserting between two nodes, go one before the desired position to maintain order
@@ -60,10 +71,18 @@ public class LinkedList<E> implements Iterable<E> {
                 currentNode = currentNode.next;
         
         //stores the nodes that are being shifted over then inserts the desired node with the variable as its next property
+        nodeBefore = currentNode;
         nextNode = currentNode.next;
-        currentNode.next = new Node(data, nextNode);
+        currentNode.next = new Node(data, nextNode, nodeBefore); //adds previous attribute
+        nextNode.previous = currentNode.next;// updating the previous attribute for the index after
         
-        this.size += 1;
+        if(position == size - 1)
+        {
+            tail = nextNode;
+            tail.next = head;
+            head.previous = tail;
+        }
+        size += 1;
         return (E) data;
     }
     
@@ -72,12 +91,18 @@ public class LinkedList<E> implements Iterable<E> {
         if(position < 0)
             return null;
         
-        if(position > this.size - 1)
+        if(position > size - 1)
             return null;
         if(position == 0)
         {
-            this.head = head.next;
-            this.size -= 1;
+            head = head.next;
+            
+            if(head == null) //null does not have a previous attribute to set to null
+                tail = null;
+            else
+                head.previous = null; //cannot reference a removed node
+            
+            size -= 1;
             return null;
         }
         
@@ -92,38 +117,50 @@ public class LinkedList<E> implements Iterable<E> {
         currentNode = currentNode.next;
         previousNode.next = currentNode.next;
         
-        this.size -= 1;
+        if(previousNode.next != null) //if not removing the not tail
+            previousNode.next.previous = previousNode; //makes it so that the node after the removed node does not point back to the removed node
+        else
+            tail = previousNode;
+        size -= 1;
         return null;
     }
     
-    public E removeFirst( E data )
+    
+    public void updateEnds()
     {
-        if(!this.contains(data))
-            return null;
+        if(head != null && tail != null)
+        {
+            head.previous = tail;
+            tail.next = head;
+        }
         
-        remove(this.headIndexOf(data));
-        
-        return data;
     }
-    public E remove(E data)
+    
+    public String toString()
     {
-        if(!this.contains(data))
-            return null;
+       if(head == null)
+        return "[]";
         
-        while(this.contains(data))
-            removeFirst(data);
-        
-        return data;
+       String list = "[";
+       Node<E> currentNode = head;
+       for(int i =0; i < size && currentNode.next != null; i++)
+       {
+           list += currentNode.data + ", ";
+           currentNode = currentNode.next;
+       }
+
+       if(list.length() == 2)
+           return list.replace(",", "") + "]";
+       return list.substring(0, list.length()-2) + "]";
     }
-   
+    
     public boolean contains(E data)
     {
        Node<E> currentNode = head;
-       while(currentNode != null)
+       for(int i = 0; i < size; i++)
        {
            // if the data is a string, uses .equals() to compare
-           boolean isString = (currentNode.data.getClass().toString()).equalsIgnoreCase("java.lang.String");
-           if(isString && currentNode.equals(data))
+           if(currentNode.data.equals(data))
             return true;
            
            // else compares the data as a numeric value
@@ -136,82 +173,19 @@ public class LinkedList<E> implements Iterable<E> {
        return false;
     }
     
-    //get the value at a position
-    public E get( int position )
-    {
-        if(position < 0)
-           return null;
-            
-        if(position > this.size - 1)
-            return null;
-        
-        
-        Node<E> currentNode = this.head;
-        for(int i = 0; i < position; i++)
-            currentNode = currentNode.next;
-        
-        return currentNode.data;
-    }
-    
-    //get the position of a value
-    public int headIndexOf(E data)
-    {
-        if(!this.contains(data))
-            return -1;
-        
-        Node<E> currentNode = this.head;
-        for(int i = 0; i < this.size; i++)
-        {
-            // if the data is a string, uses .equals() to compare
-           boolean isString = (currentNode.data.getClass().toString()).equalsIgnoreCase("java.lang.String");
-           if(isString && currentNode.equals(data))
-            return i;
-           
-           // else compares the data as a numeric value
-           if(currentNode.data == data)
-            return i;
-           
-           // if the data does not match with the current node, moves on
-           currentNode = currentNode.next;
-        } 
-   
-        return -1;
-    }
-    
-    public int size()
-    {
-        return this.size;
-    }
-    public String toString()
-    {
-       if(head == null)
-        return "[]";
-        
-       String list = "[";
-       Node<E> currentNode = head;
-       while(currentNode != null)
-       {
-           list += currentNode.data + ", ";
-           currentNode = currentNode.next;
-       }
-
-       if(list.length() == 2)
-           return list.replace(",", "") + "]";
-       return list.substring(0, list.length()-2) + "]";
-    }
-
     @Override
     public Iterator<E> iterator() 
     {
-        return new LinkedListIterator(this);
+        return new CyclicallyLinkedListIterator(this);
     }
     
-    private class LinkedListIterator implements Iterator<E>
+    private class CyclicallyLinkedListIterator implements Iterator<E>
     {
         private Node<E> current;
-        private LinkedList list; 
+        private APLinkedList list; 
         private int index;
-        public LinkedListIterator(LinkedList list)
+        private int head_count = 0;
+        public CyclicallyLinkedListIterator(APCyclicallyLinkedList list)
         {
             this.list = list;
             this.current = this.list.head;
@@ -221,7 +195,9 @@ public class LinkedList<E> implements Iterable<E> {
         @Override
         public boolean hasNext() 
         {
-           return this.current != null;
+            if(this.current == head)
+                head_count += 1;
+           return head_count <= 1;
         }
 
         @Override
@@ -251,5 +227,4 @@ public class LinkedList<E> implements Iterable<E> {
         }
         
     }
-
 }

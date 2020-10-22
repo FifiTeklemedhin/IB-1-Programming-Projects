@@ -8,28 +8,24 @@ package linkedlist;
 import APClasses.APConsole;
 import java.util.Iterator;
 import java.util.Random;
-import linkedlist.LinkedList;
+import linkedlist.APLinkedList;
 
 /**
  *
  * @author fifiteklemedhin
  */
-public class Tester 
+public class APLinkedListTester 
 {
-    LinkedList list;
+    APLinkedList list;
     APConsole console;
  
-    public Tester(LinkedList list, APConsole console)
+    public APLinkedListTester(APLinkedList list, APConsole console)
     {
         this.list = list;
         this.console = console;
-        this.functionsCorrectly(list);
     }
-    public static void main(String[] args)
-    {
-        new Tester(new LinkedList(), new APConsole("LinkedList2"));
-    }
-    public boolean functionsCorrectly(LinkedList list)
+    
+    public boolean functionsCorrectly()
     {
         
         //adding
@@ -145,16 +141,10 @@ public class Tester
         
         if(!list.contains("hello"))
             list.add(40);
-        
-        this.console.println("\n********************************CONTAINS*********************************");
-        if(list.contains("1"))
-            list.add(20);
-        
-        if(!list.contains("hello"))
-            list.add(40);
+        console.println(list);
         
         this.console.println("\n********************************ITERABLE*********************************");
-        Iterator<LinkedList> iterator = list.iterator();
+        Iterator<APLinkedList> iterator = list.iterator();
         this.console.println("For-each: removing all/n");
         this.console.println("\t" + list);
         for(Object node : list)
