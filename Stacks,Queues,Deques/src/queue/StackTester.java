@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package postfixexpressions;
+package queue;
 
- 
 import APClasses.APConsole;
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.Stack;
-import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -20,14 +20,17 @@ import javax.swing.JOptionPane;
  *
  * @author fifiteklemedhin
  */
-public class PostfixExpressions 
+public class StackTester 
 {
+        
+    static APConsole console = new APConsole("Stack Tester");
+    
     //evaluate postfix expressions
     // TODO: prompt user for file of postfix expressions (one per line)
     // TODO: ask if we should be able validate a file based off of whether or not postfix expressions are correct
     // TODO: use stackbased algorithm to evaluate input expression
     // use 2 scanners: 1 for getting expressions, other for reading them
-    static Stack<Double> stack = new Stack<Double>();
+    static APStack<Double> stack = new APStack<Double>();
     static JFileChooser chooser = new JFileChooser();
     static ArrayList<String> expressionLines;
     
@@ -36,30 +39,49 @@ public class PostfixExpressions
 
     static String inputPath;
     
-    public static void main(String[] args) throws FileNotFoundException, IOException
+    public StackTester()
     {
-        APConsole console = new APConsole("Postfix Expression");
-        JFrame frame = new JFrame();
-        JOptionPane.showMessageDialog(frame, "Give me an input file with postfix \n"
-                                           + " expressions on each line, and I will evaluate each one.");
+        console.println("STACK WORKS: " + worksCorrectly());
+    }
+    public static void main(String[] args)
+    {
+        new StackTester();
+    }
+    
+    public boolean worksCorrectly()
+    {
+        console.println("Give me an input file with postfix \n"
+                                           + " expressions on each line, and I will evaluate each one.\n");
         
         // Reading and Validating Files
-        chooser = chooseFile();
-        validateInput();
         
-        
+        String expressions = "4 5 6 * + 3 -\n" +
+                            "34 \n" +
+                            "34 22 +\n" +
+                            "34 22 2 * +\n" +
+                            "34 22 * 2 +\n" +
+                            "34 22 + 2 *";
+        String answer = "";
         // Reading Input
+        reader = new Scanner(expressions);
         expressionLines = new ArrayList<String>();
         //loops through entire file, evaluates each expression
         while(reader.hasNextLine())
         {
             String next = reader.nextLine();
+            answer += next + " ---> " + eval(next);
+            
             console.println(next + " ---> " + eval(next));
         }
         
-        JOptionPane.showMessageDialog(frame, "Done!");
-    } 
-    
+        String correct = "4 5 6 * + 3 - ---> 31.0\n" +
+                        "34  ---> 34.0\n" +
+                        "34 22 + ---> 56.0\n" +
+                        "34 22 2 * + ---> 78.0\n" +
+                        "34 22 * 2 + ---> 750.0\n" +
+                        "34 22 + 2 * ---> 112.0";
+        return answer.substring(0, answer.length()).equals(correct.replace("\n",""));
+    }
     public static double eval(String s)
     {
         Scanner tokens = new Scanner(s);
@@ -75,7 +97,7 @@ public class PostfixExpressions
             else 
                 operate(stack.pop(), stack.pop(), token);  
         }
-        return stack.peek();
+        return stack.top();
     }
     
     // operates based off of token
@@ -100,51 +122,5 @@ public class PostfixExpressions
                 return false;
         return true;
     }
-    public static JFileChooser chooseFile()
-    {
-        JOptionPane.showMessageDialog(null,"Give me a text input and and I will\n"
-                                    + " determine unique words and their frequencies");
-        chooser.showOpenDialog(null);
-        return chooser;
-    }
-    public static void validateInput()
-    {
-        // loops until the input file is chosen
-        while(true)
-        {
-            try
-            {
-                inputPath = chooser.getSelectedFile().getAbsolutePath();
-                break;
-            }
-            catch(NullPointerException e)
-            {
-                JOptionPane.showMessageDialog(null, "No file chosen. Select a valid input file");
-                // goes back to choosing file. every time, input file changes before checking if a file was chosen
-                chooser = chooseFile();
-                continue;
-            }
-        }
-        
-        inputPath = chooser.getSelectedFile().getAbsolutePath();
-        file = new File(inputPath); 
-        
-        // makes you choose a new file while file not found
-        while(true)
-        {
-            try
-            {
-                reader = new Scanner(new FileReader(file));
-                break;
-            }
-            catch(FileNotFoundException e)
-            {
-                JOptionPane.showMessageDialog(null, "File not found. Select a valid input file");
-                // goes back to choosing file. every time, input file changes before checking if it is a file
-                chooser = chooseFile();
-                continue;
-            }
-        }
-
-    }
+    
 }
