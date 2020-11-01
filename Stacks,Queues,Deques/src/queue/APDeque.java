@@ -28,40 +28,73 @@ public class APDeque<E>
     
     public void addFront(E data)
     {
-        front.previous = new Node(data, front);
-        front = front.previous;
+
+        if(size == 0)
+        {
+            front = new Node(data, null);
+            back = front;
+            
+            size += 1;
+            return;
+        }
+        
+        back.next = new Node(data, null, back);
+        back = back.next;
+        
         size += 1;
     }
     
     public void addBack(E data)
     {
-        back.next = new Node(data, null, back);
-        back = back.next;
+        if(size == 0)
+        {
+            back = new Node(data, null);
+            front = back;
+            
+            size += 1;
+            return;
+        }
+        
+        front.next = new Node(data, null, front);
+        front = front.next;
+        
         size += 1;
     }
     
     
     public E seeFront()
     {
+        if(size == 0)
+            return null;
+        
         return front.data;
     }
     public E seeBack()
     {
-        return back.data;
+        if(size == 0)
+            return null;
+        
+        return front.data;
     }
     
     
     public E getBack()
     {
-        Node<E> oldBack = back;
-        back = back.previous;
+        if(size == 0)
+            return null;
+        
+        E previousTop = front.data;
         
         size -= 1;
-        return oldBack.data;
+        front = front.previous;
+        return previousTop;
     }
     
     public E getFront()
     {
+        if(size == 0)
+            return null;
+        
         Node<E> oldFront = front;
         front = front.next;
         
@@ -72,5 +105,12 @@ public class APDeque<E>
     public int getLength()
     {
         return size;
+    }
+    
+    public String toString()
+    {
+        if(front == null)
+            return "Deque of size " + getLength() + ", type unknown";
+        return "Deque of size " + getLength() + ", type " + front.data.getClass();
     }
 }

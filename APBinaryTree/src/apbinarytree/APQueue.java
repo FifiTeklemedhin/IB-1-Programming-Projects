@@ -3,62 +3,59 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package queue;
+package apbinarytree;
 
-
-/**
- *
- * @author fifiteklemedhin
- */
-public class APStack<E> 
+public class APQueue<E>  
 {
-   /*
-    push(E data)
-    E pop()
-    E top()
-    int length()
-   */
-    Node<E> top;
-    Node<E> bottom;
+    QueueNode<E> first;
+    QueueNode<E> last;
     int size = 0;
-
+    //needs to store previous to update first
+    /*
+        enqueue()
+        E dequeue()
+        E peek()
+        int getLength()
+    */
     
-    public void push(E data)
+    public void enqueue(E data)
     {
         if(size == 0)
         {
-            bottom = new Node(data, null);
-            top = bottom;
+            first = new QueueNode(data, null);
+            last = first;
             
             size += 1;
             return;
         }
         
-        top.next = new Node(data, null, top);
-        top = top.next;
+        last.next = new QueueNode(data, null, last);
+        last = last.next;
         
         size += 1;
+        
     }
     
     
-    public E pop()
+    public E dequeue()
     {
         if(size == 0)
             return null;
         
-        E previousTop = top.data;
+        E front = first.data;
+        first = first.next;
         
         size -= 1;
-        top = top.previous;
-        return previousTop;
+        return front;
     }
     
-    public E top()
+    
+    public E peek()
     {
         if(size == 0)
             return null;
         
-        return top.data;
+        return first.data;
     }
     
     public int getLength()
@@ -66,14 +63,12 @@ public class APStack<E>
         return size;
     }
     
-    
     public String toString()
     {
-        if(top == null)
+        if(first == null)
             return "Stack of size " + getLength() + ", type unknown";
-        return "Stack of size " + getLength() + ", type " + top.data.getClass();
+        return "Stack of size " + getLength() + ", type " + first.data.getClass();
     }
     
-    
-    
 }
+

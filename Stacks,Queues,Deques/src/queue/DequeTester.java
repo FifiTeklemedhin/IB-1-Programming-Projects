@@ -5,58 +5,94 @@
  */
 package queue;
 
-import static queue.Main.console;
+import APClasses.APConsole;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import static queue.Main.console;
 
 /**
  *
  * @author fifiteklemedhin
  */
-public class StackTester 
+public class DequeTester 
 {
-        
-    
-    //evaluate postfix expressions
-    // TODO: prompt user for file of postfix expressions (one per line)
-    // TODO: ask if we should be able validate a file based off of whether or not postfix expressions are correct
-    // TODO: use stackbased algorithm to evaluate input expression
-    // use 2 scanners: 1 for getting expressions, other for reading them
-    static APStack<Double> stack = new APStack<Double>();
+    /* STACK TESTER OBJECTS */
+    static APDeque<Double> stack = new APDeque<Double>();
     static JFileChooser chooser = new JFileChooser();
     static ArrayList<String> expressionLines;
-    
-    static File file;
+
     static Scanner reader;
 
-    static String inputPath;
-    
-    public StackTester()
+    public DequeTester()
     {
-        console.println(">>>>>>>>>>>>>>>>>>>>> STACK <<<<<<<<<<<<<<<<<<<<<<<<<");
         if(functionsCorrectly())
-            console.println("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> STACK: ALL TESTS PASSED >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n\n");
+            console.println("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DEQUEUE: ALL TESTS PASSED >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n\n");
         else
-           console.println("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> STACK: TESTS FAILED  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n\n");
+           console.println("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DEQUEUE: TESTS FAILED  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n\n");
     }
+   
     
     public boolean functionsCorrectly()
     {
-        console.println("Give me an input file with postfix \n"
-                                           + " expressions on each line, and I will evaluate each one.\n");
-        
-        // Reading and Validating Files
-        if(stack.top() == null)   
+        return functionsAsQueue() && functionsAsStack();
+    }
+    public boolean functionsAsQueue()
+    {
+
+       APDeque queue = new APDeque();
+       
+       console.println(">>>>>>>>>>>>> QUEUE >>>>>>>>>>>>>>>");
+       
+       console.println("**** PEEK, ENQUEUE, AND DEQUEUE ****");
+       
+       if(queue.seeFront() == null)   
             console.println("no peeking when empty");
-       if(stack.pop() == null)   
+       if(queue.getFront() == null)   
+            console.println("no dequeueing when empty");
+       for(int i = 0; i < 10; i++)
+       {
+           queue.addFront(i);
+           console.println(queue.getFront());
+       }
+       
+      
+        queue.addFront("\ndssasa");
+        console.println(queue.seeFront());
+        console.println(queue.getFront() + "\n");
+        
+        queue.addFront("fdfsd");
+        console.println(queue.seeFront());
+        console.println(queue.getFront() + "\n");
+        
+        queue.addFront(";;;;;'`/.43241sA");
+        console.println(queue.seeFront());
+        console.println(queue.getFront() + "\n");
+       
+        
+        console.println("**** PRINTING AND SIZE ****");
+        for(int i = 0; i < 10; i++)
+            queue.addFront(i);
+        
+        queue.addFront("dssasa");
+        queue.addFront("fdfsd");
+        queue.addFront(";;;;;'`/.43241sA");
+        
+        console.println(queue);
+        
+        return queue.getLength() == 13 && queue.toString().contains("Integer");
+
+    }
+
+    public boolean functionsAsStack()
+    {
+       console.println("\n>>>>>>>>>>>>>> STACK >>>>>>>>>>>>");
+       if(stack.seeFront() == null)   
+            console.println("no peeking when empty");
+       if(stack.getFront() == null)   
             console.println("no popping when empty\n");
+       
         String expressions = "4 5 6 * + 3 -\n" +
                             "34 \n" +
                             "34 22 +\n" +
@@ -94,25 +130,25 @@ public class StackTester
 
             // adds the number to the stack
             if(isNumber(token))
-                stack.push(Double.parseDouble(token));
+                stack.addBack(Double.parseDouble(token));
             //operates on the two most recent nodes if the token is an operator
             else 
-                operate(stack.pop(), stack.pop(), token);  
+                operate(stack.getBack(), stack.getBack(), token);  
         }
-        return stack.top();
+        return stack.seeBack();
     }
     
     // operates based off of token
     public static void operate(double num1, double num2, String s)
     {
         if(s.equals("+"))
-            stack.push(num2 + num1);
+            stack.addBack(num2 + num1);
         if(s.equals("/"))
-           stack.push(num2 / num1);
+           stack.addBack(num2 / num1);
         if(s.equals("*"))
-            stack.push(num2 * num1);
+            stack.addBack(num2 * num1);
         if(s.equals("-"))
-            stack.push(num2 - num1);
+            stack.addBack(num2 - num1);
        
     }
    

@@ -67,4 +67,11 @@ public class APQueue<E>
         return size;
     }
     
+    public String toString()
+    {
+        if(first == null)
+            return "Stack of size " + getLength() + ", type unknown";
+        return "Stack of size " + getLength() + ", type " + first.data.getClass();
+    }
+    
 }
