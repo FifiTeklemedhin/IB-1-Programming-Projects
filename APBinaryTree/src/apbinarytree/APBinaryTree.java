@@ -33,10 +33,12 @@ public class APBinaryTree<E extends Comparable> implements Iterable<E>
     {
         APBinaryTree tree = new APBinaryTree();
         
-        tree.add(tree.root, 1);
         tree.add(tree.root, 2);
+        tree.add(tree.root, 1);
         tree.add(tree.root, 3);
         tree.add(tree.root, 4);
+        tree.add(tree.root, 3);
+        
         System.out.println("LENGTH: " + tree.length() + "\n");
         
         Iterator<APBinaryTree> iterator = tree.iterator();
@@ -44,28 +46,40 @@ public class APBinaryTree<E extends Comparable> implements Iterable<E>
         for(Object node: tree)
             System.out.println(node);
         
+        for(Object node: tree)
+        {
+            iterator.remove();
+            System.out.println(tree);  
+        }
+            
+        
     }
     E add(Node<E> node, E data)
     {
-        if (node.data == null) {
+        if (node.data == null) 
+        {
             root = new Node(data);
             size += 1;
             return data;
         }
-        APQueue<Node> queue = new APQueue<Node>();
-        queue.enqueue(node);
- 
         // Do level order traversal until we find
         // an empty place.
         boolean inserted = false;
         Node<E> currentNode = node;
         while(true)
         {
+            if(currentNode == null)
+            {
+                currentNode = new Node(data);
+                return data;
+            }
+            
             if(data.compareTo(currentNode.data) == 1)
             {
                 if(currentNode.right == null)
                 {
                     currentNode.right = new Node(data);
+                    size += 1;
                     return data;
                 }
                 currentNode = currentNode.right;
@@ -75,29 +89,42 @@ public class APBinaryTree<E extends Comparable> implements Iterable<E>
                 if(currentNode.left == null)
                 {
                     currentNode.left = new Node(data);
+                    size += 1;
                     return data;
                 }
                 currentNode = currentNode.left;
             }
-            
+            // if it exists already, then add it to the subtree of the root that has the smallest length
+            else
+            {
+                if(subtreeLength(currentNode.left) > subtreeLength(currentNode.right))
+                {
+                    if(currentNode.right == null)
+                    {
+                        currentNode.right = new Node(data);
+                        return data;
+                    }
+                    
+                    add(currentNode.right, data);
+                }
+                else
+                {
+                    if(currentNode.left == null)
+                    {
+                        currentNode.left = new Node(data);
+                        return data;
+                    }
+                    
+                    else
+                        add(currentNode.left, data);
+                }
+            }
         }
         
     }
     
     private int subtreeLength(Node<E> node)
     {
-        Node<E> currentNode = this.root;
-        while(currentNode != node)
-        {
-            if(currentNode.isLeaf())
-                return 0;
-            
-            //sees whether to go left or right depending on value
-            if(node.data.compareTo(currentNode.data) == 1)
-                currentNode = currentNode.left;
-            if(node.data.compareTo(currentNode.data) == -1)
-                currentNode = currentNode.right;
-        }
         return traverseFrom(node, new APQueue<E>()).getLength();
     }
     public int length()
@@ -118,7 +145,7 @@ public class APBinaryTree<E extends Comparable> implements Iterable<E>
             traverseFrom(node.left, queue);
         }
         
-        queue.enqueue(node.data);
+        queue.enqueue(node);
         //System.out.println("PASSING: " + node.data);
         
         if(node.right != null)
@@ -128,6 +155,18 @@ public class APBinaryTree<E extends Comparable> implements Iterable<E>
         }
         
         return queue;
+    }
+    
+    public String toString()
+    {
+        APQueue queue = traverseFrom(this.root, new APQueue<E>());
+        String tree = "[";
+
+        while(queue.getLength() != 0)
+            tree += queue.dequeue() + ", ";
+        
+        
+        return tree;
     }
 
      @Override
@@ -158,7 +197,8 @@ public class APBinaryTree<E extends Comparable> implements Iterable<E>
         {
             if(hasNext())
             {
-                E currentData = (E) this.queue.dequeue();
+                Node<E> current = (Node<E>) this.queue.dequeue();
+                E currentData = (E) current.data;
                 return currentData;
                 
             }
