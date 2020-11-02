@@ -15,6 +15,7 @@ public class APBinaryTree<E extends Comparable> implements Iterable<E>
 {
     protected Node<E> root = new Node(null, null, null);
     private int size = 0;
+    //ADD DOEST WORK IF YOU TRY TO ADD THE SAME NODE VALUE THREE TIMES
     /*
         TODO:
             * E add(E data)
@@ -33,12 +34,14 @@ public class APBinaryTree<E extends Comparable> implements Iterable<E>
     {
         APBinaryTree tree = new APBinaryTree();
         
-        tree.add(tree.root, 2);
-        tree.add(tree.root, 1);
-        tree.add(tree.root, 3);
-        tree.add(tree.root, 4);
-        tree.add(tree.root, 3);
-        
+        tree.add(2);
+        tree.add(1);
+        tree.add(3);
+        tree.add(4);
+        tree.add(3);
+        tree.add(1);
+        tree.add(3);
+        tree.add(5);
         System.out.println("LENGTH: " + tree.length() + "\n");
         
         Iterator<APBinaryTree> iterator = tree.iterator();
@@ -54,72 +57,75 @@ public class APBinaryTree<E extends Comparable> implements Iterable<E>
             
         
     }
-    E add(Node<E> node, E data)
+    E add(E data)
     {
-        if (node.data == null) 
+        return addFrom(this.root, data);
+    }
+    E addFrom(Node<E> currentNode, E data)
+    {
+        
+        if (currentNode.data == null) 
         {
             root = new Node(data);
             size += 1;
             return data;
         }
-        // Do level order traversal until we find
-        // an empty place.
-        boolean inserted = false;
-        Node<E> currentNode = node;
-        while(true)
+        
+        if(currentNode == null)
         {
-            if(currentNode == null)
+            currentNode = new Node(data);
+            return data;
+        }
+
+        int compare = data.compareTo(currentNode.data);
+        if(compare == 1)
+        {
+            if(currentNode.right == null)
             {
-                currentNode = new Node(data);
+                currentNode.right = new Node(data);
+                size += 1;
                 return data;
             }
-            
-            if(data.compareTo(currentNode.data) == 1)
+            addFrom(currentNode.right, data);
+        }
+        else if(compare == -1)
+        {
+            if(currentNode.left == null)
+            {
+                currentNode.left = new Node(data);
+                size += 1;
+                return data;
+            }
+            addFrom(currentNode.left, data);
+        }
+        // if it exists already, then add it to the subtree of the root that has the smallest length
+        else
+        {
+            if(subtreeLength(currentNode.left) > subtreeLength(currentNode.right))
             {
                 if(currentNode.right == null)
                 {
                     currentNode.right = new Node(data);
-                    size += 1;
                     return data;
                 }
-                currentNode = currentNode.right;
+                else
+                    addFrom(currentNode.right, data);
             }
-            else if(data.compareTo(currentNode.data) == -1)
+            else
             {
                 if(currentNode.left == null)
                 {
                     currentNode.left = new Node(data);
-                    size += 1;
                     return data;
                 }
-                currentNode = currentNode.left;
-            }
-            // if it exists already, then add it to the subtree of the root that has the smallest length
-            else
-            {
-                if(subtreeLength(currentNode.left) > subtreeLength(currentNode.right))
-                {
-                    if(currentNode.right == null)
-                    {
-                        currentNode.right = new Node(data);
-                        return data;
-                    }
-                    
-                    add(currentNode.right, data);
-                }
+
                 else
-                {
-                    if(currentNode.left == null)
-                    {
-                        currentNode.left = new Node(data);
-                        return data;
-                    }
-                    
-                    else
-                        add(currentNode.left, data);
-                }
+                    addFrom(currentNode.left, data);
             }
         }
+       
+        return null;
+    
         
     }
     
