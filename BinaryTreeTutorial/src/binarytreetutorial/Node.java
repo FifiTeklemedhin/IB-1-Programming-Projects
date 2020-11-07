@@ -9,15 +9,23 @@ package binarytreetutorial;
  *
  * @author fifiteklemedhin
  */
-public class TreeNode<E> 
+public class Node<E> 
 {
-    private E data;
-    private TreeNode<E> right;
-    private TreeNode<E> left;
+    int key;
+    String name;
     
-    public TreeNode(E data)
+    Node leftChild;
+    Node rightChild;
+    
+    Node(int key, String name)
     {
-        this.data = data;
+        this.key = key;
+        this.name = name;
+    }
+    
+    public String toString()
+    {
+        return ""+ key;
     }
     
 }
