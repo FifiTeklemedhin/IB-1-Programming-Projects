@@ -30,80 +30,37 @@ public class APBinaryTree<E extends Comparable> implements Iterable<E>
     /*
         * which thing do you by
     */
+    
+    /*
+        
+    */
     public static void main(String[] args)
     {
         APBinaryTree tree = new APBinaryTree();
         
         tree.add(2);
-        tree.add(1);
-        tree.add(3);
         tree.add(4);
-        tree.add(3);
         tree.add(1);
         tree.add(3);
         tree.add(5);
-        System.out.println("LENGTH: " + tree.length() + "\n");
+        //System.out.println("LENGTH: " + tree.length() + "\n");
         
         Iterator<APBinaryTree> iterator = tree.iterator();
-        
-        for(Object node: tree)
-            System.out.println(node);
-        
-        tree.remove(1);
-        tree.remove(2);
-        tree.remove(3);
-        System.out.println("\n");
         
         iterator = tree.iterator();
         for(Object node: tree)
             System.out.println(node);
-            
         
+        
+        System.out.println("\n");
+        
+        
+        tree.remove(tree.root, 5);
+        System.out.println(tree);
     }
     E add(E data)
     {
-        Node newNode = new Node(data);
-        
-        if(root == null)
-        {
-            root = newNode;
-            return data;
-        }
-        else
-        {
-            Node focusNode = root;
-            Node parent;
-            
-            while(true)
-            {
-                parent = focusNode;
-                if(focusNode.data != null)
-                {
-                    if(data.compareTo(focusNode.data) < 1)
-                    {
-                        focusNode = focusNode.left;
-
-                        if(focusNode == null)
-                        {
-                            parent.left = newNode;
-                            return data;
-                        }
-                    }
-
-                    else 
-                    {
-                        focusNode = focusNode.right;
-
-                        if(focusNode == null)
-                        {
-                            parent.right = newNode;
-                            return data;
-                        }
-                    }
-                }
-            }
-        }
-        
+        return addFrom(this.root, data);
     }
     E addFrom(Node<E> currentNode, E data)
     {
@@ -171,116 +128,167 @@ public class APBinaryTree<E extends Comparable> implements Iterable<E>
         return null;
     
         
-    }
-   public boolean remove(E data)
+    }public E add(Node currentNode, Node nodeToAdd, E data)
     {
-        Node focusNode = root;
-        Node parent = root;
-        
-        boolean isItALeftChild = true;
-        
-        while(focusNode.data != data)
+        if(nodeToAdd == null)
+            return data;
+        if(this.root == null)
         {
-            parent = focusNode;
-            if(data.compareTo(focusNode.data) < 1)
+           root = nodeToAdd;
+           return data; 
+        }
+        
+        int compare = data.compareTo(currentNode.data);
+        
+        if(compare < 0)
+        {
+            if(currentNode.left == null)
             {
-                isItALeftChild = true;
-                focusNode = focusNode.left;
+                currentNode.left = nodeToAdd;
+                return data;
             }
+            return add(currentNode.left, nodeToAdd, data);
+        }
+        
+        else if(compare > 0)
+        {
+            if(currentNode.right == null)
+            {
+                currentNode.right = nodeToAdd;
+                return data;
+            }
+            return add(currentNode.right, nodeToAdd, data);
+        }
+        
+        else
+        {
+            if(subtreeLength(currentNode.right) < subtreeLength(currentNode.left))
+            {
+                if(currentNode.right == null)
+                {
+                    currentNode.right = nodeToAdd;
+                    return data;
+                }
+                return add(currentNode.right, nodeToAdd, data);
+            }
+            
             else
             {
-                isItALeftChild = true;
-                focusNode = focusNode.left;
+                if(currentNode.left == null)
+                {
+                    currentNode.left = nodeToAdd;
+                    return data;
+                }
+                return add(currentNode.left, nodeToAdd, data);
             }
-            if(focusNode == null)
-                return false;
-
+            
         }
-         //if leafnode or they don't have children
-            if(focusNode.left == null && focusNode.right == null)
-            {
-                if(focusNode == root)
-                {
-                    root = null;
-                }
-                else if(isItALeftChild)
-                {
-                    parent.left = null;
-                }
-                else
-                    parent.right = null;
-            
-            }
-            else if(focusNode.right == null)
-            {
-                if(focusNode == root)
-                    root = focusNode.left;
-                else if(isItALeftChild)
-                {
-                    parent.left = null;
-                }
-                else
-                    parent.right = null;
-            }
-            else if(focusNode.right == null)
-            {
-                if(focusNode == root)
-                    root = focusNode.left;
-                else if(isItALeftChild)
-                    parent.left = focusNode.left;
-                else parent.right = focusNode.left;
-            }
-            
-            else if(focusNode.left == null)
-                if(focusNode == root)
-                    root = focusNode.right;
-                else if(isItALeftChild)
-                    parent.left = focusNode.right;
-                else
-                    parent.right = focusNode.left;
-            else 
-            {
-                Node replacement = getReplacementNode(focusNode);
-                
-                if(focusNode == root)
-                    root = replacement;
-                else if(isItALeftChild)
-                    parent.left = replacement;
-                else
-                    parent.right = replacement;
-                replacement.left = focusNode.left;
-            }
-     return true;
+        
         
     }
-    public Node getReplacementNode(Node replacedNode)
+    
+    public E remove(E data)
     {
-        Node replacementParent = replacedNode;
-        Node replacement = replacedNode;
-        
-        Node focusNode = replacedNode.right; //starts off on right
-        
-        while(focusNode != null)
-        {
-            replacementParent = replacement; //goes to parent of leftmost
-            replacement = focusNode; //goes to leftmost, one step behind being null
-            focusNode = focusNode.left; 
-        }
-        
-        if(replacement != replacedNode.right) // If the replacement isn't the right child move the replacement into the parents left slot and move the replaced nodes right child into the replacements right 
-        {
-            replacementParent.left = replacement.right;
-            replacement.right = replacedNode.right;
-        }
-        
-        return replacement;
+        return this.remove(this.root, data);
     }
+    public E remove(Node currentNode, E data)
+    {
+        
+        if(this.root == null || currentNode == null)
+        {
+           return data; 
+        }
+        
+        int compare = data.compareTo(currentNode.data);
+        if(compare != 0)
+        {
+             if(compare < 0)
+                return remove(currentNode.left, data);
+
+            else if(compare > 0) 
+                return remove(currentNode.right, data);
+        }
+
+        else
+        {
+            //take the bigger side of the current node and keep it there, then take the other side and insert it to that tree
+          
+            if(currentNode.isLeaf())
+            {
+                System.out.println("1");
+                
+                currentNode.right = null;
+                currentNode.left = null;
+                currentNode = null;
+                
+                return data;
+            }
+            
+            else if(currentNode.right == null && currentNode.left != null)
+            {
+                currentNode = currentNode.left;
+                currentNode.left = null;
+                return data;
+            }
+            else if(currentNode.left == null && currentNode.right != null)
+            {
+                currentNode = currentNode.right;
+                currentNode.right = null;
+                return data;
+            }
+            
+            if(subtreeLength(currentNode.right) < subtreeLength(currentNode.left))
+            {
+               Node<E> replacementTree = currentNode.left;
+               Node right = currentNode.right;
+               
+               currentNode.left = null;
+               currentNode.right = null;
+               
+               this.add(replacementTree, right, (E) right.data);
+               currentNode = replacementTree;
+    
+               return data;
+ 
+            }
+            
+            else
+            {
+               Node replacementTree = currentNode.right;
+               Node left = currentNode.left;
+     
+               currentNode.right = null;
+               currentNode.left = null;
+               
+               this.add(replacementTree, left, (E) left.data);
+               currentNode = replacementTree;
+               
+               return data;
+               
+            }
+            
+        }
+        
+        
+       return data;
+        
+    }
+    
     public boolean contains(E data)
     {
-        APQueue queue = inOrder(root, new APQueue<E>());
-        for(int i = 0; i < queue.getLength(); i++)
-            if(data.compareTo(queue.dequeue()) == 0)
+        Iterator<E> iterator = this.iterator();
+        System.out.print("QUEUE: ");
+        for(Object node: this)
+        {
+            System.out.print(node + ",");
+            if(data.compareTo(node) == 0)
+            {
+                System.out.println("\n");
                 return true;
+            }
+        }
+
+        System.out.println("\n");
         return false;
     }
     private int subtreeLength(Node<E> node)
@@ -291,7 +299,7 @@ public class APBinaryTree<E extends Comparable> implements Iterable<E>
     {
         return subtreeLength(this.root);
     }
-    private APQueue inOrder(Node<E> node, APQueue queue)
+    public APQueue inOrder(Node<E> node, APQueue queue)
     {
         // add left add me add right
         if(node == null || node.data == null) //means that the root has no data yet
@@ -306,23 +314,23 @@ public class APBinaryTree<E extends Comparable> implements Iterable<E>
 
         return queue;
     }
-    private APQueue postOrder(Node<E> node, APQueue queue)
+    public APQueue preOrder(Node<E> node, APQueue queue)
     {
         // add left add me add right
         if(node == null || node.data == null) //means that the root has no data yet
             return queue;
+        queue.enqueue(node.data);
         if(node.left != null)
             inOrder(node.left, queue);
         if(node.right != null)
             inOrder(node.right, queue);
-        queue.enqueue(node.data);
 
         return queue;
     }
     
     public String toString()
     {
-        APQueue queue = inOrder(this.root, new APQueue<E>());
+        APQueue queue = preOrder(this.root, new APQueue<E>());
         String tree = "[";
 
         while(queue.getLength() != 0)

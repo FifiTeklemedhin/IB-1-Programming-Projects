@@ -15,15 +15,16 @@ public class Node<E> {
     public Node<E> left;
     public Node<E> right;
     public Node<E> next;
-    
-    public Node(E data)
-    {
-        this.data = data;
-    }
+
      public Node(E data, Node<E> next)
     {
         this(data);
         this.next = next;
+    }
+    
+    public Node(E data)
+    {
+        this.data = data;
     }
     
     public Node(E data, Node<E> left, Node<E> right)
@@ -33,9 +34,11 @@ public class Node<E> {
         this.right = right;
     }
     
+    
     public boolean isLeaf()
     {
-        return this.left == null && this.right == null;
+        return left == null && right == null;
     }
+    
     
 }
