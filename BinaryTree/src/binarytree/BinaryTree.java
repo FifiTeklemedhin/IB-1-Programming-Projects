@@ -40,15 +40,16 @@ public class BinaryTree<E extends Comparable> implements Iterable<E>
         tree.add(3);
         tree.add(4);
         tree.add(5);
+        System.out.println(tree);
         
         
-        
+        tree.remove(0);
+        tree.remove(2);
         tree.remove(3);
         tree.remove(4);
-        tree.remove(5);
         tree.remove(1);
-        System.out.println(tree);
-
+        
+        //tree.remove(3);
         System.out.println(tree);
     }
     
@@ -207,16 +208,10 @@ public class BinaryTree<E extends Comparable> implements Iterable<E>
 
         else
         {
-            
             if(currentNode.isLeaf())
             {
                 System.out.println("condition 1");
                 if(previousNode == null)
-                {
-                    this.root = null;
-                    return data;
-                }
-                if(previousNode == currentNode)
                 {
                     this.root = null;
                     return data;
@@ -263,8 +258,36 @@ public class BinaryTree<E extends Comparable> implements Iterable<E>
             }
             
             
-            
-            
+            if(previousNode == currentNode)
+            {
+                System.out.println("found root");
+                
+                if(subtreeLength(currentNode.right) < subtreeLength(currentNode.left))
+                {
+                    
+
+                    Node<E> replacementTree = currentNode.left;
+                    Node right = currentNode.right;
+
+                    
+                        this.root = replacementTree;
+                        this.add(this.root, right, (E) right.data);
+                        return data;
+                    
+
+                }
+
+                else
+                {
+                   Node replacementTree = currentNode.right;
+                   Node left = currentNode.left;
+                   this.add(replacementTree, left, (E) left.data);
+                        this.root = replacementTree;
+                        
+                        return data;
+                   
+                }
+            }
             if(subtreeLength(currentNode.right) < subtreeLength(currentNode.left))
             {
                 
@@ -290,9 +313,7 @@ public class BinaryTree<E extends Comparable> implements Iterable<E>
             {
                Node replacementTree = currentNode.right;
                Node left = currentNode.left;
-               
-               
-               System.out.println(previousNode.data);
+     
                if(previousNode.right != null && currentNode == previousNode.right)
                 {
                     previousNode.right = replacementTree;
