@@ -33,7 +33,7 @@ public class BinaryTree<E extends Comparable> implements Iterable<E>
             tree.add(30);
         */
         
-        
+        //add, remove, iterator()
         tree.add(0);
         tree.add(1);
         tree.add(2);
@@ -45,10 +45,16 @@ public class BinaryTree<E extends Comparable> implements Iterable<E>
         tree.add(8);
         tree.add(9);
         
-        System.out.println(tree);
+        Iterator iterator = tree.iterator();
+        for(Object node: tree)
+           System.out.println(node);
         
         System.out.println(tree);
         //System.out.println(tree);
+        
+        tree.add(0);
+        System.out.println(tree);
+        
         tree.remove(0);
         tree.remove(1);
         tree.remove(2);
@@ -59,10 +65,22 @@ public class BinaryTree<E extends Comparable> implements Iterable<E>
         tree.remove(7);
         tree.remove(8);
         tree.remove(9);
-        
-        
-
         System.out.println(tree);
+
+        tree.remove(0);
+        System.out.println(tree);
+        
+        
+        tree.add(20);
+        tree.add(15);
+        tree.add(25);
+        tree.add(10);
+        System.out.println(tree);
+        
+        iterator = tree.postOrderIterator();
+        for(Object node: tree)
+           System.out.println(node);
+        
     }
     
     public E add(E data)
