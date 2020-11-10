@@ -34,20 +34,33 @@ public class BinaryTree<E extends Comparable> implements Iterable<E>
         */
         
         
-        tree.add(1);
         tree.add(0);
+        tree.add(1);
         tree.add(2);
         tree.add(3);
         tree.add(4);
         tree.add(5);
+        tree.add(6);
+        tree.add(7);
+        tree.add(8);
+        tree.add(9);
         
+        System.out.println(tree);
+        
+        System.out.println(tree);
+        //System.out.println(tree);
         tree.remove(0);
+        tree.remove(1);
         tree.remove(2);
         tree.remove(3);
         tree.remove(4);
         tree.remove(5);
-        tree.remove(1);
-        System.out.println(tree);
+        tree.remove(6);
+        tree.remove(7);
+        tree.remove(8);
+        tree.remove(9);
+        
+        
 
         System.out.println(tree);
     }
@@ -207,6 +220,49 @@ public class BinaryTree<E extends Comparable> implements Iterable<E>
 
         else
         {
+            if(previousNode == currentNode)
+            {
+                
+                
+                if(currentNode.isLeaf())
+                {
+                    this.root = null;
+                    return data;
+                }
+                
+                else if(currentNode.right != null && currentNode.left == null)
+                {
+                    this.root = this.root.right;
+                    return data;
+                }
+                 
+                else if(currentNode.left != null && currentNode.right == null)
+                {
+                    this.root = this.root.left;
+                    return data;
+                }
+                
+                 
+                else if(subtreeLength(currentNode.right) < subtreeLength(currentNode.left))
+                {
+                    Node replacementTree = currentNode.left;
+                    Node right = currentNode.right;
+                    
+                    this.root = replacementTree;
+                    this.add(this.root, right, (E)right.data);
+                   
+                }
+                else
+                {
+                    Node replacementTree = currentNode.right;
+                    Node left = currentNode.left;
+                    
+                    this.root = replacementTree;
+                    this.add(this.root, left, (E)left.data);
+                    return data;
+                }
+                
+            }
             
             if(currentNode.isLeaf())
             {
