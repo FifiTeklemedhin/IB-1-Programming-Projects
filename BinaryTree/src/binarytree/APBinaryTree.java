@@ -8,80 +8,16 @@ package binarytree;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-
+import APClasses.APConsole;
 /**
  *
  * @author fifiteklemedhin
  */
-public class BinaryTree<E extends Comparable> implements Iterable<E>
+public class APBinaryTree<E extends Comparable> implements Iterable<E>
 {
     public Node<E> root;
+    APConsole console = new APConsole("BINARY TREE TESTER1");
     
-    public static void main(String[] args)
-    {
-        BinaryTree tree = new BinaryTree();
-        
-        /* testing add, adding non-unique values
-            tree.add(5);
-            tree.add(1);
-            tree.add(2);
-            tree.add(3);
-            tree.add(0);
-            tree.add(3);
-            tree.add(2);
-            tree.add(5);
-            tree.add(30);
-        */
-        
-        //add, remove, iterator()
-        tree.add(0);
-        tree.add(1);
-        tree.add(2);
-        tree.add(3);
-        tree.add(4);
-        tree.add(5);
-        tree.add(6);
-        tree.add(7);
-        tree.add(8);
-        tree.add(9);
-        
-        Iterator iterator = tree.iterator();
-        for(Object node: tree)
-           System.out.println(node);
-        
-        System.out.println(tree);
-        //System.out.println(tree);
-        
-        tree.add(0);
-        System.out.println(tree);
-        
-        tree.remove(0);
-        tree.remove(1);
-        tree.remove(2);
-        tree.remove(3);
-        tree.remove(4);
-        tree.remove(5);
-        tree.remove(6);
-        tree.remove(7);
-        tree.remove(8);
-        tree.remove(9);
-        System.out.println(tree);
-
-        tree.remove(0);
-        System.out.println(tree);
-        
-        
-        tree.add(20);
-        tree.add(15);
-        tree.add(25);
-        tree.add(10);
-        System.out.println(tree);
-        
-        iterator = tree.postOrderIterator();
-        for(Object node: tree)
-           System.out.println(node);
-        
-    }
     
     public E add(E data)
     {
@@ -216,7 +152,12 @@ public class BinaryTree<E extends Comparable> implements Iterable<E>
     
     public E remove(E data)
     {
-        return this.remove(this.root, this.root, data);
+        if(!this.contains(this.root, data))
+            return null;
+        while(this.contains(this.root,data))
+          this.remove(this.root, this.root, data);
+        
+        return data;
     }
     public E remove(Node currentNode, Node previousNode, E data)
     {
@@ -284,7 +225,7 @@ public class BinaryTree<E extends Comparable> implements Iterable<E>
             
             if(currentNode.isLeaf())
             {
-                System.out.println("condition 1");
+                
                 if(previousNode == null)
                 {
                     this.root = null;
@@ -366,7 +307,7 @@ public class BinaryTree<E extends Comparable> implements Iterable<E>
                Node left = currentNode.left;
                
                
-               System.out.println(previousNode.data);
+               console.println(previousNode.data);
                if(previousNode.right != null && currentNode == previousNode.right)
                 {
                     previousNode.right = replacementTree;
@@ -413,7 +354,7 @@ public class BinaryTree<E extends Comparable> implements Iterable<E>
           
             if(currentNode.isLeaf())
             {
-                System.out.println("1");
+                console.println("1");
                 
                 currentNode.right = null;
                 currentNode.left = null;
@@ -424,8 +365,8 @@ public class BinaryTree<E extends Comparable> implements Iterable<E>
             
             else if(currentNode.right == null && currentNode.left != null)
             {
-                System.out.println("LEFT: " + this.toString(currentNode.left));
-                System.out.println("2");
+                console.println("LEFT: " + this.toString(currentNode.left));
+                console.println("2");
                 currentNode = currentNode.left;
                 currentNode.left = null;
                 currentNode = null;
@@ -433,8 +374,8 @@ public class BinaryTree<E extends Comparable> implements Iterable<E>
             }
             else if(currentNode.left == null && currentNode.right != null)
             {
-                System.out.println("RIGHT: " + this.toString(currentNode.right));
-                System.out.println("3");
+                console.println("RIGHT: " + this.toString(currentNode.right));
+                console.println("3");
                 currentNode = currentNode.right;
                 
                 Node<E> parent = getParent(this.root, (E)currentNode.data);
@@ -445,9 +386,9 @@ public class BinaryTree<E extends Comparable> implements Iterable<E>
             if(subtreeLength(currentNode.right) < subtreeLength(currentNode.left))
             {
                 
-                System.out.println("4");
-                System.out.println("LEFT: " + this.toString(currentNode.left));
-                System.out.println("RIGHT: " + this.toString(currentNode.right));
+                console.println("4");
+                console.println("LEFT: " + this.toString(currentNode.left));
+                console.println("RIGHT: " + this.toString(currentNode.right));
                 
                 Node<E> replacementTree = currentNode.left;
                 Node right = currentNode.right;
@@ -464,9 +405,9 @@ public class BinaryTree<E extends Comparable> implements Iterable<E>
             
             else
             {
-                System.out.println("5");
-                System.out.println("LEFT: " + this.toString(currentNode.left));
-                System.out.println("RIGHT: " + this.toString(currentNode.right));
+                console.println("5");
+                console.println("LEFT: " + this.toString(currentNode.left));
+                console.println("RIGHT: " + this.toString(currentNode.right));
                 Node replacementTree = currentNode.right;
                 Node left = currentNode.left;
      
@@ -551,7 +492,7 @@ public class BinaryTree<E extends Comparable> implements Iterable<E>
         
         else
         {
-            System.out.println(currentNode.data);
+            console.println(currentNode.data);
             if(currentNode.left != null && currentNode.left.data == data)
                 return currentNode;
         
@@ -636,7 +577,7 @@ public class BinaryTree<E extends Comparable> implements Iterable<E>
         APQueue queue = inOrder(this.root, new APQueue());
         //APQueue queue = breadthFirst(this.root, new APQueue(), new HashSet());
         String result = "TREE: ";
-        //System.out.println("length: " + queue.getLength());
+        //console.println("length: " + queue.getLength());
         int len = queue.getLength();
         for(int i = 0; i < len; i++)
         {
@@ -683,9 +624,9 @@ public class BinaryTree<E extends Comparable> implements Iterable<E>
     
     private class inOrderIterator implements Iterator<E>
     {
-        private BinaryTree tree; 
+        private APBinaryTree tree; 
         private APQueue queue = new APQueue();
-        public inOrderIterator(BinaryTree tree)
+        public inOrderIterator(APBinaryTree tree)
         {
             this.tree = tree;      
             this.queue = inOrder(this.tree.root, this.queue);
@@ -725,9 +666,9 @@ public class BinaryTree<E extends Comparable> implements Iterable<E>
     
     private class PreOrderIterator implements Iterator<E>
     {
-        private BinaryTree tree; 
+        private APBinaryTree tree; 
         private APQueue queue = new APQueue();
-        public PreOrderIterator(BinaryTree tree)
+        public PreOrderIterator(APBinaryTree tree)
         {
             this.tree = tree;      
             this.queue = preOrder(this.tree.root, this.queue);
@@ -767,9 +708,9 @@ public class BinaryTree<E extends Comparable> implements Iterable<E>
     
     private class PostOrderIterator implements Iterator<E>
     {
-        private BinaryTree tree; 
+        private APBinaryTree tree; 
         private APQueue queue = new APQueue();
-        public PostOrderIterator(BinaryTree tree)
+        public PostOrderIterator(APBinaryTree tree)
         {
             this.tree = tree;      
             this.queue = postOrder(this.tree.root, this.queue);
@@ -815,9 +756,9 @@ public class BinaryTree<E extends Comparable> implements Iterable<E>
     
      private class BreadthFirstIterator implements Iterator<E>
     {
-        private BinaryTree tree; 
+        private APBinaryTree tree; 
         private APQueue queue = new APQueue();
-        public BreadthFirstIterator(BinaryTree tree)
+        public BreadthFirstIterator(APBinaryTree tree)
         {
             this.tree = tree;      
             this.queue = new APQueue();

@@ -7,6 +7,7 @@ package apbinarytree;
 
 import java.util.Iterator;
 
+import APClasses.*;
 /**
  *
  * @author fifiteklemedhin
@@ -37,6 +38,7 @@ public class APBinaryTree<E extends Comparable> implements Iterable<E>
     public static void main(String[] args)
     {
         APBinaryTree tree = new APBinaryTree();
+        APConsole console = new APConsole("");
         
         tree.add(2);
         tree.add(4);
