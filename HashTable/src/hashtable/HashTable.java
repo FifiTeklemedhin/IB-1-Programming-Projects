@@ -5,6 +5,7 @@
  */
 package hashtable;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -28,6 +29,8 @@ public class HashTable<E> implements Collection {
     {
         HashTable table = new HashTable(10);
         
+        //******************** Basic Hashtable Properties ********************
+        
         // Adding/removing manually: works
         System.out.println("ADDING/REMOVING MANUALLY: ");
         System.out.println(table.add(1));
@@ -49,7 +52,7 @@ public class HashTable<E> implements Collection {
         for(Object i: table)
             System.out.println(i);
         
-        // Size/refresh/lazycount: work 
+        // Size/refresh/lazycount: works 
         System.out.println("\nSIZE/REFRESH/LAZYCOUNT: ");
         
         table.refresh();
@@ -62,13 +65,52 @@ public class HashTable<E> implements Collection {
         System.out.println(table.contains(1));
         System.out.println(table.isEmpty());
         
+        //******************** Collection Properties ********************
+        
+        //toArray(): works
+        Object[] modArr = table.toArray();
+        
+        System.out.println("\nTO ARRAY: ");
+        for(int i = 0 ; i < modArr.length; i ++)
+            System.out.println(modArr[i]);
+        
+        //TODO: toArray(Obj[])
+        System.out.println("\nTO ARRAY(Obj[]): TODO");
+      
+        //containsAll: DOES NOT WORK, SOMETHING WITH CONTAINS METHOD?
+        System.out.println("\nCONTAINS ALL: ");
+        
+            //should return true
+            System.out.println(table.containsAll(table));
+            ArrayList trueArr = new ArrayList();
+            Object[] toArr = table.toArray();
+            for(Object i : toArr)
+            {
+                trueArr.add(i);
+            }
+            for(Object i : trueArr)
+            {
+                System.out.println(i);
+            }
+            System.out.println(table.containsAll(trueArr));
+        
+            //should return false
+            ArrayList falseArr = new ArrayList();
+            falseArr.add(0);
+            falseArr.add(1);
+            falseArr.add(2);
+            falseArr.add(3);
+            falseArr.add(4);
+            falseArr.add(5);
+            falseArr.add(6);
+            System.out.println(table.containsAll(falseArr));
     }
     
-    public HashTable(int size)
+    public HashTable(int length)
     {
-        this.size = size;
+        this.size = 0;
         this.lazyCount = 0;
-        this.table = new Object[size];
+        this.table = new Object[length];
         this.lazyToken = new Object();
         
     }
@@ -101,20 +143,6 @@ public class HashTable<E> implements Collection {
             if(this.table[j] == this.lazyToken)
                 this.table[j] = null;   
         }
-        
-        /*   
-        Object[] placeholder = new Object[this.table.length]; 
-        for(int j = 0; j < this.table.length; j++) //copies all of the objects in the table to another list
-        {
-            placeholder[j] = this.table[j];
-        }
-        
-        for(int j = 0; j < placeholder.length; j++) //deletes lazy tokens and reinserts the items    
-        {
-            if(placeholder[j] != this.lazyToken && placeholder[j] != null)
-                add(placeholder[j]);   
-        }
-        */
         
         this.size -= lazyCount;
         this.lazyCount = 0;
@@ -224,18 +252,36 @@ public class HashTable<E> implements Collection {
     }
 
     @Override
-    public Object[] toArray() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Object[] toArray() 
+    {
+        Object[] modifiedTable = new Object[this.size - lazyCount];
+        int modifiedIndex = 0;
+        for(int i = 0 ; i < this.table.length; i ++)
+        {
+            if(this.table[i] != this.lazyToken && this.table[i] != null)
+            {
+                modifiedTable[modifiedIndex] = this.table[i];
+                modifiedIndex += 1;
+            }
+        }
+        
+        return modifiedTable;
     }
 
     @Override
     public Object[] toArray(Object[] a) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
     @Override
     public boolean containsAll(Collection c) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean contains = true;
+        
+        for(Object i : c)
+        {
+            if(this.contains(c) == false)
+                return false;
+        }
+        return true;
     }
 
     @Override
@@ -257,17 +303,21 @@ public class HashTable<E> implements Collection {
     public void clear() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+   
     
     
     private class HashTableIterator implements Iterator<E>
     {
         private HashTable table;
         private int index;
+        private boolean zeroPassed; //makes sure you start at index 0
 
         public HashTableIterator(HashTable table)
         {
             this.table = table;
             this.index = 0;
+            this.zeroPassed = false;
         }
         
         @Override
@@ -288,6 +338,12 @@ public class HashTable<E> implements Collection {
         @Override
         public E next() 
         {
+            if(index == 0 && !zeroPassed)
+            {
+                zeroPassed = true;
+                return (E) this.table.table[0];
+            }
+            
             for(int j = this.index + 1; j < this.table.size(); j++) //find the next non-null/non-lazy object if it's there
             {
                if(this.table.table[j] != null && this.table.table[j] != this.table.lazyToken)

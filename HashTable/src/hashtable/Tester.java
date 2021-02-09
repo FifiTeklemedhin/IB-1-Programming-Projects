@@ -40,9 +40,9 @@ public class Tester {
         // Size/refresh/lazycount: work 
         System.out.println("\nSIZE/REFRESH/LAZYCOUNT: ");
         
-        table.refresh();
+        //table.refresh(); private func
         System.out.println(table.size());
-        System.out.println(table.lazyCount);
+        //System.out.println(table.lazyCount); private var
         
         // Contains/isEmpty: works
         System.out.println("\nCONTAINS/ISEMPTY: ");
