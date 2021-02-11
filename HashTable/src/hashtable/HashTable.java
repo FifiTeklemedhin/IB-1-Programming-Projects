@@ -51,13 +51,15 @@ public class HashTable<E> implements Collection {
         
         for(Object i: table)
             System.out.println(i);
-        
+      
         // Size/refresh/lazycount: works 
         System.out.println("\nSIZE/REFRESH/LAZYCOUNT: ");
-        
+   
         table.refresh();
+
         System.out.println(table.size());
         System.out.println(table.lazyCount);
+       
         
         // Contains/isEmpty: works
         System.out.println("\nCONTAINS/ISEMPTY: ");
@@ -69,15 +71,15 @@ public class HashTable<E> implements Collection {
         
         //toArray(): works
         Object[] modArr = table.toArray();
-        
+    
         System.out.println("\nTO ARRAY: ");
         for(int i = 0 ; i < modArr.length; i ++)
             System.out.println(modArr[i]);
-        
+         
         //TODO: toArray(Obj[])
         System.out.println("\nTO ARRAY(Obj[]): TODO");
       
-        //containsAll: DOES NOT WORK, SOMETHING WITH CONTAINS METHOD?
+        //containsAll(): works
         System.out.println("\nCONTAINS ALL: ");
         
             //should return true
@@ -102,7 +104,34 @@ public class HashTable<E> implements Collection {
             falseArr.add(5);
             falseArr.add(6);
             System.out.println(table.containsAll(falseArr));
-    }
+        
+        //addAll(): works
+        System.out.println("\nADD ALL: ");
+        
+            //should not work
+            ArrayList tensArr = new ArrayList();
+            for(int i = 10; i < 100; i+= 10)
+                tensArr.add(i + "");
+     
+            System.out.println(table.addAll(tensArr));
+        
+            for(Object i: table.toArray())
+            System.out.print(i + ", ");
+        
+           //should work
+           System.out.println("\n");
+           tensArr = new ArrayList();
+           for(int i = 10; i < 100; i+= 10)
+                tensArr.add(i);
+
+           System.out.println(table.addAll(tensArr));
+
+           for(Object i: table.toArray())
+               System.out.print(i + ", ");
+
+        
+        
+}
     
     public HashTable(int length)
     {
@@ -134,12 +163,13 @@ public class HashTable<E> implements Collection {
     {
                     
         if(this.lazyCount / this.table.length >= .1) // if lazytokesn are 10% of size, resize
-             this.table = new Object[this.table.length * 10];
+             this.resize(this.table.length * 10);
         
         for(int j = 0; j < this.table.length; j++) //deletes lazy tokens and reinserts the items    
         {
             if(this.table[j] == this.lazyToken)
-                this.table[j] = null;   
+                this.table[j] = null;;
+
         }
         
         this.size -= lazyCount;
@@ -284,7 +314,32 @@ public class HashTable<E> implements Collection {
 
     @Override
     public boolean addAll(Collection c) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        // finds objects from hashtable and other collection to compare whether they store same type of data
+        Object cObj = "";
+        for(Object i : c)
+        {
+            if(i != null)
+               cObj = i;
+        }
+        
+        Object thisObj = 1;
+        for(Object i : this)
+        {
+            if(i != null)
+               thisObj = i;
+        }
+        
+        //if they don't, return false
+        if(!thisObj.getClass().equals(cObj.getClass()))
+            return false;
+        
+        //else adds
+        for(Object i : c)
+        {
+            this.add(i);
+        }    
+        return true;
     }
 
     @Override
@@ -321,10 +376,10 @@ public class HashTable<E> implements Collection {
         @Override
         public boolean hasNext() 
         {
-           if(index == this.table.size()) //if at end, cannot have next
+           if(index == this.table.table.length) //if at end, cannot have next
                return false;
            
-           for(int j = this.index + 1; j < this.table.size(); j++) //if there is a non-null, non-lazy object
+           for(int j = this.index + 1; j < this.table.table.length; j++) //if there is a non-null, non-lazy object
            {
                if(this.table.table[j] != null && this.table.table[j] != this.table.lazyToken)
                    return true;
@@ -342,7 +397,7 @@ public class HashTable<E> implements Collection {
                 return (E) this.table.table[0];
             }
             
-            for(int j = this.index + 1; j < this.table.size(); j++) //find the next non-null/non-lazy object if it's there
+            for(int j = this.index + 1; j < this.table.table.length; j++) //find the next non-null/non-lazy object if it's there
             {
                if(this.table.table[j] != null && this.table.table[j] != this.table.lazyToken)
                {
