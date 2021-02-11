@@ -82,15 +82,13 @@ public class HashTable<E> implements Collection {
         
             //should return true
             System.out.println(table.containsAll(table));
+            
+            //should return true
             ArrayList trueArr = new ArrayList();
             Object[] toArr = table.toArray();
             for(Object i : toArr)
             {
                 trueArr.add(i);
-            }
-            for(Object i : trueArr)
-            {
-                System.out.println(i);
             }
             System.out.println(table.containsAll(trueArr));
         
@@ -278,7 +276,7 @@ public class HashTable<E> implements Collection {
         
         for(Object i : c)
         {
-            if(this.contains(c) == false)
+            if(this.contains(i) == false)
                 return false;
         }
         return true;
