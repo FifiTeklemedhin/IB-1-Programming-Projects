@@ -5,9 +5,12 @@
  */
 package hashtable;
 
+import APClasses.APConsole;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.function.Consumer;
 
 /**
  *
@@ -27,63 +30,73 @@ public class HashTable<E> implements Collection {
     */
     public static void main (String[] args)
     {
+        APConsole console = new APConsole();
         HashTable table = new HashTable(10);
         
         //******************** Basic Hashtable Properties ********************
         
         // Adding/removing manually: works
-        System.out.println("ADDING/REMOVING MANUALLY: ");
-        System.out.println("\t" + table.add(1));
-        System.out.println("\t" + table.add(2));
-        System.out.println("\t" + table.add(3));
-        System.out.println("\t" + table.remove(1));
-        System.out.println("\t" + table.remove(2));
+        console.println("ADDING/REMOVING MANUALLY: ");
+        console.println("\t" + table.add(1));
+        console.println("\t" + table.add(2));
+        console.println("\t" + table.add(3));
+        console.println("\t" + table.remove(1));
+        console.println("\t" + table.remove(2));
         
         // Adding in for-loop: works so long as ending index is static (ie not size/length of table, which changes)
-        System.out.println("\nADDING W/ LOOP: ");
+        console.println("\nADDING W/ LOOP: ");
         for(Integer i = 0; i <= 5; i ++)
          table.add(i);
 
         // Iterator: works 
-        System.out.println("\nITERATOR: ");
+        console.println("\nITERATOR: ");
         
         Iterator<HashTable> iterator = table.iterator();
         
         for(Object i: table)
-            System.out.println("\t" + i);
+            console.println("\t" + i);
       
         // Size/refresh/lazycount: works 
-        System.out.println("\nSIZE/REFRESH/LAZYCOUNT: ");
+        console.println("\nSIZE/REFRESH/LAZYCOUNT: ");
    
         table.refresh();
 
-        System.out.println("\t" + table.size());
-        System.out.println("\t" + table.lazyCount);
+        console.println("\t" + table.size());
+        console.println("\t" + table.lazyCount);
        
         
         // Contains/isEmpty: works
-        System.out.println("\nCONTAINS/ISEMPTY: ");
+        console.println("\nCONTAINS/ISEMPTY: ");
         
-        System.out.println("\t" + table.contains(1));
-        System.out.println("\t" + table.isEmpty());
+        console.println("\t" + table.contains(1));
+        console.println("\t" + table.isEmpty());
         
         //******************** Collection Properties ********************
         
         //toArray(): works
         Object[] modArr = table.toArray();
     
-        System.out.println("\nTO ARRAY: ");
+        console.println("\nTO ARRAY: ");
         for(int i = 0 ; i < modArr.length; i ++)
-            System.out.println("\t" + modArr[i]);
+            console.println("\t" + modArr[i]);
          
         //TODO: toArray(Obj[])
-        System.out.println("\nTO ARRAY(Obj[]): TODO");
-      
+        console.println("\nTO ARRAY(Obj[]):");
+        
+        String[] hundredsArr = new String[10];
+            for(int i = 100; i < hundredsArr.length; i+= 100)
+                hundredsArr[i ] = i + "";
+        //table.toArray(hundredsArr);
+        console.print("\t");
+        for(Object i: table)
+            console.print(i.getClass() + ", ");
+        
+        
         //containsAll(): works
-        System.out.println("\nCONTAINS ALL: ");
+        console.println("\nCONTAINS ALL: ");
         
             //should return true
-            System.out.println("\t" + table.containsAll(table));
+            console.println("\t" + table.containsAll(table));
             
             //should return true
             ArrayList trueArr = new ArrayList();
@@ -92,7 +105,7 @@ public class HashTable<E> implements Collection {
             {
                 trueArr.add(i);
             }
-            System.out.println("\t" + table.containsAll(trueArr));
+            console.println("\t" + table.containsAll(trueArr));
         
             //should return false
             ArrayList falseArr = new ArrayList();
@@ -103,42 +116,48 @@ public class HashTable<E> implements Collection {
             falseArr.add(4);
             falseArr.add(5);
             falseArr.add(6);
-            System.out.println("\t" + table.containsAll(falseArr));
+            console.println("\t" + table.containsAll(falseArr));
         
         //addAll(): works
-        System.out.println("\nADD ALL: ");
+        console.println("\nADD ALL: ");
         
             //should not work
             ArrayList tensArr = new ArrayList();
             for(int i = 10; i < 100; i+= 10)
                 tensArr.add(i + "");
      
-            System.out.println("\t" + table.addAll(tensArr));
+            console.println("\t" + table.addAll(tensArr));
         
-            System.out.print("\t");
+            console.print("\t");
             for(Object i: table.toArray())
-            System.out.print(i + ", ");
+            console.print(i + ", ");
         
            //should work
-           System.out.println("\n");
+           console.println("\n");
            tensArr = new ArrayList();
            for(int i = 10; i < 100; i+= 10)
                 tensArr.add(i);
 
-           System.out.println("\t" + table.addAll(tensArr));
+           console.println("\t" + table.addAll(tensArr));
 
-           System.out.print("\t");
+           console.print("\t");
            for(Object i: table.toArray())
-               System.out.print(i + ", ");
+               console.print(i + ", ");
 
         //removeAll(): works
-        System.out.println("\n\nREMOVE ALL: ");
+        console.println("\n\nREMOVE ALL: ");
         table.removeAll(tensArr);
-        System.out.print("\t");
+        console.print("\t");
         for(Object i: table.toArray())
-               System.out.print(i + ", ");
+               console.print(i + ", ");
                 
-                
+        //retainAll(): works
+        console.println("\nRETAIN ALL: ");
+        table.addAll(tensArr);
+        table.retainAll(tensArr);
+        console.print("\t");
+        for(Object i: table)
+               console.print(i + ", ");        
 
         
         
@@ -291,7 +310,7 @@ public class HashTable<E> implements Collection {
     }
 
     @Override
-    public Object[] toArray() 
+    public Object[] toArray()
     {
         Object[] modifiedTable = new Object[this.size - lazyCount];
         int modifiedIndex = 0;
@@ -342,11 +361,13 @@ public class HashTable<E> implements Collection {
             return false;
         
         //else adds
+        boolean changed = false;
         for(Object i : c)
         {
-            this.add(i);
+            if(this.add(i) == true)
+                changed = true;
         }    
-        return true;
+        return changed;
     }
     
     
@@ -372,29 +393,70 @@ public class HashTable<E> implements Collection {
             return false;
         
         //else adds
+        boolean changed = false;
         for(Object i : c)
         {
-            this.remove(i);
+            if(this.remove(i) == true)
+                changed = true;
         }    
-        return true;
+        return changed;
     }
     
     @Override
-    public Object[] toArray(Object[] a) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    @Override
     public boolean retainAll(Collection c) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // finds objects from hashtable and other collection to compare whether they store same type of data
+        Object cObj = "";
+        for(Object i : c)
+        {
+            if(i != null)
+               cObj = i;
+        }
+        
+        Object thisObj = 1;
+        for(Object i : this)
+        {
+            if(i != null)
+               thisObj = i;
+        }
+        
+        //if they don't, return false
+        if(!thisObj.getClass().equals(cObj.getClass()))
+            return false;
+        
+        boolean changed = false;
+        for(Object i : this.table)
+        {
+            if(i != null && !c.contains(i))
+            {
+                this.remove(i);
+                changed = true;
+            }
+        }  
+        return changed;
+        
     }
 
     @Override
     public void clear() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+      
+        removeAll(this);  
+    }
+    
+  
+ 
+
+    @Override
+    public void forEach(Consumer action) {
+        Collection.super.forEach(action); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object[] toArray(Object[] a) {
+        return Arrays.copyOf(this.toArray(), this.size, a.getClass());
+        
     }
 
    
-    
     
     private class HashTableIterator implements Iterator<E>
     {
