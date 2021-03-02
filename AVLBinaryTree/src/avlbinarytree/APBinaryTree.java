@@ -16,29 +16,17 @@ public class APBinaryTree<E extends Comparable> implements Iterable<E>
 {
     protected Node<E> root = new Node(null, null, null);
     private int size = 0;
-    APConsole console = new APConsole("");
+    APConsole console = new APConsole("1");
     String toStr = "";
     
-
-    //REMOVE WORKS FOR ONLY FIRST AND SECOND VALUES
     /*
         TODO:
-            * E add(E data)
-            * int length()
-            * int subtreeLength(Node<E>) --> private
-            * E remove(E data)
-            * Iterator iterator() --> in order
-            * Iterator getPreOrderIterator()
-            * Iterator getPostOrderIterator()
+            * print tree
+            * get height of a given node
+            *
     */
     
-    /*
-        * which thing do you by
-    */
-    
-    /*
-        
-    */
+  
     public static void main(String[] args)
     {
         APBinaryTree tree = new APBinaryTree();
@@ -50,8 +38,9 @@ public class APBinaryTree<E extends Comparable> implements Iterable<E>
         tree.add(3);
         tree.add(5);
         
-        //console.println("root: " + tree.root.right);
+        
         tree.printTree(tree.root, 10, 10);
+        console.println("root height: " + tree.root.rightHeight());
     }
     E add(E data)
     {
@@ -329,23 +318,21 @@ public class APBinaryTree<E extends Comparable> implements Iterable<E>
     }
     public void printTree(Node root, int spaces, int increment)
     {
-        if(root == null)
+        if(root == null) //if null, go to next recursive call
            return;
         
-        spaces += increment;
-        if(root.right != null)
-            printTree(root.right, spaces, increment);
+        spaces += increment; //spaces increment depending on level of node within tree
+        if(root.right != null) 
+            printTree(root.right, spaces, increment); //print right child first
         
-        console.println("");
+        console.println(""); //create a new line and then indent 
         for(int j = increment; j < spaces; j++)
             console.print(" ");
         
-        console.println(root.data);
+        console.println(root.data); //print current node
         
-        if(root.left != null)
+        if(root.left != null) //print left child
             printTree(root.left, spaces, increment);
-        
-        
     }
      @Override
     public Iterator<E> iterator() 

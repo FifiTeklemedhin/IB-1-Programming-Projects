@@ -34,6 +34,37 @@ public class Node<E>
         return left == null && right == null;
     }
     
+    public int leftHeight()
+    {
+        return leftHeight(this, 0);
+    }
+    
+    public int rightHeight()
+    {
+        return rightHeight(this, 0);
+    }
+    
+    public int leftHeight(Node<E> current, int height)
+    {
+        if(current == null)
+            return height;
+        
+        if(current.left == null)
+            return height;
+        
+        return leftHeight(current.left, height + 1);
+    }
+    
+     public int rightHeight(Node<E> current, int height)
+    {
+        if(current == null)
+            return height;
+        
+        if(current.right == null)
+            return height;
+        
+        return rightHeight(current.right, height + 1);
+    }
     public String toString()
     {
         return this.data + "";
