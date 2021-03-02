@@ -34,6 +34,15 @@ public class Node<E>
         return left == null && right == null;
     }
     
+    public boolean isBalanced()
+    {
+        return Math.abs(this.rightHeight() - this.leftHeight()) <= 1;
+    }
+    
+    public int height()
+    {
+        return Math.max(this.leftHeight(), this.rightHeight()) + 1;
+    }
     public int leftHeight()
     {
         return leftHeight(this, 0);
@@ -65,6 +74,8 @@ public class Node<E>
         
         return rightHeight(current.right, height + 1);
     }
+     
+    
     public String toString()
     {
         return this.data + "";
