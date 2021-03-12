@@ -1,0 +1,43 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package avlbinarytree;
+
+import APClasses.APConsole;
+import avlbinarytree.AVLBinaryTree;/**
+ *
+ * @author fifiteklemedhin
+ */
+public class Tester 
+{
+    
+    public static void main(String[] args)
+    {
+        AVLBinaryTree tree = new AVLBinaryTree();
+        APConsole console = new APConsole("AVL Tree Tester");
+        
+        tree.add(3);
+        tree.add(2);
+        tree.add(1);
+        
+        
+        tree.printTree(tree.root, 3, 3);
+        console.println("root height: " + tree.root.height());
+        console.println(tree.rightRotationWorks(tree.root.left, tree.root)); // should work for adding 3,2,1
+        
+        tree = new AVLBinaryTree();
+        tree.add(7);
+        tree.add(8);
+        tree.add(4);
+        tree.add(5);
+        tree.add(3);
+       // tree.printTree(tree.root, 3, 3);
+        
+        tree.rightRotation(tree.root.left, tree.root);
+        
+        tree.printTree(tree.root, 10, 10);
+    }
+    
+}

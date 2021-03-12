@@ -11,8 +11,11 @@ package avlbinarytree;
  */
 public class Node<E> 
 {
+    //needs parent to assign new children after a rotation
+    
     public Node<E> left;
     public Node<E> right;
+    public Node<E> parent;
     
     public E data;
     
@@ -21,9 +24,22 @@ public class Node<E>
         this.data = data;
     }
     
+    public Node(E data, Node<E> parent)
+    {
+        this.data = data;
+        this.parent = parent;
+    }
+    
     public Node(E data, Node<E> left, Node<E> right)
     {
         this(data);
+        this.left = left;
+        this.right = right;
+    }
+    
+    public Node(E data, Node<E> left, Node<E> right, Node<E> parent)
+    {
+        this(data, parent);
         this.left = left;
         this.right = right;
     }

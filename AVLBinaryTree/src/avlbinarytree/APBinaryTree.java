@@ -14,11 +14,16 @@ import APClasses.*;
  */
 public class APBinaryTree<E extends Comparable> implements Iterable<E>
 {
-    protected Node<E> root = new Node(null, null, null);
+    public Node<E> root = new Node(null, null, null);
     private int size = 0;
     APConsole console = new APConsole("1");
     String toStr = "";
     
+    
+    public Node getRoot()
+    {
+        return this.root;
+    }
     
     E add(E data)
     {
