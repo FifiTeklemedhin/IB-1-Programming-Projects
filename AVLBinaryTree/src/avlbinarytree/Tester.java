@@ -53,6 +53,21 @@ public class Tester
             tree.leftRotation(tree.root.right);
             tree.printTree(tree.root, 10, 10);
             
+        //right double rotations
+            tree = new AVLBinaryTree();
+            tree.add(47);
+            tree.add(51);
+            tree.add(60);
+            tree.add(50);
+            tree.add(30);
+            tree.add(40);
+            tree.add(42);
+            tree.add(29);
+            tree.add(45);
+
+            tree.doubleRightRotation(tree.root);
+            tree.printTree(tree.root, 10, 10);
+            
         
     }
     

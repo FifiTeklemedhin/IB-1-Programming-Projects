@@ -19,10 +19,13 @@ public class AVLBinaryTree<E extends Comparable> extends APBinaryTree{
         super();
     }
    
-   
     public void rightRotation(Node rotatedNode)
     {
          rightRotation(rotatedNode, rotatedNode.parent);
+    }
+    public void leftRotation(Node rotatedNode)
+    {
+        leftRotation(rotatedNode, rotatedNode.parent);
     }
     
     public void rightRotation(Node rotatedNode, Node parent)
@@ -56,10 +59,7 @@ public class AVLBinaryTree<E extends Comparable> extends APBinaryTree{
         rotatedNode.right.parent = rotatedNode;
     }
     
-    public void leftRotation(Node rotatedNode)
-    {
-        leftRotation(rotatedNode, rotatedNode.parent);
-    }
+  
     
     public void leftRotation(Node rotatedNode, Node parent)
     {
@@ -92,7 +92,51 @@ public class AVLBinaryTree<E extends Comparable> extends APBinaryTree{
         rotatedNode.left.parent = rotatedNode;
     }
     
+    public void doubleRightRotation(Node imbalancedNode) //rotates grandchild to the right
+    {
+        //what do you do if no grandchildren are unbalanced?
+        //what if the child node is not imbalanced? Does grandchildren refer to any node below the child of the imbalanced node?
+        
+        System.out.println(imbalancedNode.left != null);
+        System.out.println(!imbalancedNode.left.isBalanced());
+        System.out.println(imbalancedNode.left.right.height() + ", " +  imbalancedNode.left.left.height());
+         
+        Node rotatingGrandchild;
+        if(imbalancedNode.left != null) //if child isn't null
+        {
+            if(!imbalancedNode.left.isBalanced()) //if there is a grandchild that is unbalanced
+            {
+                if(imbalancedNode.left.right.height() > imbalancedNode.left.left.height()) //finds the imbalanced grandchild
+                    rotatingGrandchild = imbalancedNode.left.right; 
+                else
+                    rotatingGrandchild = imbalancedNode.left.left; 
+                
+                rightRotation(rotatingGrandchild); //rotates to the right
+            }
+        }  
+        
+    }
     
+    public void doubleLeftRotation(Node imbalancedNode) //rotates grandchild to the left
+    {
+        //what do you do if no grandchildren are unbalanced?
+        //what if the child node is not imbalanced? Does grandchildren refer to any node below the child of the imbalanced node?
+        
+        Node rotatingGrandchild;
+        if(imbalancedNode.right != null) //if child isn't null
+        {
+            if(!imbalancedNode.right.isBalanced()) //if there is a grandchild that is unbalanced
+            {
+                if(imbalancedNode.right.right.height() > imbalancedNode.right.left.height()) //finds the imbalanced grandchild
+                    rotatingGrandchild = imbalancedNode.right.right; 
+                else
+                    rotatingGrandchild = imbalancedNode.right.left; 
+                
+                leftRotation(rotatingGrandchild); //rotates to the left
+            }
+        }        
+    }
+             
     public boolean rightRotationWorks(Node newRoot, Node oldRoot)
     {
         // all of these conditions have to be false in order for the right rotation to work
