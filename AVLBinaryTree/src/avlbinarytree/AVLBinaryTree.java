@@ -96,11 +96,7 @@ public class AVLBinaryTree<E extends Comparable> extends APBinaryTree{
     {
         //what do you do if no grandchildren are unbalanced?
         //what if the child node is not imbalanced? Does grandchildren refer to any node below the child of the imbalanced node?
-        
-        System.out.println(imbalancedNode.left != null);
-        System.out.println(!imbalancedNode.left.isBalanced());
-        System.out.println(imbalancedNode.left.right.height() + ", " +  imbalancedNode.left.left.height());
-         
+       
         Node rotatingGrandchild;
         if(imbalancedNode.left != null) //if child isn't null
         {
@@ -111,7 +107,29 @@ public class AVLBinaryTree<E extends Comparable> extends APBinaryTree{
                 else
                     rotatingGrandchild = imbalancedNode.left.left; 
                 
-                rightRotation(rotatingGrandchild); //rotates to the right
+                //rightRotation(rotatingGrandchild, root); //rotates to the right
+                
+                
+                Node parent = rotatingGrandchild.parent;
+                rotatingGrandchild.left = parent.left;
+                parent.left = null;
+
+                if(imbalancedNode == this.getRoot())
+                    this.root = rotatingGrandchild;
+
+                // if they have one, assigns the rotating node's right child to become the parent's left child 
+                if(rotatingGrandchild.right != null)
+                {
+                    imbalancedNode.left = rotatingGrandchild.right;
+                }  
+
+                // assigns the rotating node's parent to become its right child 
+                rotatingGrandchild.right = imbalancedNode;
+
+                rotatingGrandchild.parent = null;
+                
+                //sets the old parent's parent to be the rotated node
+                imbalancedNode.parent = rotatingGrandchild;
             }
         }  
         
@@ -123,6 +141,7 @@ public class AVLBinaryTree<E extends Comparable> extends APBinaryTree{
         //what if the child node is not imbalanced? Does grandchildren refer to any node below the child of the imbalanced node?
         
         Node rotatingGrandchild;
+        
         if(imbalancedNode.right != null) //if child isn't null
         {
             if(!imbalancedNode.right.isBalanced()) //if there is a grandchild that is unbalanced
@@ -133,8 +152,10 @@ public class AVLBinaryTree<E extends Comparable> extends APBinaryTree{
                     rotatingGrandchild = imbalancedNode.right.left; 
                 
                 leftRotation(rotatingGrandchild); //rotates to the left
+               
             }
-        }        
+        }  
+       
     }
              
     public boolean rightRotationWorks(Node newRoot, Node oldRoot)

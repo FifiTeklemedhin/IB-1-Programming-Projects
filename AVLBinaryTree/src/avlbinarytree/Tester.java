@@ -68,7 +68,7 @@ public class Tester
             tree.doubleRightRotation(tree.root);
             tree.printTree(tree.root, 10, 10);
             
-        
+            System.out.println(tree.root.left);
     }
     
 }
