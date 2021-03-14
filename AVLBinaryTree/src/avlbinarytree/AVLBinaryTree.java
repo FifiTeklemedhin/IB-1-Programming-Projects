@@ -22,33 +22,7 @@ public class AVLBinaryTree<E extends Comparable> extends APBinaryTree{
    
     public void rightRotation(Node rotatedNode)
     {
-        if(rotatedNode.parent == null)
-            return;
-        
-        if(rotatedNode.parent == this.getRoot())
-            this.root = rotatedNode;
-        
-        // if they have one, assigns the rotating node's right child to become the parent's left child 
-        if(rotatedNode.right != null)
-        {
-            rotatedNode.parent.left = rotatedNode.right;
-        }
-        else
-            rotatedNode.parent.left = null;
-        
-        // assigns the rotating node's parent to become its right child 
-        rotatedNode.right = rotatedNode.parent;
-        
-        // if they have one, assigns the parent's parent to become the parent's left child 
-        if(rotatedNode.parent.parent != null)
-        {
-            rotatedNode.parent = rotatedNode.parent.parent;
-        }
-        else
-            rotatedNode.parent = null;
-        
-        //sets the old parent's parent to be the rotated node
-        rotatedNode.right.parent = rotatedNode;
+         rightRotation(rotatedNode, rotatedNode.parent);
     }
     
     public void rightRotation(Node rotatedNode, Node parent)
@@ -70,10 +44,10 @@ public class AVLBinaryTree<E extends Comparable> extends APBinaryTree{
         // assigns the rotating node's parent to become its right child 
         rotatedNode.right = parent;
         
-        // if they have one, assigns the parent's parent to become the parent's left child 
+         // if they have one, assigns rotated node to have the parent's parent
         if(parent.parent != null)
         {
-            parent = rotatedNode.parent.parent;
+            rotatedNode.parent = parent.parent;
         }
         else
             parent = null;
@@ -84,33 +58,7 @@ public class AVLBinaryTree<E extends Comparable> extends APBinaryTree{
     
     public void leftRotation(Node rotatedNode)
     {
-        if(rotatedNode.parent == null)
-            return;
-        
-        if(rotatedNode.parent == this.getRoot())
-            this.root = rotatedNode;
-        
-        // if they have one, assigns the rotating node's right child to become the parent's left child 
-        if(rotatedNode.left != null)
-        {
-            rotatedNode.parent.right = rotatedNode.left;
-        }
-        else
-            rotatedNode.parent.right = null;
-        
-        // assigns the rotating node's parent to become its right child 
-        rotatedNode.left = rotatedNode.parent;
-        
-        // if they have one, assigns the parent's parent to become the parent's left child 
-        if(rotatedNode.parent.parent != null)
-        {
-            rotatedNode.parent = rotatedNode.parent.parent;
-        }
-        else
-            rotatedNode.parent = null;
-        
-        //sets the old parent's parent to be the rotated node
-        rotatedNode.left.parent = rotatedNode;
+        leftRotation(rotatedNode, rotatedNode.parent);
     }
     
     public void leftRotation(Node rotatedNode, Node parent)
@@ -121,7 +69,7 @@ public class AVLBinaryTree<E extends Comparable> extends APBinaryTree{
         if(parent == this.getRoot())
             this.root = rotatedNode;
         
-        // if they have one, assigns the rotating node's right child to become the parent's left child 
+        // if they have one, assigns the rotating node's left child to become the parent's right child 
         if(rotatedNode.left != null)
         {
             parent.right = rotatedNode.left;
@@ -129,14 +77,13 @@ public class AVLBinaryTree<E extends Comparable> extends APBinaryTree{
         else
             parent.right = null;
         
-        // assigns the rotating node's parent to become its right child 
+        // assigns the rotating node's parent to become its left child 
         rotatedNode.left = parent;
         
-        // if they have one, assigns the parent's parent to become the parent's left child 
+        // if they have one, assigns rotated node to have the parent's parent
         if(parent.parent != null)
         {
             rotatedNode.parent = parent.parent;
-            //parent = rotatedNode.parent.parent;
         }
         else
             parent = null;
@@ -145,7 +92,7 @@ public class AVLBinaryTree<E extends Comparable> extends APBinaryTree{
         rotatedNode.left.parent = rotatedNode;
     }
     
-    //TODO: change to be not static after finished
+    
     public boolean rightRotationWorks(Node newRoot, Node oldRoot)
     {
         // all of these conditions have to be false in order for the right rotation to work

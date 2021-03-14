@@ -28,7 +28,7 @@ public class APBinaryTree<E extends Comparable> implements Iterable<E>
 
     public E add(E data)
     {
-        return (E) this.addFrom(this.root, data, this.root);
+        return  addFrom(this.root, data, this.root);
     }
     
     private E addFrom(Node<E> currentNode, E data, Node parent)
@@ -36,7 +36,7 @@ public class APBinaryTree<E extends Comparable> implements Iterable<E>
         
         if (currentNode.data == null) 
         {
-            root = new Node(data, parent);
+            root = new Node(data);
             size += 1;
             return data;
         }
@@ -56,7 +56,8 @@ public class APBinaryTree<E extends Comparable> implements Iterable<E>
                 {
                     currentNode.right = new Node(data, parent);
                 }
-                currentNode.right = new Node(data);
+                else
+                    currentNode.right = new Node(data);
                 size += 1;
                 return data;
             }
@@ -70,7 +71,8 @@ public class APBinaryTree<E extends Comparable> implements Iterable<E>
                 {
                     currentNode.left = new Node(data, parent);
                 }
-                currentNode.left = new Node(data);
+                else
+                    currentNode.left = new Node(data);
                 
                 size += 1;
                 return data;
@@ -89,7 +91,8 @@ public class APBinaryTree<E extends Comparable> implements Iterable<E>
                         currentNode.right = new Node(data, parent);
                     }
                     
-                    currentNode.right = new Node(data);
+                    else
+                        currentNode.right = new Node(data);
                     return data;
                 }
                 else
@@ -103,7 +106,8 @@ public class APBinaryTree<E extends Comparable> implements Iterable<E>
                     {
                         currentNode.left = new Node(data, parent);
                     }
-                    currentNode.left = new Node(data);
+                    else
+                        currentNode.left = new Node(data);
                     return data;
                 }
 

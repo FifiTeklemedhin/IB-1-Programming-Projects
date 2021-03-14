@@ -50,7 +50,7 @@ public class Tester
             tree.add(11);
             tree.add(4);
 
-            tree.leftRotation(tree.root.right, tree.root);
+            tree.leftRotation(tree.root.right);
             tree.printTree(tree.root, 10, 10);
             
         
