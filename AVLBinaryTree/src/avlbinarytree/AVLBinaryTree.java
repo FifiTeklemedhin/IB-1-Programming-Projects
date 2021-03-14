@@ -14,15 +14,6 @@ import APClasses.APConsole;
  */
 public class AVLBinaryTree extends APBinaryTree{
 
-      /*
-        TODO:
-            * print tree
-            * get height of a given node
-            * 
-    */
-    
-  
-    
     public AVLBinaryTree()
     {
         super();
@@ -88,6 +79,68 @@ public class AVLBinaryTree extends APBinaryTree{
         
         //sets the old parent's parent to be the rotated node
         rotatedNode.right.parent = rotatedNode;
+    }
+    
+    public void leftRotation(Node rotatedNode)
+    {
+        if(rotatedNode.parent == null)
+            return;
+        
+        if(rotatedNode.parent == this.getRoot())
+            this.root = rotatedNode;
+        
+        // if they have one, assigns the rotating node's right child to become the parent's left child 
+        if(rotatedNode.left != null)
+        {
+            rotatedNode.parent.right = rotatedNode.left;
+        }
+        else
+            rotatedNode.parent.right = null;
+        
+        // assigns the rotating node's parent to become its right child 
+        rotatedNode.left = rotatedNode.parent;
+        
+        // if they have one, assigns the parent's parent to become the parent's left child 
+        if(rotatedNode.parent.parent != null)
+        {
+            rotatedNode.parent = rotatedNode.parent.parent;
+        }
+        else
+            rotatedNode.parent = null;
+        
+        //sets the old parent's parent to be the rotated node
+        rotatedNode.left.parent = rotatedNode;
+    }
+    
+    public void leftRotation(Node rotatedNode, Node parent)
+    {
+        if(parent == null)
+            return;
+        
+        if(parent == this.getRoot())
+            this.root = rotatedNode;
+        
+        // if they have one, assigns the rotating node's right child to become the parent's left child 
+        if(rotatedNode.left != null)
+        {
+            parent.right = rotatedNode.left;
+        }
+        else
+            parent.right = null;
+        
+        // assigns the rotating node's parent to become its right child 
+        rotatedNode.left = parent;
+        
+        // if they have one, assigns the parent's parent to become the parent's left child 
+        if(parent.parent != null)
+        {
+            parent = rotatedNode.parent.parent;
+        }
+        else
+            parent = null;
+        
+        //sets the old parent's parent to be the rotated node
+        rotatedNode.left.parent = rotatedNode;
     }
     
     //TODO: change to be not static after finished

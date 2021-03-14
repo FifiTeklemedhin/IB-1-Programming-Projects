@@ -18,26 +18,42 @@ public class Tester
         AVLBinaryTree tree = new AVLBinaryTree();
         APConsole console = new APConsole("AVL Tree Tester");
         
-        tree.add(3);
-        tree.add(2);
-        tree.add(1);
         
         
-        tree.printTree(tree.root, 3, 3);
-        console.println("root height: " + tree.root.height());
-        console.println(tree.rightRotationWorks(tree.root.left, tree.root)); // should work for adding 3,2,1
+        // printing + getting height: works
+            tree.add(3);
+            tree.add(2);
+            tree.add(1);    
+            tree.printTree(tree.root, 3, 3, console);
+            
+            console.println("root height: " + tree.root.height());
         
-        tree = new AVLBinaryTree();
-        tree.add(7);
-        tree.add(8);
-        tree.add(4);
-        tree.add(5);
-        tree.add(3);
-       // tree.printTree(tree.root, 3, 3);
+        //checking whether rotations would help: works
+            console.println(tree.rightRotationWorks(tree.root.left, tree.root)); // should work for adding 3,2,1
         
-        tree.rightRotation(tree.root.left, tree.root);
+        // right rotations: work
+            tree = new AVLBinaryTree();
+            tree.add(7);
+            tree.add(8);
+            tree.add(4);
+            tree.add(5);
+            tree.add(3);
+
+            tree.rightRotation(tree.root.left, tree.root);
+            tree.printTree(tree.root, 10, 10);
+            
+        // left rotations: 
+            tree = new AVLBinaryTree();
+            tree.add(7);
+            tree.add(9);
+            tree.add(8);
+            tree.add(11);
+            tree.add(4);
+
+            tree.leftRotation(tree.root.right, tree.root);
+            tree.printTree(tree.root, 10, 10);
+            
         
-        tree.printTree(tree.root, 10, 10);
     }
     
 }

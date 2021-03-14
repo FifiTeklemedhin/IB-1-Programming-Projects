@@ -319,6 +319,25 @@ public class APBinaryTree<E extends Comparable> implements Iterable<E>
         if(root.left != null) //print left child
             printTree(root.left, spaces, increment);
     }
+    
+    public void printTree(Node root, int spaces, int increment, APConsole console)
+    {
+        if(root == null) //if null, go to next recursive call
+           return;
+        
+        spaces += increment; //spaces increment depending on level of node within tree
+        if(root.right != null) 
+            printTree(root.right, spaces, increment); //print right child first
+        
+        console.println(""); //create a new line and then indent 
+        for(int j = increment; j < spaces; j++)
+            console.print(" ");
+        
+        console.println(root.data); //print current node
+        
+        if(root.left != null) //print left child
+            printTree(root.left, spaces, increment);
+    }
      @Override
     public Iterator<E> iterator() 
     {
