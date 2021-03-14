@@ -15,7 +15,7 @@ import APClasses.*;
 public class APBinaryTree<E extends Comparable> implements Iterable<E>
 {
     public Node<E> root = new Node(null, null, null);
-    private int size = 0;
+    protected int size = 0;
     APConsole console = new APConsole("1");
     String toStr = "";
     
@@ -25,23 +25,25 @@ public class APBinaryTree<E extends Comparable> implements Iterable<E>
         return this.root;
     }
     
-    E add(E data)
+
+    public E add(E data)
     {
-        return addFrom(this.root, data);
+        return (E) this.addFrom(this.root, data, this.root);
     }
-    E addFrom(Node<E> currentNode, E data)
+    
+    private E addFrom(Node<E> currentNode, E data, Node parent)
     {
         
         if (currentNode.data == null) 
         {
-            root = new Node(data);
+            root = new Node(data, parent);
             size += 1;
             return data;
         }
         
         if(currentNode == null)
         {
-            currentNode = new Node(data);
+            currentNode = new Node(data, parent);
             return data;
         }
 
@@ -50,21 +52,30 @@ public class APBinaryTree<E extends Comparable> implements Iterable<E>
         {
             if(currentNode.right == null)
             {
+                if(parent != null)
+                {
+                    currentNode.right = new Node(data, parent);
+                }
                 currentNode.right = new Node(data);
                 size += 1;
                 return data;
             }
-            addFrom(currentNode.right, data);
+            addFrom(currentNode.right, data, currentNode);
         }
         else if(compare == -1)
         {
             if(currentNode.left == null)
             {
+                if(parent != null)
+                {
+                    currentNode.left = new Node(data, parent);
+                }
                 currentNode.left = new Node(data);
+                
                 size += 1;
                 return data;
             }
-            addFrom(currentNode.left, data);
+            addFrom(currentNode.left, data, currentNode);
         }
         // if it exists already, then add it to the subtree of the root that has the smallest length
         else
@@ -73,22 +84,31 @@ public class APBinaryTree<E extends Comparable> implements Iterable<E>
             {
                 if(currentNode.right == null)
                 {
+                    if(parent != null)
+                    {
+                        currentNode.right = new Node(data, parent);
+                    }
+                    
                     currentNode.right = new Node(data);
                     return data;
                 }
                 else
-                    addFrom(currentNode.right, data);
+                    addFrom(currentNode.right, data, currentNode);
             }
             else
             {
                 if(currentNode.left == null)
                 {
+                    if(parent != null)
+                    {
+                        currentNode.left = new Node(data, parent);
+                    }
                     currentNode.left = new Node(data);
                     return data;
                 }
 
                 else
-                    addFrom(currentNode.left, data);
+                    addFrom(currentNode.left, data, currentNode);
             }
         }
        
@@ -260,7 +280,7 @@ public class APBinaryTree<E extends Comparable> implements Iterable<E>
         System.out.println("\n");
         return false;
     }
-    private int subtreeLength(Node<E> node)
+    protected int subtreeLength(Node<E> node)
     {
         return inOrder(node, new APQueue<E>()).getLength();
     }
@@ -338,7 +358,7 @@ public class APBinaryTree<E extends Comparable> implements Iterable<E>
         if(root.left != null) //print left child
             printTree(root.left, spaces, increment);
     }
-     @Override
+    @Override
     public Iterator<E> iterator() 
     {
         return new APBinaryTreeIterator(this);

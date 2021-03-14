@@ -12,13 +12,14 @@ import APClasses.APConsole;
  *
  * @author fifiteklemedhin
  */
-public class AVLBinaryTree extends APBinaryTree{
+public class AVLBinaryTree<E extends Comparable> extends APBinaryTree{
 
     public AVLBinaryTree()
     {
         super();
     }
-    
+   
+   
     public void rightRotation(Node rotatedNode)
     {
         if(rotatedNode.parent == null)
@@ -134,7 +135,8 @@ public class AVLBinaryTree extends APBinaryTree{
         // if they have one, assigns the parent's parent to become the parent's left child 
         if(parent.parent != null)
         {
-            parent = rotatedNode.parent.parent;
+            rotatedNode.parent = parent.parent;
+            //parent = rotatedNode.parent.parent;
         }
         else
             parent = null;

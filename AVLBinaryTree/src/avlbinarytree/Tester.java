@@ -39,10 +39,10 @@ public class Tester
             tree.add(5);
             tree.add(3);
 
-            tree.rightRotation(tree.root.left, tree.root);
+            tree.rightRotation(tree.root.left);
             tree.printTree(tree.root, 10, 10);
             
-        // left rotations: 
+        // left rotations: work
             tree = new AVLBinaryTree();
             tree.add(7);
             tree.add(9);
