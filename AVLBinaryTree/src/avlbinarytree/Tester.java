@@ -65,6 +65,7 @@ public class Tester
             tree.add(29);
             tree.add(45);
 
+            //tree.printTree(tree.root, 10, 10);
             tree.doubleRightRotation(tree.root);
             tree.printTree(tree.root, 10, 10);
             

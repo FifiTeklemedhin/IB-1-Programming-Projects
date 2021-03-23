@@ -11,8 +11,9 @@ import APClasses.APConsole;
 /**
  *
  * @author fifiteklemedhin
+ * @param <E>
  */
-public class AVLBinaryTree<E extends Comparable> extends APBinaryTree{
+public class AVLBinaryTree<E extends Comparable> extends APBinaryTree {
 
     public AVLBinaryTree()
     {
@@ -96,7 +97,11 @@ public class AVLBinaryTree<E extends Comparable> extends APBinaryTree{
     {
         //what do you do if no grandchildren are unbalanced?
         //what if the child node is not imbalanced? Does grandchildren refer to any node below the child of the imbalanced node?
-       
+        
+        System.out.println(imbalancedNode.left != null);
+        System.out.println(!imbalancedNode.left.isBalanced());
+        System.out.println(imbalancedNode.left.right.height() + ", " +  imbalancedNode.left.left.height());
+         
         Node rotatingGrandchild;
         if(imbalancedNode.left != null) //if child isn't null
         {
@@ -107,29 +112,7 @@ public class AVLBinaryTree<E extends Comparable> extends APBinaryTree{
                 else
                     rotatingGrandchild = imbalancedNode.left.left; 
                 
-                //rightRotation(rotatingGrandchild, root); //rotates to the right
-                
-                
-                Node parent = rotatingGrandchild.parent;
-                rotatingGrandchild.left = parent.left;
-                parent.left = null;
-
-                if(imbalancedNode == this.getRoot())
-                    this.root = rotatingGrandchild;
-
-                // if they have one, assigns the rotating node's right child to become the parent's left child 
-                if(rotatingGrandchild.right != null)
-                {
-                    imbalancedNode.left = rotatingGrandchild.right;
-                }  
-
-                // assigns the rotating node's parent to become its right child 
-                rotatingGrandchild.right = imbalancedNode;
-
-                rotatingGrandchild.parent = null;
-                
-                //sets the old parent's parent to be the rotated node
-                imbalancedNode.parent = rotatingGrandchild;
+                rightRotation(rotatingGrandchild); //rotates to the right
             }
         }  
         
@@ -141,7 +124,6 @@ public class AVLBinaryTree<E extends Comparable> extends APBinaryTree{
         //what if the child node is not imbalanced? Does grandchildren refer to any node below the child of the imbalanced node?
         
         Node rotatingGrandchild;
-        
         if(imbalancedNode.right != null) //if child isn't null
         {
             if(!imbalancedNode.right.isBalanced()) //if there is a grandchild that is unbalanced
@@ -152,12 +134,33 @@ public class AVLBinaryTree<E extends Comparable> extends APBinaryTree{
                     rotatingGrandchild = imbalancedNode.right.left; 
                 
                 leftRotation(rotatingGrandchild); //rotates to the left
-               
             }
-        }  
-       
+        }        
     }
-             
+    
+
+    public void balance(Node newRoot) //balances a node
+    {
+        if(newRoot == this.root || this.root.isBalanced())
+            return;
+        
+        if(newRoot.parent.left == newRoot) //if left child, do right rotation
+        {
+            if(rightRotationWorks(newRoot, this.root)) //do single rotation if possible, else do double
+                rightRotation(newRoot);
+            else
+                doubleRightRotation(newRoot);
+        }
+        
+        else //else is right child, do left rotation
+        {
+            if(leftRotationWorks(newRoot, this.root)) //do single rotation if possible, else do double
+                leftRotation(newRoot);
+            else
+                doubleLeftRotation(newRoot);
+        }
+        
+    }
     public boolean rightRotationWorks(Node newRoot, Node oldRoot)
     {
         // all of these conditions have to be false in order for the right rotation to work
@@ -175,4 +178,106 @@ public class AVLBinaryTree<E extends Comparable> extends APBinaryTree{
                                                                       // The old root's right child will have a height increase of 1 since it will become it's parent's root
     }
     
+      public E add(E data)
+    {
+        return (E) addFrom(this.root, data, this.root);
+    }
+    
+    private E addFrom(Node<E> currentNode, E data, Node parent)
+    {
+        
+        if (currentNode.data == null) 
+        {
+            root = new Node(data);
+            size += 1;
+            balance(currentNode);
+            balance(currentNode);
+        }
+        
+        if(currentNode == null)
+        {
+            currentNode = new Node(data, parent);
+            balance(currentNode); 
+            return data;
+        }
+
+        int compare = data.compareTo(currentNode.data);
+        if(compare == 1)
+        {
+            if(currentNode.right == null)
+            {
+                if(parent != null)
+                {
+                    currentNode.right = new Node(data, parent);
+                }
+                else
+                    currentNode.right = new Node(data);
+                size += 1;
+                balance(currentNode); 
+                return data;
+            }
+            addFrom(currentNode.right, data, currentNode);
+        }
+        else if(compare == -1)
+        {
+            if(currentNode.left == null)
+            {
+                if(parent != null)
+                {
+                    currentNode.left = new Node(data, parent);
+                }
+                else
+                    currentNode.left = new Node(data);
+                
+                size += 1;
+                balance(currentNode); 
+                return data;
+            }
+            addFrom(currentNode.left, data, currentNode);
+        }
+        // if it exists already, then add it to the subtree of the root that has the smallest length
+        else
+        {
+            if(subtreeLength(currentNode.left) > subtreeLength(currentNode.right))
+            {
+                if(currentNode.right == null)
+                {
+                    if(parent != null)
+                    {
+                        currentNode.right = new Node(data, parent);
+                    }
+                    
+                    else
+                        currentNode.right = new Node(data);
+                    balance(currentNode); 
+                    return data;
+                }
+                else
+                    addFrom(currentNode.right, data, currentNode);
+            }
+            else
+            {
+                if(currentNode.left == null)
+                {
+                    if(parent != null)
+                    {
+                        currentNode.left = new Node(data, parent);
+                    }
+                    else
+                        currentNode.left = new Node(data);
+                    balance(currentNode); 
+                    return data;
+                }
+
+                else
+                    addFrom(currentNode.left, data, currentNode);
+            }
+        }
+       
+        return null;
+    
+        
+    }
+    
+   
 }
